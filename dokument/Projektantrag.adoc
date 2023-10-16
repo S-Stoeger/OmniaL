@@ -10,28 +10,36 @@
 
 == Projektauftrag
 
-=== Projektbezeichnung:
+=== Projektname
 HTL-Leonding App
 
-=== Projektteam:
-- Sophie Stöger (PL)
+=== Projektteam
+- Sophie Stöger
 - Sophie Binder
 - Moritz Wagner
 - Maximillian Slabschi
 
 === Projektbeschreibung
+Eine Anwendung die Schüler und Lehrer ermöglicht Räume zu reservieren um Projekte zu verwirklichen, sowie die Entlehnung von Equipment.
 
 === Ausgangssituation
+In der Htl-Leonding ist eine mittelgroße Schule in Oberösterreich. Die Schüler können
 
 === Projektdauer
+Bis zum Projectaward 2025. (ca. 1.5 Jahre)
 
 === Projektziel / Nicht-Ziele
+* Schüler können besser ihre Projekte planen
+
 
 === Projektinhalte
+* Schüler können Vorplanen wann sie ihre Projekte in bestimmten Räumen durchführen wollen.
+* Die Entlehnung des Equipments ist übersichtlicher und Lehrern wird das Management der Geräte erleichtert.
+* Nicht
+* Ein Raum kann immer nur einmal reserviert werden.
+
 
 === Kritische Erfolgsfaktoren
-
-=== Ergebnis
 
 === Termine
 
