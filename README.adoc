@@ -15,10 +15,11 @@ Das Projekt HTL-Leonding-App handelt von einer Anwendung, auf welcher es Schüle
 Auch der Verleih von Equipment wird hier festgehalten bzw. kann auch durchgeführt werden.
 
 Das Projektteam besteht aus: 
-- Stöger Sophie
-- Binder Sofie
-- Wagner Moritz
-- Slabschi Maximilian
+
+* Stöger Sophie
+* Binder Sofie
+* Wagner Moritz
+* Slabschi Maximilian
 
 === Projektaufbau
 ...
