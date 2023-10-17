@@ -1,0 +1,27 @@
+= Projekt ITP
+1.0.0, {docdate}: ITP
+//:toc-placement!:  // prevents the generation of the doc at this position, so it can be printed afterwards
+:sourcedir: ../src/main/java
+:icons: font
+:sectnums:    // Nummerierung der Überschriften / section numbering
+:toc: left
+:experimental:
+
+
+== HTL-Leonding-App
+
+=== Einführung
+Das Projekt HTL-Leonding-App handelt von einer Anwendung, auf welcher es Schülern ermöglicht wird Räume zu reservieren.
+Auch der Verleih von Equipment wird hier festgehalten bzw. kann auch durchgeführt werden.
+
+Das Projektteam besteht aus: 
+- Stöger Sophie
+- Binder Sofie
+- Wagner Moritz
+- Slabschi Maximilian
+
+=== Projektaufbau
+...
+
+=== Projektausführung
+...
