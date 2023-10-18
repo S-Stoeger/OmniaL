@@ -1,0 +1,24 @@
+@startuml
+
+entity Room {
+id
+}
+
+entity Reservation {
+id
+}
+
+
+entity Person {
+}
+
+entity Role {
+}
+
+
+
+Room "1"--"*" Reservation
+Person "1"--"*" Reservation
+Person "*"--"1" Role
+
+@enduml
