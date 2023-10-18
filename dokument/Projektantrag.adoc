@@ -11,7 +11,7 @@
 == Projektauftrag
 
 === Projektname
-HTL-Leonding App
+OmniaL
 
 === Ausgangssituation
 In der Htl-Leonding ist eine mittelgroße Schule in Oberösterreich.
