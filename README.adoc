@@ -8,10 +8,10 @@
 :experimental:
 
 
-== HTL-Leonding-App
+== OmniaL
 
 === Einführung
-Das Projekt HTL-Leonding-App handelt von einer Anwendung, auf welcher es Schülern ermöglicht wird Räume zu reservieren.
+Das Projekt HTL-Leonding-App handelt von einer Anwendung, auf welcher es Schülern ermöglicht Räume zu reservieren.
 Auch der Verleih von Equipment wird hier festgehalten bzw. kann auch durchgeführt werden.
 
 Das Projektteam besteht aus: 
@@ -22,7 +22,14 @@ Das Projektteam besteht aus:
 * Slabschi Maximilian
 
 === Projektaufbau
-...
+
+
+==== Technologien
+* Frontend: Typescript
+* Backend: Java, Quarkus
+* Datenbank: Postgres
+
+
 
 === Projektausführung
 ...
