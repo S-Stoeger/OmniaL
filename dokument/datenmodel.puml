@@ -1,24 +1,30 @@
 @startuml
 
 entity Room {
-id
+- id
+- name
+- description
 }
 
 entity Reservation {
-id
+- id
+- roomId
+- personId
+- date
+- startTime
+- endTime
 }
 
 
 entity Person {
-}
-
-entity Role {
+- id
+- surname
+- firstname
 }
 
 
 
 Room "1"--"*" Reservation
 Person "1"--"*" Reservation
-Person "*"--"1" Role
 
 @enduml
