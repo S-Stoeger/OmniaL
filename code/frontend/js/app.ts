@@ -3,6 +3,14 @@ type Reservation = {
     startTime: string;
     endTime: string;
 }
+// constatnts
+const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
+const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
+const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+const dayDefaultValue: string = "Montag";
+const startTimeDefaultValue: string = "-- Startzeit --";
+const endTimeDefaultValue: string = "-- Endzeit --";
+
 
 let reservations: Reservation[] = [];
 
@@ -14,8 +22,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("myModal") as HTMLDivElement;
     const closeIcon = document.querySelector(".close") as HTMLElement;
 
+    // get dropdowns
+    const dropdownDay = document.getElementById("day") as HTMLSelectElement;
+    const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
+    const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
+
     openPopupButton.addEventListener("click", () => {
         modal.style.display = "block";
+
+        // set value at dropdowns
+        dropdownDay.value = dayDefaultValue;
+        dropdownStartTime.value = startTimeDefaultValue;
+        dropdownEndTime.value = endTimeDefaultValue;
     });
 
     closeIcon?.addEventListener("click", () => {
@@ -41,21 +59,52 @@ document.addEventListener("DOMContentLoaded", () => {
         const headers = table.querySelectorAll("th");
         const rows = table.querySelectorAll("tr");
 
+        // Reserving room per onlick
+        function addReservationPerClick(cellId: string) {
+            // get modal
+            const modal = document.getElementById("myModal") as HTMLDivElement;
+
+            // show modal
+            modal.style.display = "block";
+
+            // get dropdown elements
+            const dropdownDay = document.getElementById("day") as HTMLSelectElement;
+            const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
+            const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
+
+            // split id into row and column
+            let array:string[] = cellId.split("_");
+            
+            // get data from column
+            const day: string = dayArray[Number(array[2]) - 1];
+            const startTime: string = startTimeArray[Number(array[1]) -1];
+            const endTime: string = endTimeArray[Number(array[1]) - 1];7
+            
+            // set value of dropdown in modal
+            dropdownDay.value = day;
+            dropdownStartTime.value = startTime;
+            dropdownEndTime.value = endTime;
+        }
+
         // Iterate through each header and row
         for (let i = 0; i < headers.length; i++) {
             if (!headers[i].classList.contains("hour")) {
                 for (let j = 1; j < rows.length; j++) {
                     const cell = (rows[j].children[i] as HTMLTableCellElement);
+
                     // Generate a unique ID based on the column index and row index
                     cell.id = `cell_${j}_${i}`;
+                    cell.addEventListener('click', function() {
+                        addReservationPerClick(cell.id);
+                    });
                 }
             }
         }
     }
-
     // Call the function to assign IDs
     assignColumnIds();
 });
+
 
 // get all values from dropdown
 document.addEventListener("DOMContentLoaded", () => {
@@ -111,12 +160,6 @@ function getColumn(startTime: string, endTime: string, day: string) {//: String[
 
     saveReservationToLocalStorage(reservation);
 
-    // arrays with the values
-
-    const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
-    const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
-    const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
-
     // importatnt variables
     let dayId: number = 0; // id of day
     let units: number = 0; // count uf units reservated
@@ -159,17 +202,11 @@ function getColumn(startTime: string, endTime: string, day: string) {//: String[
 
 function loadAllReservations() {
     const storedReservations = getLocalStorageAsArray();
-
-    console.log("akdbhajhdbajhd")
     console.log(storedReservations)
     for (let i: number = 0; i < storedReservations.length; i++) {
-
-
         let reservationsArray = JSON.parse(storedReservations[i]);
-        console.log("hier")
         console.log(reservationsArray)
         let day: string = reservationsArray[i].day;
-        console.log(day)
         let startTime: string = reservationsArray[i].startTime;
         let endTime: string = reservationsArray[i].endTime;
 

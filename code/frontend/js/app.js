@@ -1,3 +1,10 @@
+// constatnts
+var startTimeArray = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
+var endTimeArray = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
+var dayArray = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+var dayDefaultValue = "Montag";
+var startTimeDefaultValue = "-- Startzeit --";
+var endTimeDefaultValue = "-- Endzeit --";
 var reservations = [];
 loadAllReservations();
 // popup window
@@ -5,8 +12,16 @@ document.addEventListener("DOMContentLoaded", function () {
     var openPopupButton = document.getElementById("openPopupButton");
     var modal = document.getElementById("myModal");
     var closeIcon = document.querySelector(".close");
+    // get dropdowns
+    var dropdownDay = document.getElementById("day");
+    var dropdownStartTime = document.getElementById("time");
+    var dropdownEndTime = document.getElementById("timeE");
     openPopupButton.addEventListener("click", function () {
         modal.style.display = "block";
+        // set value at dropdowns
+        dropdownDay.value = dayDefaultValue;
+        dropdownStartTime.value = startTimeDefaultValue;
+        dropdownEndTime.value = endTimeDefaultValue;
     });
     closeIcon === null || closeIcon === void 0 ? void 0 : closeIcon.addEventListener("click", function () {
         modal.style.display = "none";
@@ -27,13 +42,41 @@ document.addEventListener("DOMContentLoaded", function () {
         var table = document.querySelector("table");
         var headers = table.querySelectorAll("th");
         var rows = table.querySelectorAll("tr");
+        // Reserving room per onlick
+        function addReservationPerClick(cellId) {
+            // get modal
+            var modal = document.getElementById("myModal");
+            // show modal
+            modal.style.display = "block";
+            // get dropdown elements
+            var dropdownDay = document.getElementById("day");
+            var dropdownStartTime = document.getElementById("time");
+            var dropdownEndTime = document.getElementById("timeE");
+            // split id into row and column
+            var array = cellId.split("_");
+            // get data from column
+            var day = dayArray[Number(array[2]) - 1];
+            var startTime = startTimeArray[Number(array[1]) - 1];
+            var endTime = endTimeArray[Number(array[1]) - 1];
+            7;
+            // set value of dropdown in modal
+            dropdownDay.value = day;
+            dropdownStartTime.value = startTime;
+            dropdownEndTime.value = endTime;
+        }
         // Iterate through each header and row
         for (var i = 0; i < headers.length; i++) {
             if (!headers[i].classList.contains("hour")) {
-                for (var j = 1; j < rows.length; j++) {
+                var _loop_1 = function (j) {
                     var cell = rows[j].children[i];
                     // Generate a unique ID based on the column index and row index
                     cell.id = "cell_".concat(j, "_").concat(i);
+                    cell.addEventListener('click', function () {
+                        addReservationPerClick(cell.id);
+                    });
+                };
+                for (var j = 1; j < rows.length; j++) {
+                    _loop_1(j);
                 }
             }
         }
@@ -85,10 +128,6 @@ function getColumn(startTime, endTime, day) {
     var reservation = { day: day, startTime: startTime, endTime: endTime };
     reservations.push(reservation);
     saveReservationToLocalStorage(reservation);
-    // arrays with the values
-    var startTimeArray = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
-    var endTimeArray = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
-    var dayArray = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
     // importatnt variables
     var dayId = 0; // id of day
     var units = 0; // count uf units reservated
@@ -126,14 +165,11 @@ function getColumn(startTime, endTime, day) {
 }
 function loadAllReservations() {
     var storedReservations = getLocalStorageAsArray();
-    console.log("akdbhajhdbajhd");
     console.log(storedReservations);
     for (var i = 0; i < storedReservations.length; i++) {
         var reservationsArray = JSON.parse(storedReservations[i]);
-        console.log("hier");
         console.log(reservationsArray);
         var day = reservationsArray[i].day;
-        console.log(day);
         var startTime = reservationsArray[i].startTime;
         var endTime = reservationsArray[i].endTime;
         getColumn(startTime, endTime, day);
