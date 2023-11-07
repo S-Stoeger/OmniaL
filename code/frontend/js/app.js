@@ -1,3 +1,5 @@
+var reservations = [];
+loadAllReservations();
 // popup window
 document.addEventListener("DOMContentLoaded", function () {
     var openPopupButton = document.getElementById("openPopupButton");
@@ -72,8 +74,17 @@ function addReservation(array) {
 function toCell(startTimeId, dayId) {
     return "cell_".concat(startTimeId, "_").concat(dayId);
 }
+function saveReservationToLocalStorage(reservation) {
+    var storedReservations = JSON.parse(localStorage.getItem('reservations') || '[]');
+    //console.log(storedReservations)
+    storedReservations.push(reservation);
+    localStorage.setItem('reservations', JSON.stringify(storedReservations));
+}
 // get assigned columns
 function getColumn(startTime, endTime, day) {
+    var reservation = { day: day, startTime: startTime, endTime: endTime };
+    reservations.push(reservation);
+    saveReservationToLocalStorage(reservation);
     // arrays with the values
     var startTimeArray = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
     var endTimeArray = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
@@ -101,13 +112,44 @@ function getColumn(startTime, endTime, day) {
     // get dayId
     for (var i = 0; i < dayArray.length; i++) {
         if (dayArray[i] === day) {
+            // + 1 because the first column is 1 not 0
             dayId = i + 1;
         }
     }
     // fill array with the ids from html
     for (var i = startTimeId; i < startTimeId + units; i++) {
+        // + 1 because the first row is 1 not 0
         columnIds.push(toCell(i + 1, dayId));
     }
     // add reservations to calendar
     addReservation(columnIds);
+}
+function loadAllReservations() {
+    var storedReservations = getLocalStorageAsArray();
+    console.log("akdbhajhdbajhd");
+    console.log(storedReservations);
+    for (var i = 0; i < storedReservations.length; i++) {
+        var reservationsArray = JSON.parse(storedReservations[i]);
+        console.log("hier");
+        console.log(reservationsArray);
+        var day = reservationsArray[i].day;
+        console.log(day);
+        var startTime = reservationsArray[i].startTime;
+        var endTime = reservationsArray[i].endTime;
+        getColumn(startTime, endTime, day);
+    }
+}
+function getLocalStorageAsArray() {
+    var localStorageArray = [];
+    // Iterate through all keys in localStorage
+    for (var i = 0; i < localStorage.length; i++) {
+        var key = "reservations";
+        if (key) {
+            var value = localStorage.getItem(key);
+            if (value) {
+                localStorageArray.push(value);
+            }
+        }
+    }
+    return localStorageArray;
 }
