@@ -117,17 +117,10 @@ function addReservation(array) {
 function toCell(startTimeId, dayId) {
     return "cell_".concat(startTimeId, "_").concat(dayId);
 }
-function saveReservationToLocalStorage(reservation) {
-    var storedReservations = JSON.parse(localStorage.getItem('reservations') || '[]');
-    //console.log(storedReservations)
-    storedReservations.push(reservation);
-    localStorage.setItem('reservations', JSON.stringify(storedReservations));
-}
 // get assigned columns
 function getColumn(startTime, endTime, day) {
     var reservation = { day: day, startTime: startTime, endTime: endTime };
     reservations.push(reservation);
-    saveReservationToLocalStorage(reservation);
     // importatnt variables
     var dayId = 0; // id of day
     var units = 0; // count uf units reservated
@@ -164,28 +157,28 @@ function getColumn(startTime, endTime, day) {
     addReservation(columnIds);
 }
 function loadAllReservations() {
-    var storedReservations = getLocalStorageAsArray();
-    console.log(storedReservations);
-    for (var i = 0; i < storedReservations.length; i++) {
-        var reservationsArray = JSON.parse(storedReservations[i]);
-        console.log(reservationsArray);
-        var day = reservationsArray[i].day;
-        var startTime = reservationsArray[i].startTime;
-        var endTime = reservationsArray[i].endTime;
-        getColumn(startTime, endTime, day);
-    }
 }
-function getLocalStorageAsArray() {
-    var localStorageArray = [];
-    // Iterate through all keys in localStorage
-    for (var i = 0; i < localStorage.length; i++) {
-        var key = "reservations";
-        if (key) {
-            var value = localStorage.getItem(key);
-            if (value) {
-                localStorageArray.push(value);
-            }
-        }
+var isShown = false;
+function showRooms() {
+    var box = document.getElementById("rooms");
+    var changeRoom = document.getElementById("changeRoom");
+    var openPopupButton = document.getElementById("openPopupButton");
+    if (isShown) {
+        box.style.transform = "translate(100%, -50%)";
+        changeRoom.style.transform = "translate(0%, 0%)";
+        openPopupButton.style.transform = "translate(0%, 0%)";
+        setTimeout(function () {
+            box.style.display = "none";
+        }, 501);
+        isShown = false;
     }
-    return localStorageArray;
+    else {
+        box.style.display = "block";
+        setTimeout(function () {
+            box.style.transform = "translate(0%, -50%)";
+        }, 0);
+        changeRoom.style.transform = "translate(-340%, 0%)";
+        openPopupButton.style.transform = "translate(-340%, 0%)";
+        isShown = true;
+    }
 }

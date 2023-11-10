@@ -145,20 +145,12 @@ function toCell(startTimeId: number, dayId: number): string {
     return `cell_${startTimeId}_${dayId}`;
 }
 
-function saveReservationToLocalStorage(reservation: Reservation) {
-    const storedReservations = JSON.parse(localStorage.getItem('reservations') || '[]');
-    //console.log(storedReservations)
-    storedReservations.push(reservation);
-    localStorage.setItem('reservations', JSON.stringify(storedReservations));
-}
 
 // get assigned columns
 function getColumn(startTime: string, endTime: string, day: string) {//: String[] {
 
     const reservation: Reservation = {day: day, startTime: startTime, endTime: endTime}
     reservations.push(reservation)
-
-    saveReservationToLocalStorage(reservation);
 
     // importatnt variables
     let dayId: number = 0; // id of day
@@ -201,31 +193,37 @@ function getColumn(startTime: string, endTime: string, day: string) {//: String[
 
 
 function loadAllReservations() {
-    const storedReservations = getLocalStorageAsArray();
-    console.log(storedReservations)
-    for (let i: number = 0; i < storedReservations.length; i++) {
-        let reservationsArray = JSON.parse(storedReservations[i]);
-        console.log(reservationsArray)
-        let day: string = reservationsArray[i].day;
-        let startTime: string = reservationsArray[i].startTime;
-        let endTime: string = reservationsArray[i].endTime;
+    
+}
 
-        getColumn(startTime, endTime, day)
+var isShown = false;
+
+function showRooms() {
+    var box = document.getElementById("rooms");
+    var changeRoom = document.getElementById("changeRoom");
+    var openPopupButton = document.getElementById("openPopupButton");
+
+    if (isShown) {
+        box.style.transform = "translate(100%, -50%)";
+        changeRoom.style.transform = "translate(0%, 0%)";
+        openPopupButton.style.transform = "translate(0%, 0%)";
+
+        setTimeout(function () {
+            box.style.display = "none";
+        }, 501);
+
+        isShown = false;
+    } else {    
+        box.style.display = "block";
+
+        setTimeout(function () {
+            box.style.transform = "translate(0%, -50%)";
+        }, 0);
+        
+        changeRoom.style.transform = "translate(-340%, 0%)";
+        openPopupButton.style.transform = "translate(-340%, 0%)";
+
+        isShown = true;
     }
 }
 
-function getLocalStorageAsArray(): string[] {
-    const localStorageArray: string[] = [];
-
-    // Iterate through all keys in localStorage
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = "reservations";
-        if (key) {
-            const value = localStorage.getItem(key);
-            if (value) {
-                localStorageArray.push(value);
-            }
-        }
-    }
-    return localStorageArray;
-}
