@@ -1,0 +1,12 @@
+{
+  "reservations" : [
+    {
+      "id" : 1,
+      "roomId" : 1,
+      "personId" : 1,
+      "reservationDate" : "10.11.2023",
+      "startTime": "10:00",
+      "endTime": "10:50"
+    }
+  ]
+}
