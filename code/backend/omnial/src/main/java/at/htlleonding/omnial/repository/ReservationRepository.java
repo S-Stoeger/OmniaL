@@ -18,7 +18,6 @@ public class ReservationRepository {
         return this.entityManager.createQuery("select r from Reservation r").getResultList();
     }
 
-    @Transactional
     public void addReservation(Reservation reservation){
         this.entityManager.persist(reservation);
     }
