@@ -7,10 +7,13 @@ type Reservation = {
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+const allRooms: string[] = ["Fotostudio", "Audiostudie", "Viedeoschnitt", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10", "EDV11", "EDV12", "EDV13", "EDV14", "EDV15", "EDV16", "EDV17", "EDV18"];
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
 const endTimeDefaultValue: string = "-- Endzeit --";
 
+const urlParams = new URLSearchParams(window.location.search);
+const roomValue = urlParams.get('roomValue');
 
 let reservations: Reservation[] = [];
 
@@ -214,7 +217,7 @@ function showRooms() {
 
         isShown = false;
     } else {    
-        box.style.display = "block";
+        box.style.display = "grid";
 
         setTimeout(function () {
             box.style.transform = "translate(0%, -50%)";
@@ -225,5 +228,41 @@ function showRooms() {
 
         isShown = true;
     }
+}
+displayRooms()
+function displayRooms() {
+    var box = document.getElementById("rooms");
+
+    // Clear existing content in the box
+    box.innerHTML = '';
+
+    // Assuming allRooms is an array of strings
+    for (let i = 0; i < allRooms.length; i++) {
+        // Use textContent instead of innerHTML
+        var anchor = document.createElement("a");
+        anchor.textContent = allRooms[i];
+        anchor.id = allRooms[i];
+
+        let currentRoomId: string = anchor.id;
+
+        if (checkRoom(allRooms[i])) {
+            anchor.style.cssText = "color: #0074d9"; // Matching room
+            console.log("t");
+            
+        } else {
+            anchor.style.cssText = "color: #fff"; // Non-matching room
+            console.log("f");
+            
+        }
+
+        anchor.href = `../html/index.html?roomValue=${currentRoomId}`;
+
+        
+        box.appendChild(anchor);
+    }
+}
+
+function checkRoom(room: string) {
+    return roomValue === room;
 }
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <link rel="stylesheet" type="text/css" href="../css/style.css">
 <script src="../js/app.js" defer></script>
-
+<script src="https://kit.fontawesome.com/5b65f55fa1.js" crossorigin="anonymous"></script>
 <html>
 <head>
     <title>Omnial</title>
@@ -154,7 +154,10 @@
             <td></td>
         </tr>
     </table>
-    <button class="add-button" id="openPopupButton">+</button>
+    <button class="add-button" id="openPopupButton"><i class="fa-solid fa-plus"></i></button>
+    <button class="add-button" id="changeRoom" onclick="showRooms()"><i class="fa-solid fa-door-open"></i></button>
+
+    <div id="rooms"></div>
 
     <div id="myModal" class="modal">
         <div class="modal-content">
