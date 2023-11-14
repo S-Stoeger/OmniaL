@@ -1,35 +1,53 @@
 package at.htlleonding.omnial.repository;
 
 import at.htlleonding.omnial.model.Reservation;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
+
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 @ApplicationScoped
 public class ReservationRepository {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
+    Map<Reservation, Integer> reservations = new HashMap<>();
+
+
     public List<Reservation> getAllReservation() {
+        //return this.entityManager.
+        String jsonCarArray = getReservationsFromFile();
+        try {
+            List<Reservation> listCar = objectMapper.readValue(jsonCarArray, new TypeReference<List<Reservation>>() {});
+        }
+        catch (IOException ex){
+            System.out.println("cant turn JSON to List");
+        }
+
+        return null;
+    }
+
+    public Reservation getReservationById(int id) {
         //return this.entityManager.
         return null;
     }
 
     public void addReservation(Reservation reservation) {
         try {
-            objectMapper.writeValue(new File("data/reservation.json"), reservation);
+            objectMapper.writeValue(new File("./data/reservations.json"), reservation);
         }
         catch (IOException e){
+            System.out.println("Cant add to JSON File");
 
         }
     }
