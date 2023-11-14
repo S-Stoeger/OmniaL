@@ -14,8 +14,14 @@ const endTimeDefaultValue: string = "-- Endzeit --";
 
 const urlParams = new URLSearchParams(window.location.search);
 const roomValue = urlParams.get('roomValue');
+const newUri: string = "../html/index.html?roomValue=Fotostudio";
+
+if (roomValue == null) {
+    window.location.href = newUri;
+}
 
 let reservations: Reservation[] = [];
+
 
 loadAllReservations()
 
@@ -247,12 +253,8 @@ function displayRooms() {
 
         if (checkRoom(allRooms[i])) {
             anchor.style.cssText = "color: #0074d9"; // Matching room
-            console.log("t");
-            
         } else {
             anchor.style.cssText = "color: #fff"; // Non-matching room
-            console.log("f");
-            
         }
 
         anchor.href = `../html/index.html?roomValue=${currentRoomId}`;

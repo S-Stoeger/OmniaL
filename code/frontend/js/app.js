@@ -8,6 +8,10 @@ var startTimeDefaultValue = "-- Startzeit --";
 var endTimeDefaultValue = "-- Endzeit --";
 var urlParams = new URLSearchParams(window.location.search);
 var roomValue = urlParams.get('roomValue');
+var newUri = "../html/index.html?roomValue=Fotostudio";
+if (roomValue == null) {
+    window.location.href = newUri;
+}
 var reservations = [];
 loadAllReservations();
 // popup window
@@ -199,11 +203,9 @@ function displayRooms() {
         var currentRoomId = anchor.id;
         if (checkRoom(allRooms[i])) {
             anchor.style.cssText = "color: #0074d9"; // Matching room
-            console.log("t");
         }
         else {
             anchor.style.cssText = "color: #fff"; // Non-matching room
-            console.log("f");
         }
         anchor.href = "../html/index.html?roomValue=".concat(currentRoomId);
         box.appendChild(anchor);
