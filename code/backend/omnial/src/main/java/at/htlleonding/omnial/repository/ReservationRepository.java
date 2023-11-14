@@ -26,9 +26,9 @@ public class ReservationRepository {
 
     public List<Reservation> getAllReservation() {
         //return this.entityManager.
-        String jsonCarArray = getReservationsFromFile();
+        String jsonReservationsArray = getReservationsFromFile();
         try {
-            List<Reservation> listCar = objectMapper.readValue(jsonCarArray, new TypeReference<List<Reservation>>() {});
+            List<Reservation> listCar = objectMapper.readValue(jsonReservationsArray, new TypeReference<List<Reservation>>() {});
         }
         catch (IOException ex){
             System.out.println("cant turn JSON to List");
