@@ -16,6 +16,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const roomValue = urlParams.get('roomValue');
 const newUri: string = "../html/index.html?roomValue=Fotostudio";
 
+// no more room null
 if (roomValue == null) {
     window.location.href = newUri;
 }
@@ -207,34 +208,43 @@ function loadAllReservations() {
 
 var isShown = false;
 
+// Function to show or hide the rooms
 function showRooms() {
+    // Get references to DOM elements
     var box = document.getElementById("rooms");
     var changeRoom = document.getElementById("changeRoom");
     var openPopupButton = document.getElementById("openPopupButton");
 
+    // Check if the rooms are currently shown
     if (isShown) {
+        // If shown, animate hiding
         box.style.transform = "translate(100%, -50%)";
         changeRoom.style.transform = "translate(0%, 0%)";
         openPopupButton.style.transform = "translate(0%, 0%)";
 
+        // Delay hiding the box until the animation is complete
         setTimeout(function () {
             box.style.display = "none";
         }, 501);
 
         isShown = false;
-    } else {    
+    } else {
         box.style.display = "grid";
 
+        // Delay showing the box until the animation is complete
         setTimeout(function () {
             box.style.transform = "translate(0%, -50%)";
         }, 0);
-        
+
+        // Move other elements off-screen when showing the rooms
         changeRoom.style.transform = "translate(-340%, 0%)";
         openPopupButton.style.transform = "translate(-340%, 0%)";
 
         isShown = true;
     }
 }
+
+
 displayRooms()
 function displayRooms() {
     var box = document.getElementById("rooms");
@@ -251,12 +261,14 @@ function displayRooms() {
 
         let currentRoomId: string = anchor.id;
 
+        // set color for selected room
         if (checkRoom(allRooms[i])) {
             anchor.style.cssText = "color: #0074d9"; // Matching room
         } else {
             anchor.style.cssText = "color: #fff"; // Non-matching room
         }
 
+        // reload page with correct room
         anchor.href = `../html/index.html?roomValue=${currentRoomId}`;
 
         
