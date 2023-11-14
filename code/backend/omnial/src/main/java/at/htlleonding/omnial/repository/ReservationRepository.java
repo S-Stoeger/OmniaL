@@ -9,6 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import java.nio.file.Files;
@@ -27,14 +28,15 @@ public class ReservationRepository {
     public List<Reservation> getAllReservation() {
         //return this.entityManager.
         String jsonReservationsArray = getReservationsFromFile();
+        List<Reservation> listReservations = new LinkedList<>();
         try {
-            List<Reservation> listCar = objectMapper.readValue(jsonReservationsArray, new TypeReference<List<Reservation>>() {});
+            listReservations = objectMapper.readValue(jsonReservationsArray, new TypeReference<List<Reservation>>() {});
         }
         catch (IOException ex){
             System.out.println("cant turn JSON to List");
         }
 
-        return null;
+        return listReservations;
     }
 
     public Reservation getReservationById(int id) {

@@ -12,22 +12,25 @@ public class Reservation {
     private int id;
     //@ManyToOne
     //@JoinColumn(name = "roomId")
-    private Room room;
+    private int roomId;
 
     //@ManyToOne
     //@JoinColumn(name = "personId")
-    private Person person;
+    private int personId;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private LocalDate date;
+    private LocalDate reservationDate;
 
-    public Reservation(Room room, Person person, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
-        this.room = room;
-        this.person = person;
+    public Reservation(int roomId, int personId, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
+        this.roomId = roomId;
+        this.personId = personId;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.date = date;
+        this.reservationDate = date;
+    }
+
+    public Reservation() {
     }
 
     public int getId() {
@@ -38,20 +41,20 @@ public class Reservation {
         this.id = id;
     }
 
-    public Room getRoom() {
-        return room;
+    public int getRoomId() {
+        return roomId;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setRoomId(int room) {
+        this.roomId= room;
     }
 
-    public Person getPerson() {
-        return person;
+    public int getPersonId() {
+        return personId;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPersonId(int person) {
+        this.personId = person;
     }
 
     public LocalDateTime getStartTime() {
@@ -70,11 +73,11 @@ public class Reservation {
         this.endTime = endTime;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getReservationDate() {
+        return reservationDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setReservationDate(LocalDate date) {
+        this.reservationDate = date;
     }
 }
