@@ -36,7 +36,7 @@ public class ReservationRepository {
 
     public String getReservationsFromFile(){
         String reservationString = "";
-        Path filepath = Paths.get("../../../../../../../data/reservations.json");
+        Path filepath = Paths.get("./data/reservations.json");
         try {
             reservationString = Files.readString(filepath);
         }
