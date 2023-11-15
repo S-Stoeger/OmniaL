@@ -3,11 +3,18 @@ package at.htlleonding.omnial.repository;
 import at.htlleonding.omnial.model.Reservation;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import jakarta.enterprise.context.ApplicationScoped;
-
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,9 +33,17 @@ public class ReservationRepository {
 
 
     public List<Reservation> getAllReservation() {
-        //return this.entityManager.
+        objectMapper.registerModule(new JSR310Module());
         String jsonReservationsArray = getReservationsFromFile();
         List<Reservation> listReservations = new LinkedList<>();
+
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE_TIME));
+
+        objectMapper.registerModule(javaTimeModule);
+
+        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE));
         try {
             listReservations = objectMapper.readValue(jsonReservationsArray, new TypeReference<List<Reservation>>() {});
         }
