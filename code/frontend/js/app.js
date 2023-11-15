@@ -9,12 +9,12 @@ var endTimeDefaultValue = "-- Endzeit --";
 var urlParams = new URLSearchParams(window.location.search);
 var roomValue = urlParams.get('roomValue');
 var newUri = "../html/index.html?roomValue=Fotostudio";
+// no more room null
 if (roomValue == null) {
     window.location.href = newUri;
 }
 var reservations = [];
 loadAllReservations();
-// popup window
 document.addEventListener("DOMContentLoaded", function () {
     var openPopupButton = document.getElementById("openPopupButton");
     var modal = document.getElementById("myModal");
@@ -23,6 +23,9 @@ document.addEventListener("DOMContentLoaded", function () {
     var dropdownDay = document.getElementById("day");
     var dropdownStartTime = document.getElementById("time");
     var dropdownEndTime = document.getElementById("timeE");
+    var dayDefaultValue = ""; // Set your default values
+    var startTimeDefaultValue = ""; // Set your default values
+    var endTimeDefaultValue = ""; // Set your default values
     openPopupButton.addEventListener("click", function () {
         modal.style.display = "block";
         // set value at dropdowns
@@ -33,10 +36,8 @@ document.addEventListener("DOMContentLoaded", function () {
     closeIcon === null || closeIcon === void 0 ? void 0 : closeIcon.addEventListener("click", function () {
         modal.style.display = "none";
     });
-    function closeModal() {
-        modal.style.display = "none";
-    }
     window.addEventListener("click", function (event) {
+        // Close modal when clicking outside of it
         if (event.target === modal) {
             modal.style.display = "none";
         }
@@ -98,6 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var dropdownEndTime = document.getElementById("timeE");
     var submitButton = document.getElementById("submitButton");
     submitButton === null || submitButton === void 0 ? void 0 : submitButton.addEventListener("click", function () {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
         // get values from dropdown
         var startTime = dropdownStartTime.value;
         var endTime = dropdownEndTime.value;
@@ -116,7 +119,7 @@ function addReservation(array) {
     for (var i = 0; i < array.length; i++) {
         var id = document.getElementById(array[i]);
         if (id) {
-            id.style.backgroundColor = "#eb4258";
+            id.style.backgroundColor = "#cd7f35";
         }
     }
 }
@@ -166,14 +169,19 @@ function getColumn(startTime, endTime, day) {
 function loadAllReservations() {
 }
 var isShown = false;
+// Function to show or hide the rooms
 function showRooms() {
+    // Get references to DOM elements
     var box = document.getElementById("rooms");
     var changeRoom = document.getElementById("changeRoom");
     var openPopupButton = document.getElementById("openPopupButton");
+    // Check if the rooms are currently shown
     if (isShown) {
+        // If shown, animate hiding
         box.style.transform = "translate(100%, -50%)";
         changeRoom.style.transform = "translate(0%, 0%)";
         openPopupButton.style.transform = "translate(0%, 0%)";
+        // Delay hiding the box until the animation is complete
         setTimeout(function () {
             box.style.display = "none";
         }, 501);
@@ -181,9 +189,11 @@ function showRooms() {
     }
     else {
         box.style.display = "grid";
+        // Delay showing the box until the animation is complete
         setTimeout(function () {
             box.style.transform = "translate(0%, -50%)";
         }, 0);
+        // Move other elements off-screen when showing the rooms
         changeRoom.style.transform = "translate(-340%, 0%)";
         openPopupButton.style.transform = "translate(-340%, 0%)";
         isShown = true;
@@ -201,12 +211,14 @@ function displayRooms() {
         anchor.textContent = allRooms[i];
         anchor.id = allRooms[i];
         var currentRoomId = anchor.id;
+        // set color for selected room
         if (checkRoom(allRooms[i])) {
-            anchor.style.cssText = "color: #0074d9"; // Matching room
+            anchor.style.cssText = "color: #f5b963"; // Matching room
         }
         else {
             anchor.style.cssText = "color: #fff"; // Non-matching room
         }
+        // reload page with correct room
         anchor.href = "../html/index.html?roomValue=".concat(currentRoomId);
         box.appendChild(anchor);
     }

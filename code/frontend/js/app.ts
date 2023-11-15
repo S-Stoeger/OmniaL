@@ -26,7 +26,6 @@ let reservations: Reservation[] = [];
 
 loadAllReservations()
 
-// popup window
 document.addEventListener("DOMContentLoaded", () => {
     const openPopupButton = document.getElementById("openPopupButton") as HTMLButtonElement;
     const modal = document.getElementById("myModal") as HTMLDivElement;
@@ -36,6 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownDay = document.getElementById("day") as HTMLSelectElement;
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
+
+    const dayDefaultValue = ""; // Set your default values
+    const startTimeDefaultValue = ""; // Set your default values
+    const endTimeDefaultValue = ""; // Set your default values
 
     openPopupButton.addEventListener("click", () => {
         modal.style.display = "block";
@@ -50,11 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.style.display = "none";
     });
 
-    function    closeModal() {
-        modal.style.display = "none";
-    }
-
     window.addEventListener("click", (event) => {
+        // Close modal when clicking outside of it
         if (event.target === modal) {
             modal.style.display = "none";
         }
@@ -124,6 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitButton = document.getElementById("submitButton");
 
     submitButton?.addEventListener("click", () => {
+        const modal = document.getElementById("myModal") as HTMLDivElement;
+        modal.style.display = "none";
         // get values from dropdown
         const startTime = dropdownStartTime.value;
         const endTime = dropdownEndTime.value;
@@ -134,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (endTime > startTime) {
                 // get values/convert to id/ make reservation
                 getColumn(startTime, endTime, day);
-            }
+            }   
         }
     });
 });
@@ -144,7 +146,7 @@ function addReservation(array: string[]) {
     for (let i: number = 0; i < array.length; i++) {
         let id = document.getElementById(array[i]);
         if (id) {
-            id.style.backgroundColor = "#eb4258";
+            id.style.backgroundColor = "#cd7f35";
         }
     }
 }
@@ -263,7 +265,7 @@ function displayRooms() {
 
         // set color for selected room
         if (checkRoom(allRooms[i])) {
-            anchor.style.cssText = "color: #0074d9"; // Matching room
+            anchor.style.cssText = "color: #f5b963"; // Matching room
         } else {
             anchor.style.cssText = "color: #fff"; // Non-matching room
         }
