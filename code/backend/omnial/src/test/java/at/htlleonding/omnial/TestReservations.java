@@ -33,6 +33,5 @@ public class TestReservations {
         Reservation reservation = new Reservation(1,1, LocalDateTime.of(2023,11,15,12, 00,00), LocalDateTime.of(2023,11,15,12, 50,00), LocalDate.of(2023,11,15));
         repository.addReservation(reservation);
 
-        System.out.println(repository.getReservationsFromFile());
     }
 }

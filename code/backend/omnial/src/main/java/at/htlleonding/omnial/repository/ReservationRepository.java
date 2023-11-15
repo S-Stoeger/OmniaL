@@ -23,13 +23,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ReservationRepository {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    Map<Reservation, Integer> reservations = new HashMap<>();
+    Map<Integer,Reservation> reservations = new HashMap<>();
 
     public ReservationRepository() {
         objectMapper.registerModule(new JSR310Module());
@@ -55,6 +56,7 @@ public class ReservationRepository {
             System.out.println("cant turn JSON to List");
         }
 
+
         return listReservations;
     }
 
@@ -64,8 +66,13 @@ public class ReservationRepository {
     }
 
     public void addReservation(Reservation reservation) {
+        List<Reservation> listReservations = getAllReservation();
         try {
-            objectMapper.writeValue(new File("./data/reservations-test.json"), reservation);
+            listReservations.add(reservation);
+            System.out.println(listReservations);
+            //objectMapper.writeValue(new File("./data/reservations-test.json"), reservation);
+            //this.reservations.put(reservation, reservation.getId());
+            objectMapper.writeValue(Paths.get("./data/reservations-test.json").toFile(), listReservations);
         }
         catch (IOException e){
             System.out.println("Cant add to JSON File");
@@ -83,6 +90,7 @@ public class ReservationRepository {
             System.out.println("Error happened while reading reservations");
         }
         return reservationString;
+
     }
 
 
