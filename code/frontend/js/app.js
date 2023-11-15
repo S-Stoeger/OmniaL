@@ -23,9 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var dropdownDay = document.getElementById("day");
     var dropdownStartTime = document.getElementById("time");
     var dropdownEndTime = document.getElementById("timeE");
-    var dayDefaultValue = ""; // Set your default values
-    var startTimeDefaultValue = ""; // Set your default values
-    var endTimeDefaultValue = ""; // Set your default values
     openPopupButton.addEventListener("click", function () {
         modal.style.display = "block";
         // set value at dropdowns
@@ -73,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
             dropdownEndTime.value = endTime;
         }
         // Iterate through each header and row
-        for (var i = 0; i < headers.length; i++) {
+        for (var i = 1; i < headers.length; i++) {
             if (!headers[i].classList.contains("hour")) {
                 var _loop_1 = function (j) {
                     var cell = rows[j].children[i];

@@ -69,9 +69,9 @@ td:hover {
     display: none;
     position: fixed;
     z-index: 1;
-    left: 25%;
-    top: 18%;
-    width: 50%;
+    left: 0;
+    top: 0;
+    width: 100%;
     height: 100%;
     overflow: auto;
     margin-left: auto;
@@ -83,7 +83,7 @@ td:hover {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid var(--dark_blue);
-    width: 70%;
+    width: 40%;
   }
 
   .close {

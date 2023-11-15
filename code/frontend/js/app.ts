@@ -36,10 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
 
-    const dayDefaultValue = ""; // Set your default values
-    const startTimeDefaultValue = ""; // Set your default values
-    const endTimeDefaultValue = ""; // Set your default values
-
     openPopupButton.addEventListener("click", () => {
         modal.style.display = "block";
 
@@ -97,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Iterate through each header and row
-        for (let i = 0; i < headers.length; i++) {
+        for (let i = 1; i < headers.length; i++) {
             if (!headers[i].classList.contains("hour")) {
                 for (let j = 1; j < rows.length; j++) {
                     const cell = (rows[j].children[i] as HTMLTableCellElement);
