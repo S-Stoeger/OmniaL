@@ -10,6 +10,7 @@ import java.util.Date;
 public class Reservation {
     //@Id
     private int id;
+    private static int countId;
     //@ManyToOne
     //@JoinColumn(name = "roomId")
     private int roomId;
@@ -23,6 +24,8 @@ public class Reservation {
     private LocalDate reservationDate;
 
     public Reservation(int roomId, int personId, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
+        countId = countId+2;
+        id =countId;
         this.roomId = roomId;
         this.personId = personId;
         this.startTime = startTime;
@@ -35,10 +38,6 @@ public class Reservation {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getRoomId() {
