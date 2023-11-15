@@ -72,7 +72,7 @@ public class ReservationRepository {
     public void addReservation(Reservation reservation) {
         try {
             allReservations.add(reservation);
-            objectMapper.writeValue(Paths.get("./data/reservations-test.json").toFile(), allReservations);
+            objectMapper.writeValue(Paths.get("./data/reservations.json").toFile(), allReservations);
         }
         catch (IOException e){
             System.out.println("Cant add to JSON File");
