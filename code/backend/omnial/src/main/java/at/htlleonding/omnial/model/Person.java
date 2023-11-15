@@ -3,9 +3,9 @@ package at.htlleonding.omnial.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
-@Entity
+//@Entity
 public class Person {
-    @Id
+    //@Id
     private int id;
 
     private String surname;
