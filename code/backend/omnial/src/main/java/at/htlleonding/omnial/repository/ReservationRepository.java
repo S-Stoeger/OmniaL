@@ -30,7 +30,8 @@ public class ReservationRepository {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
-    Map<Integer,Reservation> reservations = new HashMap<>();
+    List<Reservation> allReservations = new LinkedList<>();
+
 
     public ReservationRepository() {
         objectMapper.registerModule(new JSR310Module());
@@ -41,6 +42,9 @@ public class ReservationRepository {
         objectMapper.registerModule(javaTimeModule);
 
         javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE));
+
+        allReservations = getAllReservation();
+
 
     }
 
@@ -66,13 +70,9 @@ public class ReservationRepository {
     }
 
     public void addReservation(Reservation reservation) {
-        List<Reservation> listReservations = getAllReservation();
         try {
-            listReservations.add(reservation);
-            System.out.println(listReservations);
-            //objectMapper.writeValue(new File("./data/reservations-test.json"), reservation);
-            //this.reservations.put(reservation, reservation.getId());
-            objectMapper.writeValue(Paths.get("./data/reservations-test.json").toFile(), listReservations);
+            allReservations.add(reservation);
+            objectMapper.writeValue(Paths.get("./data/reservations-test.json").toFile(), allReservations);
         }
         catch (IOException e){
             System.out.println("Cant add to JSON File");
