@@ -71,7 +71,12 @@ public class ReservationRepository {
 
     public void addReservation(Reservation reservation) {
         try {
-            allReservations.add(reservation);
+            if(checkReservation(reservation)) {
+                allReservations.add(reservation);
+            }
+            else {
+                throw new IllegalArgumentException("Wrong Time");
+            }
             objectMapper.writeValue(Paths.get("./data/reservations.json").toFile(), allReservations);
         }
         catch (IOException e){
@@ -94,5 +99,19 @@ public class ReservationRepository {
     }
 
 
+    public boolean checkReservation(Reservation reservation){
+
+        for (Reservation currRes: allReservations) {
+            //checks if reservation is between another reservation
+            if(reservation.getStartTime().isAfter(currRes.getStartTime()) && reservation.getStartTime().isBefore(currRes.getEndTime())){
+               return false;
+            }
+            else if (reservation.getEndTime().isAfter(currRes.getStartTime()) && reservation.getEndTime().isBefore(currRes.getEndTime())){
+                return false;
+            }
+        }
+        return true;
+
+    }
 
 }
