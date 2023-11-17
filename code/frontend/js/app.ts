@@ -22,8 +22,7 @@ if (roomValue == null) {
     window.location.href = newUri;
 }
 
-loadAllReservations()
-
+// MODAL
 document.addEventListener("DOMContentLoaded", () => {
     const openPopupButton = document.getElementById("openPopupButton") as HTMLButtonElement;
     const modal = document.getElementById("myModal") as HTMLDivElement;
@@ -76,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     }
+    getAllReservations();
 });
 
 // Reserving room per onlick
@@ -176,6 +176,10 @@ function getReservatedColumnsAndAddIdsToCell(startTime: string, endTime: string,
         }
     };
 
+    console.log(startTime)
+    console.log(reservation.startTime)
+    console.log(startTimeArray.indexOf(reservation.startTime));
+
     // get dayId
     for (let i: number = 0; i < dayArray.length; i++) {
         if (dayArray[i] === day) {
@@ -193,9 +197,46 @@ function getReservatedColumnsAndAddIdsToCell(startTime: string, endTime: string,
 }
 
 
-function loadAllReservations() {
-    
+function getAllReservations() {
+// Example usage
+    const url: string = 'http://localhost:8080/api/reservations/list';
+
+    fetchDataFromUrl(url)
+        .then(data => {
+            if (data) {
+                data.forEach(singleReservation => {
+                    let newReservation = {day: findDayFromDate(singleReservation.startTime), startTime:parseTime(singleReservation.startTime), endTime: parseTime(singleReservation.endTime) }
+                    loadReservation(newReservation);
+                });
+            }
+        })
+        .catch(error => console.error(`Error: ${error.message}`));
 }
+
+function loadReservation(reservation: Reservation) {
+    reservation.startTime = reservation.startTime.slice(0, -3);
+    reservation.endTime = reservation.endTime.slice(0, -3);
+    let columns = getReservatedColumnsAndAddIdsToCell(reservation.startTime, reservation.endTime, reservation.day);
+    console.log(columns)
+    paintColumnsReservated(columns);
+}
+
+function findDayFromDate(dateString) {
+    let array = dateString.split("T");
+    const dateObject = new Date(array[0]);
+    const dayIndex = dateObject.getDay();
+
+    return dayArray[dayIndex];
+}
+
+function parseTime(startTime: string) {
+    let array = startTime.split("T");
+    return array[1];
+}
+
+// Example usage
+const dateAsString = '2023-11-15';
+const dayOfWeek = findDayFromDate(dateAsString);
 
 var isShown = false;
 
@@ -271,3 +312,22 @@ function checkRoom(room: string) {
     return roomValue === room;
 }
 
+async function fetchDataFromUrl(url: string): Promise<any | null> {
+    try {
+        const response = await fetch(url);
+
+        // Check if the request was successful (status code 200)
+        if (response.ok) {
+            // Parse the response JSON and return
+            return await response.json();
+        } else {
+            // Print an error message if the request was not successful
+            console.error(`Error: Unable to fetch data. Status code: ${response.status}`);
+            return null;
+        }
+    } catch (error) {
+        // Handle exceptions (e.g., network issues)
+        console.error(`Error: ${error.message}`);
+        return null;
+    }
+}
