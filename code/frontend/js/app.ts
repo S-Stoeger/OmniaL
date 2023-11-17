@@ -4,6 +4,7 @@ type Reservation = {
     endTime: string;
 }
 // constatnts
+let reservations: Reservation[] = [];
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
@@ -20,9 +21,6 @@ const newUri: string = "../html/index.html?roomValue=Fotostudio";
 if (roomValue == null) {
     window.location.href = newUri;
 }
-
-let reservations: Reservation[] = [];
-
 
 loadAllReservations()
 
@@ -60,64 +58,61 @@ document.addEventListener("DOMContentLoaded", () => {
 // 
 document.addEventListener("DOMContentLoaded", () => {
     // Function to assign unique IDs to the columns
-    function assignColumnIds() {
-        const table = document.querySelector("table") as HTMLTableElement;
-        const headers = table.querySelectorAll("th");
-        const rows = table.querySelectorAll("tr");
+    const table = document.querySelector("table") as HTMLTableElement;
+    const headers = table.querySelectorAll("th");
+    const rows = table.querySelectorAll("tr");
 
-        // Reserving room per onlick
-        function addReservationPerClick(cellId: string) {
-            // get modal
-            const modal = document.getElementById("myModal") as HTMLDivElement;
+    // Iterate through each header and row
+    for (let i = 1; i < headers.length; i++) {
+        if (!headers[i].classList.contains("hour")) {
+            for (let j = 1; j < rows.length; j++) {
+                const cell = (rows[j].children[i] as HTMLTableCellElement);
 
-            // show modal
-            modal.style.display = "block";
-
-            // get dropdown elements
-            const dropdownDay = document.getElementById("day") as HTMLSelectElement;
-            const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
-            const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
-
-            // split id into row and column
-            let array:string[] = cellId.split("_");
-            
-            // get data from column
-            const day: string = dayArray[Number(array[2]) - 1];
-            const startTime: string = startTimeArray[Number(array[1]) -1];
-            const endTime: string = endTimeArray[Number(array[1]) - 1];7
-            
-            // set value of dropdown in modal
-            dropdownDay.value = day;
-            dropdownStartTime.value = startTime;
-            dropdownEndTime.value = endTime;
-        }
-
-        // Iterate through each header and row
-        for (let i = 1; i < headers.length; i++) {
-            if (!headers[i].classList.contains("hour")) {
-                for (let j = 1; j < rows.length; j++) {
-                    const cell = (rows[j].children[i] as HTMLTableCellElement);
-
-                    // Generate a unique ID based on the column index and row index
-                    cell.id = `cell_${j}_${i}`;
-                    cell.addEventListener('click', function() {
-                        addReservationPerClick(cell.id);
-                    });
-                }
+                // Generate a unique ID based on the column index and row index
+                cell.id = `cell_${j}_${i}`;
+                cell.addEventListener('click', function() {
+                    addReservationPerClick(cell.id);
+                });
             }
         }
     }
-    // Call the function to assign IDs
-    assignColumnIds();
 });
 
+// Reserving room per onlick
+function addReservationPerClick(cellId: string) {
+    // get modal
+    const modal = document.getElementById("myModal") as HTMLDivElement;
 
-// get all values from dropdown
+    // show modall
+    modal.style.display = "block";
+
+    // get dropdown elements
+    const dropdownDay = document.getElementById("day") as HTMLSelectElement;
+    const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
+    const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
+
+    // split id into row and column
+    let array:string[] = cellId.split("_");
+    
+    // get data from column
+    const day: string = dayArray[Number(array[2]) - 1];
+    const startTime: string = startTimeArray[Number(array[1]) -1];
+    const endTime: string = endTimeArray[Number(array[1]) - 1];7
+    
+    // set value of dropdown in modal
+    dropdownDay.value = day;
+    dropdownStartTime.value = startTime;
+    dropdownEndTime.value = endTime;
+}
+
+
+// get all values from dropdown & do reservation
 document.addEventListener("DOMContentLoaded", () => {
     const dropdownDay = document.getElementById("day") as HTMLSelectElement;
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
     const submitButton = document.getElementById("submitButton");
+    let columnIds;
 
     submitButton?.addEventListener("click", () => {
         const modal = document.getElementById("myModal") as HTMLDivElement;
@@ -131,14 +126,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (startTime && endTime && day) {
             if (endTime > startTime) {
                 // get values/convert to id/ make reservation
-                getColumn(startTime, endTime, day);
+                columnIds = getReservatedColumnsAndAddIdsToCell(startTime, endTime, day);
             }   
         }
+
+        // add reservations to calendar
+        paintColumnsReservated(columnIds);
     });
 });
 
 // adding color to box
-function addReservation(array: string[]) {
+function paintColumnsReservated(array: string[]) {
     for (let i: number = 0; i < array.length; i++) {
         let id = document.getElementById(array[i]);
         if (id) {
@@ -147,26 +145,23 @@ function addReservation(array: string[]) {
     }
 }
 
-
 // convert ids to the cell id
-function toCell(startTimeId: number, dayId: number): string {
+function returnCellIdString(startTimeId: number, dayId: number): string {
     return `cell_${startTimeId}_${dayId}`;
 }
 
 
 // get assigned columns
-function getColumn(startTime: string, endTime: string, day: string) {//: String[] {
-
+function getReservatedColumnsAndAddIdsToCell(startTime: string, endTime: string, day: string) {//: String[] {
     const reservation: Reservation = {day: day, startTime: startTime, endTime: endTime}
     reservations.push(reservation)
 
-    // importatnt variables
     let dayId: number = 0; // id of day
     let units: number = 0; // count uf units reservated
     let startTimeId: number = 0; // reservation start time
     let columnIds: string[] = []; // array of all ids
 
-    // get start id
+    // get startTime position in array
     for (let i: number = 0; i < startTimeArray.length; i++) {
         if (startTimeArray[i] === startTime) {
             startTimeId = i;
@@ -191,12 +186,10 @@ function getColumn(startTime: string, endTime: string, day: string) {//: String[
 
     // fill array with the ids from html
     for (let i: number = startTimeId; i < startTimeId + units; i++) {
-        // + 1 because the first row is 1 not 0
-        columnIds.push(toCell(i + 1, dayId));
+        columnIds.push(returnCellIdString(i + 1, dayId));
     }
 
-    // add reservations to calendar
-    addReservation(columnIds);
+    return columnIds;
 }
 
 
