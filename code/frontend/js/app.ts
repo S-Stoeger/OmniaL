@@ -1,13 +1,18 @@
-type Reservation = {
-    day: string;
+interface Reservation {
+    id: number;
+    roomId: number;
+    personId: number;
     startTime: string;
     endTime: string;
+    reservationDate: string;
 }
+
 // constatnts
 let reservations: Reservation[] = [];
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+const dayAsDateArray: string[] = ["2023-11-13", "2023-11-14", "2023-11-15", "2023-11-16", "2023-11-17"];
 const allRooms: string[] = ["Fotostudio", "Audiostudie", "Viedeoschnitt", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10", "EDV11", "EDV12", "EDV13", "EDV14", "EDV15", "EDV16", "EDV17", "EDV18"];
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
@@ -16,6 +21,8 @@ const endTimeDefaultValue: string = "-- Endzeit --";
 const urlParams = new URLSearchParams(window.location.search);
 const roomValue = urlParams.get('roomValue');
 const newUri: string = "../html/index.html?roomValue=Fotostudio";
+
+const url: string = 'http://localhost:8080/api/reservations'
 
 var isRoomShown = false;
 
@@ -116,28 +123,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
     const submitButton = document.getElementById("submitButton");
-    let columnIds: string[];
 
-    submitButton?.addEventListener("click", () => {
+    submitButton?.addEventListener("click", async () => {
         const modal = document.getElementById("myModal") as HTMLDivElement;
         modal.style.display = "none";
         // get values from dropdown
         const startTime = dropdownStartTime.value;
         const endTime = dropdownEndTime.value;
         const day = dropdownDay.value;
+        let dayId;
 
         // ceck if all set
         if (startTime && endTime && day) {
-            if (endTime > startTime) {
-                // get values/convert to id/ make reservation
-                columnIds = getColumnId(startTime, endTime, day);
-            }   
-        }
+            // get day position in array
+            for (let i: number = 0; i < dayArray.length; i++) {
+                if (dayArray[i] === day) {
+                    dayId = i;
+                }
+            }
+            const reservation: Reservation = {id: reservations.length + 1, roomId: 1, personId: 1, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
 
-        // add reservations to calendar
-        paintColumnsReservated(columnIds);
+            try {
+                await addReservationToDatabase(reservation);
+            } catch (error) {
+                console.error('Error occured while adding reservation to Database!');
+            } 
+
+            getReservationsFromDatabase();
+        }
     });
 });
+
+function parseToLocalDateTimeFormat(date, time) {
+    const localDateTime = date +"T"+ time +":00";
+    return localDateTime;
+}
 
 // adding color to box
 function paintColumnsReservated(array: string[]) {
@@ -154,12 +174,8 @@ function cellIdToString(startTimeId: number, dayId: number): string {
     return `cell_${startTimeId}_${dayId}`;
 }
 
-
 // get assigned columns
-function getColumnId(startTime: string, endTime: string, day: string) {//: String[] {
-    const reservation: Reservation = {day: day, startTime: startTime, endTime: endTime}
-    reservations.push(reservation)
-
+function getColumnId(reservation: Reservation) {    
     let dayId: number = 0; // id of day
     let units: number = 0; // count uf units reservated
     let startTimeId: number = 0; // reservation start time
@@ -167,13 +183,13 @@ function getColumnId(startTime: string, endTime: string, day: string) {//: Strin
 
     // get startTime position in array
     for (let i: number = 0; i < startTimeArray.length; i++) {
-        if (startTimeArray[i] === startTime) {
+        if (startTimeArray[i] === parseTime(reservation.startTime)) {
             startTimeId = i;
 
             // get units
             for (let j: number = i; j < endTimeArray.length; j++) {
                 units++;
-                if (endTimeArray[j] === endTime) {
+                if (endTimeArray[j] === parseTime(reservation.endTime)) {
                     break;
                 }
             };
@@ -182,7 +198,7 @@ function getColumnId(startTime: string, endTime: string, day: string) {//: Strin
 
     // get day position in array
     for (let i: number = 0; i < dayArray.length; i++) {
-        if (dayArray[i] === day) {
+        if (dayArray[i] === parseDay(reservation.reservationDate)) {
             // + 1 because the first column is 1 not 0
             dayId = i + 1;
         }
@@ -198,14 +214,14 @@ function getColumnId(startTime: string, endTime: string, day: string) {//: Strin
 
 function getReservationsFromDatabase() {
 // Example usage
-    const url: string = 'http://localhost:8080/api/reservations/list';
-
-    fetchDataFromUrl(url)
+    const getUrl = url + '/list';
+    fetchDataFromUrl(getUrl)
         .then(data => {
             if (data) {
                 data.forEach(singleReservation => {
-                    let newReservation = {day: parseDay(singleReservation.startTime), startTime:parseTime(singleReservation.startTime), endTime: parseTime(singleReservation.endTime) }
-                    loadReservation(newReservation);
+                    const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
+                    reservations.push(reservation);
+                    loadReservation(reservation);
             });
         }
         })
@@ -216,7 +232,7 @@ function loadReservation(reservation: Reservation) {
     reservation.startTime = reservation.startTime.slice(0, -3);
     reservation.endTime = reservation.endTime.slice(0, -3);
 
-    let columns = getColumnId(reservation.startTime, reservation.endTime, reservation.day);
+    let columns = getColumnId(reservation);
 
     paintColumnsReservated(columns);
 }
@@ -225,7 +241,13 @@ function loadReservation(reservation: Reservation) {
 function parseDay(dateString) {
     let array = dateString.split("T");
     const dateObject = new Date(array[0]);
-    const dayIndex = dateObject.getDay();
+    let dayIndex = dateObject.getDay();
+
+    // adjust index, becaus getDay() starts and ends with Sunday
+    dayIndex = (dayIndex + 6) % 7;
+
+    //console.log(array[0]);
+    //console.log(dayArray[dayIndex]);
 
     return dayArray[dayIndex];
 }
@@ -322,5 +344,15 @@ async function fetchDataFromUrl(url: string): Promise<any | null> {
         // Handle exceptions
         console.error(`Error: ${error.message}`);
         return null;
+    }
+}
+
+async function addReservationToDatabase(reservation: Reservation) {
+    const response = await fetch(url, {
+        method: 'POST', headers: {'Content-Type': 'application/json',}, body: JSON.stringify(reservation)
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to add reservation');
     }
 }
