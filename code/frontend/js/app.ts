@@ -17,6 +17,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const roomValue = urlParams.get('roomValue');
 const newUri: string = "../html/index.html?roomValue=Fotostudio";
 
+var isRoomShown = false;
+
 // no more room null
 if (roomValue == null) {
     window.location.href = newUri;
@@ -70,16 +72,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Generate a unique ID based on the column index and row index
                 cell.id = `cell_${j}_${i}`;
                 cell.addEventListener('click', function() {
-                    addReservationPerClick(cell.id);
+                    openModalWithOnclick(cell.id);
                 });
             }
         }
     }
-    getAllReservations();
+
+    getReservationsFromDatabase();
+    displayRooms();
 });
 
 // Reserving room per onlick
-function addReservationPerClick(cellId: string) {
+function openModalWithOnclick(cellId: string) {
     // get modal
     const modal = document.getElementById("myModal") as HTMLDivElement;
 
@@ -112,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
     const submitButton = document.getElementById("submitButton");
-    let columnIds;
+    let columnIds: string[];
 
     submitButton?.addEventListener("click", () => {
         const modal = document.getElementById("myModal") as HTMLDivElement;
@@ -126,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (startTime && endTime && day) {
             if (endTime > startTime) {
                 // get values/convert to id/ make reservation
-                columnIds = getReservatedColumnsAndAddIdsToCell(startTime, endTime, day);
+                columnIds = getColumnId(startTime, endTime, day);
             }   
         }
 
@@ -146,13 +150,13 @@ function paintColumnsReservated(array: string[]) {
 }
 
 // convert ids to the cell id
-function returnCellIdString(startTimeId: number, dayId: number): string {
+function cellIdToString(startTimeId: number, dayId: number): string {
     return `cell_${startTimeId}_${dayId}`;
 }
 
 
 // get assigned columns
-function getReservatedColumnsAndAddIdsToCell(startTime: string, endTime: string, day: string) {//: String[] {
+function getColumnId(startTime: string, endTime: string, day: string) {//: String[] {
     const reservation: Reservation = {day: day, startTime: startTime, endTime: endTime}
     reservations.push(reservation)
 
@@ -176,11 +180,7 @@ function getReservatedColumnsAndAddIdsToCell(startTime: string, endTime: string,
         }
     };
 
-    console.log(startTime)
-    console.log(reservation.startTime)
-    console.log(startTimeArray.indexOf(reservation.startTime));
-
-    // get dayId
+    // get day position in array
     for (let i: number = 0; i < dayArray.length; i++) {
         if (dayArray[i] === day) {
             // + 1 because the first column is 1 not 0
@@ -190,14 +190,13 @@ function getReservatedColumnsAndAddIdsToCell(startTime: string, endTime: string,
 
     // fill array with the ids from html
     for (let i: number = startTimeId; i < startTimeId + units; i++) {
-        columnIds.push(returnCellIdString(i + 1, dayId));
+        columnIds.push(cellIdToString(i + 1, dayId));
     }
 
     return columnIds;
 }
 
-
-function getAllReservations() {
+function getReservationsFromDatabase() {
 // Example usage
     const url: string = 'http://localhost:8080/api/reservations/list';
 
@@ -205,10 +204,10 @@ function getAllReservations() {
         .then(data => {
             if (data) {
                 data.forEach(singleReservation => {
-                    let newReservation = {day: findDayFromDate(singleReservation.startTime), startTime:parseTime(singleReservation.startTime), endTime: parseTime(singleReservation.endTime) }
+                    let newReservation = {day: parseDay(singleReservation.startTime), startTime:parseTime(singleReservation.startTime), endTime: parseTime(singleReservation.endTime) }
                     loadReservation(newReservation);
-                });
-            }
+            });
+        }
         })
         .catch(error => console.error(`Error: ${error.message}`));
 }
@@ -216,12 +215,14 @@ function getAllReservations() {
 function loadReservation(reservation: Reservation) {
     reservation.startTime = reservation.startTime.slice(0, -3);
     reservation.endTime = reservation.endTime.slice(0, -3);
-    let columns = getReservatedColumnsAndAddIdsToCell(reservation.startTime, reservation.endTime, reservation.day);
-    console.log(columns)
+
+    let columns = getColumnId(reservation.startTime, reservation.endTime, reservation.day);
+
     paintColumnsReservated(columns);
 }
 
-function findDayFromDate(dateString) {
+// parse day received from beckand
+function parseDay(dateString) {
     let array = dateString.split("T");
     const dateObject = new Date(array[0]);
     const dayIndex = dateObject.getDay();
@@ -229,16 +230,11 @@ function findDayFromDate(dateString) {
     return dayArray[dayIndex];
 }
 
+//parse time received from backend
 function parseTime(startTime: string) {
     let array = startTime.split("T");
     return array[1];
 }
-
-// Example usage
-const dateAsString = '2023-11-15';
-const dayOfWeek = findDayFromDate(dateAsString);
-
-var isShown = false;
 
 // Function to show or hide the rooms
 function showRooms() {
@@ -248,7 +244,7 @@ function showRooms() {
     var openPopupButton = document.getElementById("openPopupButton");
 
     // Check if the rooms are currently shown
-    if (isShown) {
+    if (isRoomShown) {
         // If shown, animate hiding
         box.style.transform = "translate(100%, -50%)";
         changeRoom.style.transform = "translate(0%, 0%)";
@@ -259,7 +255,7 @@ function showRooms() {
             box.style.display = "none";
         }, 501);
 
-        isShown = false;
+        isRoomShown = false;
     } else {
         box.style.display = "grid";
 
@@ -272,12 +268,10 @@ function showRooms() {
         changeRoom.style.transform = "translate(-340%, 0%)";
         openPopupButton.style.transform = "translate(-340%, 0%)";
 
-        isShown = true;
+        isRoomShown = true;
     }
 }
 
-
-displayRooms()
 function displayRooms() {
     var box = document.getElementById("rooms");
 
@@ -294,7 +288,7 @@ function displayRooms() {
         let currentRoomId: string = anchor.id;
 
         // set color for selected room
-        if (checkRoom(allRooms[i])) {
+        if (compareRoom(allRooms[i])) {
             anchor.style.cssText = "color: #f5b963"; // Matching room
         } else {
             anchor.style.cssText = "color: #fff"; // Non-matching room
@@ -303,12 +297,11 @@ function displayRooms() {
         // reload page with correct room
         anchor.href = `../html/index.html?roomValue=${currentRoomId}`;
 
-        
         box.appendChild(anchor);
     }
 }
 
-function checkRoom(room: string) {
+function compareRoom(room: string) {
     return roomValue === room;
 }
 
@@ -326,7 +319,7 @@ async function fetchDataFromUrl(url: string): Promise<any | null> {
             return null;
         }
     } catch (error) {
-        // Handle exceptions (e.g., network issues)
+        // Handle exceptions
         console.error(`Error: ${error.message}`);
         return null;
     }
