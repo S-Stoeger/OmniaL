@@ -13,7 +13,7 @@ const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 const dayAsDateArray: string[] = ["2023-11-13", "2023-11-14", "2023-11-15", "2023-11-16", "2023-11-17"];
-const allRooms: string[] = ["Fotostudio", "Audiostudie", "Viedeoschnitt", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10", "EDV11", "EDV12", "EDV13", "EDV14", "EDV15", "EDV16", "EDV17", "EDV18"];
+const allRooms: string[] = ["Fotostudio", "Audiostudio", "Videoschnitt", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10", "EDV11", "EDV12", "EDV13", "EDV14", "EDV15", "EDV16", "EDV17", "EDV18"];
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
 const endTimeDefaultValue: string = "-- Endzeit --";
@@ -116,6 +116,33 @@ function openModalWithOnclick(cellId: string) {
     dropdownEndTime.value = endTime;
 }
 
+function showErrorMessage(message: string) {
+    const errorMessageBox = document.getElementById("errorMessageBox") as HTMLDivElement;
+    const errorMessage = document.getElementById("error_message") as HTMLParagraphElement;
+    errorMessageBox.style.display = "block";
+    errorMessage.innerHTML = message;
+    var i = 100;
+    if (i == 100) {
+        i = 99;
+        var elem = document.getElementById("progressBar");
+        var width = 99;
+        var id = setInterval(frame, -10);
+        function frame() {
+          if (width <= 0) {
+            clearInterval(id);
+            i = 100;
+          } else {
+            width -= 0.09;
+            elem.style.width = width + "%";
+          }
+        }
+      }
+
+    setTimeout(function () {
+        errorMessageBox.style.display = "none";
+        errorMessage.innerHTML = "";
+    }, 4800);
+}
 
 // get all values from dropdown & do reservation
 document.addEventListener("DOMContentLoaded", () => {
@@ -146,7 +173,8 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 await addReservationToDatabase(reservation);
             } catch (error) {
-                console.error('Error occured while adding reservation to Database!');
+                const message: string = `Reservation already exists! \n Can't overwrite existing reservation! `;
+                showErrorMessage(message);
             } 
 
             getReservationsFromDatabase();
