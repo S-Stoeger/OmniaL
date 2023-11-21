@@ -1,13 +1,18 @@
-type Reservation = {
-    day: string;
+interface Reservation {
+    id: number;
+    roomId: number;
+    personId: number;
     startTime: string;
     endTime: string;
+    reservationDate: string;
 }
+
 // constatnts
 let reservations: Reservation[] = [];
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
+const dayAsDateArray: string[] = ["2023-11-13", "2023-11-14", "2023-11-15", "2023-11-16", "2023-11-17"];
 const allRooms: string[] = ["Fotostudio", "Audiostudie", "Viedeoschnitt", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10", "EDV11", "EDV12", "EDV13", "EDV14", "EDV15", "EDV16", "EDV17", "EDV18"];
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
@@ -17,13 +22,16 @@ const urlParams = new URLSearchParams(window.location.search);
 const roomValue = urlParams.get('roomValue');
 const newUri: string = "../html/index.html?roomValue=Fotostudio";
 
+const url: string = 'http://localhost:8080/api/reservations'
+
+var isRoomShown = false;
+
 // no more room null
 if (roomValue == null) {
     window.location.href = newUri;
 }
 
-loadAllReservations()
-
+// MODAL
 document.addEventListener("DOMContentLoaded", () => {
     const openPopupButton = document.getElementById("openPopupButton") as HTMLButtonElement;
     const modal = document.getElementById("myModal") as HTMLDivElement;
@@ -71,15 +79,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Generate a unique ID based on the column index and row index
                 cell.id = `cell_${j}_${i}`;
                 cell.addEventListener('click', function() {
-                    addReservationPerClick(cell.id);
+                    openModalWithOnclick(cell.id);
                 });
             }
         }
     }
+
+    getReservationsFromDatabase();
+    displayRooms();
 });
 
 // Reserving room per onlick
-function addReservationPerClick(cellId: string) {
+function openModalWithOnclick(cellId: string) {
     // get modal
     const modal = document.getElementById("myModal") as HTMLDivElement;
 
@@ -112,28 +123,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
     const submitButton = document.getElementById("submitButton");
-    let columnIds;
 
-    submitButton?.addEventListener("click", () => {
+    submitButton?.addEventListener("click", async () => {
         const modal = document.getElementById("myModal") as HTMLDivElement;
         modal.style.display = "none";
         // get values from dropdown
         const startTime = dropdownStartTime.value;
         const endTime = dropdownEndTime.value;
         const day = dropdownDay.value;
+        let dayId;
 
         // ceck if all set
         if (startTime && endTime && day) {
-            if (endTime > startTime) {
-                // get values/convert to id/ make reservation
-                columnIds = getReservatedColumnsAndAddIdsToCell(startTime, endTime, day);
-            }   
-        }
+            // get day position in array
+            for (let i: number = 0; i < dayArray.length; i++) {
+                if (dayArray[i] === day) {
+                    dayId = i;
+                }
+            }
+            const reservation: Reservation = {id: reservations.length + 1, roomId: 1, personId: 1, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
 
-        // add reservations to calendar
-        paintColumnsReservated(columnIds);
+            try {
+                await addReservationToDatabase(reservation);
+            } catch (error) {
+                console.error('Error occured while adding reservation to Database!');
+            } 
+
+            getReservationsFromDatabase();
+        }
     });
 });
+
+function parseToLocalDateTimeFormat(date, time) {
+    const localDateTime = date +"T"+ time +":00";
+    return localDateTime;
+}
 
 // adding color to box
 function paintColumnsReservated(array: string[]) {
@@ -146,16 +170,12 @@ function paintColumnsReservated(array: string[]) {
 }
 
 // convert ids to the cell id
-function returnCellIdString(startTimeId: number, dayId: number): string {
+function cellIdToString(startTimeId: number, dayId: number): string {
     return `cell_${startTimeId}_${dayId}`;
 }
 
-
 // get assigned columns
-function getReservatedColumnsAndAddIdsToCell(startTime: string, endTime: string, day: string) {//: String[] {
-    const reservation: Reservation = {day: day, startTime: startTime, endTime: endTime}
-    reservations.push(reservation)
-
+function getColumnId(reservation: Reservation) {    
     let dayId: number = 0; // id of day
     let units: number = 0; // count uf units reservated
     let startTimeId: number = 0; // reservation start time
@@ -163,22 +183,22 @@ function getReservatedColumnsAndAddIdsToCell(startTime: string, endTime: string,
 
     // get startTime position in array
     for (let i: number = 0; i < startTimeArray.length; i++) {
-        if (startTimeArray[i] === startTime) {
+        if (startTimeArray[i] === parseTime(reservation.startTime)) {
             startTimeId = i;
 
             // get units
             for (let j: number = i; j < endTimeArray.length; j++) {
                 units++;
-                if (endTimeArray[j] === endTime) {
+                if (endTimeArray[j] === parseTime(reservation.endTime)) {
                     break;
                 }
             };
         }
     };
 
-    // get dayId
+    // get day position in array
     for (let i: number = 0; i < dayArray.length; i++) {
-        if (dayArray[i] === day) {
+        if (dayArray[i] === parseDay(reservation.reservationDate)) {
             // + 1 because the first column is 1 not 0
             dayId = i + 1;
         }
@@ -186,18 +206,57 @@ function getReservatedColumnsAndAddIdsToCell(startTime: string, endTime: string,
 
     // fill array with the ids from html
     for (let i: number = startTimeId; i < startTimeId + units; i++) {
-        columnIds.push(returnCellIdString(i + 1, dayId));
+        columnIds.push(cellIdToString(i + 1, dayId));
     }
 
     return columnIds;
 }
 
-
-function loadAllReservations() {
-    
+function getReservationsFromDatabase() {
+// Example usage
+    const getUrl = url + '/list';
+    fetchDataFromUrl(getUrl)
+        .then(data => {
+            if (data) {
+                data.forEach(singleReservation => {
+                    const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
+                    reservations.push(reservation);
+                    loadReservation(reservation);
+            });
+        }
+        })
+        .catch(error => console.error(`Error: ${error.message}`));
 }
 
-var isShown = false;
+function loadReservation(reservation: Reservation) {
+    reservation.startTime = reservation.startTime.slice(0, -3);
+    reservation.endTime = reservation.endTime.slice(0, -3);
+
+    let columns = getColumnId(reservation);
+
+    paintColumnsReservated(columns);
+}
+
+// parse day received from beckand
+function parseDay(dateString) {
+    let array = dateString.split("T");
+    const dateObject = new Date(array[0]);
+    let dayIndex = dateObject.getDay();
+
+    // adjust index, becaus getDay() starts and ends with Sunday
+    dayIndex = (dayIndex + 6) % 7;
+
+    //console.log(array[0]);
+    //console.log(dayArray[dayIndex]);
+
+    return dayArray[dayIndex];
+}
+
+//parse time received from backend
+function parseTime(startTime: string) {
+    let array = startTime.split("T");
+    return array[1];
+}
 
 // Function to show or hide the rooms
 function showRooms() {
@@ -207,7 +266,7 @@ function showRooms() {
     var openPopupButton = document.getElementById("openPopupButton");
 
     // Check if the rooms are currently shown
-    if (isShown) {
+    if (isRoomShown) {
         // If shown, animate hiding
         box.style.transform = "translate(100%, -50%)";
         changeRoom.style.transform = "translate(0%, 0%)";
@@ -218,7 +277,7 @@ function showRooms() {
             box.style.display = "none";
         }, 501);
 
-        isShown = false;
+        isRoomShown = false;
     } else {
         box.style.display = "grid";
 
@@ -231,12 +290,10 @@ function showRooms() {
         changeRoom.style.transform = "translate(-340%, 0%)";
         openPopupButton.style.transform = "translate(-340%, 0%)";
 
-        isShown = true;
+        isRoomShown = true;
     }
 }
 
-
-displayRooms()
 function displayRooms() {
     var box = document.getElementById("rooms");
 
@@ -253,7 +310,7 @@ function displayRooms() {
         let currentRoomId: string = anchor.id;
 
         // set color for selected room
-        if (checkRoom(allRooms[i])) {
+        if (compareRoom(allRooms[i])) {
             anchor.style.cssText = "color: #f5b963"; // Matching room
         } else {
             anchor.style.cssText = "color: #fff"; // Non-matching room
@@ -262,12 +319,40 @@ function displayRooms() {
         // reload page with correct room
         anchor.href = `../html/index.html?roomValue=${currentRoomId}`;
 
-        
         box.appendChild(anchor);
     }
 }
 
-function checkRoom(room: string) {
+function compareRoom(room: string) {
     return roomValue === room;
 }
 
+async function fetchDataFromUrl(url: string): Promise<any | null> {
+    try {
+        const response = await fetch(url);
+
+        // Check if the request was successful (status code 200)
+        if (response.ok) {
+            // Parse the response JSON and return
+            return await response.json();
+        } else {
+            // Print an error message if the request was not successful
+            console.error(`Error: Unable to fetch data. Status code: ${response.status}`);
+            return null;
+        }
+    } catch (error) {
+        // Handle exceptions
+        console.error(`Error: ${error.message}`);
+        return null;
+    }
+}
+
+async function addReservationToDatabase(reservation: Reservation) {
+    const response = await fetch(url, {
+        method: 'POST', headers: {'Content-Type': 'application/json',}, body: JSON.stringify(reservation)
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to add reservation');
+    }
+}
