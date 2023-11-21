@@ -109,6 +109,16 @@ public class ReservationRepository {
             else if (reservation.getEndTime().isAfter(currRes.getStartTime()) && reservation.getEndTime().isBefore(currRes.getEndTime())){
                 return false;
             }
+
+            else if(currRes.getStartTime().isAfter(reservation.getStartTime()) && currRes.getStartTime().isBefore(reservation.getEndTime())){
+                return false;
+            }
+            else if (currRes.getEndTime().isAfter(reservation.getStartTime()) && currRes.getEndTime().isBefore(reservation.getEndTime())){
+                return false;
+            }
+            else if(reservation.getEndTime() == currRes.getEndTime() || reservation.getStartTime() == currRes.getStartTime()){
+                return false;
+            }
         }
         return true;
 

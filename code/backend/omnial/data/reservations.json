@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 [
   {
     "id" : 1,
@@ -8,3 +9,6 @@
     "endTime": "2023-11-15T10:50:00"
   }
 ]
+=======
+[{"id":1,"roomId":1,"personId":1,"startTime":"2023-11-13T08:00:00","endTime":"2023-11-13T08:50:00","reservationDate":"2023-11-13"},{"id":2,"roomId":1,"personId":1,"startTime":"2023-11-14T10:55:00","endTime":"2023-11-14T16:20:00","reservationDate":"2023-11-14"},{"id":4,"roomId":1,"personId":1,"startTime":"2023-11-14T10:00:00","endTime":"2023-11-14T16:20:00","reservationDate":"2023-11-14"},{"id":10,"roomId":1,"personId":1,"startTime":"2023-11-14T08:55:00","endTime":"2023-11-14T17:15:00","reservationDate":"2023-11-14"},{"id":5,"roomId":1,"personId":1,"startTime":"2023-11-16T08:00:00","endTime":"2023-11-16T08:50:00","reservationDate":"2023-11-16"},{"id":10,"roomId":1,"personId":1,"startTime":"2023-11-16T07:00:00","endTime":"2023-11-16T11:45:00","reservationDate":"2023-11-16"},{"id":13,"roomId":1,"personId":1,"startTime":"2023-11-13T07:00:00","endTime":"2023-11-13T12:40:00","reservationDate":"2023-11-13"}]
+>>>>>>> Stashed changes
