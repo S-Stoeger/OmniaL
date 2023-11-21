@@ -28,4 +28,18 @@ public class ReservationResource {
         this.reservationRepository.addReservation(reservation);
     }
 
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    public void deleteReservation(@PathParam("id") int id){
+        this.reservationRepository.deleteReservation(id);
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    public void updateReservation(@PathParam("id") int id, Reservation reservation){
+        this.reservationRepository.updateReservation(id,reservation);
+    }
 }

@@ -85,6 +85,46 @@ public class ReservationRepository {
         }
     }
 
+    public void deleteReservation(int id){
+        try {
+            Reservation reservation = allReservations.get(id);
+            if (reservation == null){
+                throw new IllegalArgumentException();
+            }
+            allReservations.remove(reservation);
+            objectMapper.writeValue(Paths.get("./data/reservations.json").toFile(), allReservations);
+        }
+        catch (IOException e){
+            System.out.println("Cant add to JSON File");
+
+        }
+    }
+
+    public void updateReservation(int id, Reservation reservation){
+        try {
+            Reservation reservationOld = allReservations.get(id);
+
+            if (reservationOld == null){
+                throw new IllegalArgumentException();
+            }
+            allReservations.remove(reservationOld);
+
+            reservationOld.setReservationDate(reservation.getReservationDate());
+            reservationOld.setEndTime(reservationOld.getEndTime());
+            reservationOld.setPersonId(reservation.getPersonId());
+            reservationOld.setRoomId(reservation.getRoomId());
+            reservationOld.setStartTime(reservation.getStartTime());
+
+            allReservations.add(reservationOld);
+
+            objectMapper.writeValue(Paths.get("./data/reservations.json").toFile(), allReservations);
+        }
+        catch (IOException e){
+            System.out.println("Cant add to JSON File");
+
+        }
+    }
+
     public String getReservationsFromFile(){
         String reservationString = "";
         Path filepath = Paths.get("./data/reservations.json");
@@ -116,7 +156,7 @@ public class ReservationRepository {
             else if (currRes.getEndTime().isAfter(reservation.getStartTime()) && currRes.getEndTime().isBefore(reservation.getEndTime())){
                 return false;
             }
-            else if(reservation.getEndTime() == currRes.getEndTime() || reservation.getStartTime() == currRes.getStartTime()){
+            else if(reservation.getEndTime().isEqual(currRes.getEndTime() )|| reservation.getStartTime().isEqual(currRes.getStartTime())){
                 return false;
             }
         }
