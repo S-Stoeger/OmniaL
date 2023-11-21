@@ -218,6 +218,7 @@ function getReservationsFromDatabase() {
     fetchDataFromUrl(getUrl)
         .then(data => {
             if (data) {
+                reservations.length = 0;
                 data.forEach(singleReservation => {
                     const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
                     reservations.push(reservation);
