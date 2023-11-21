@@ -12,7 +12,7 @@ import java.util.List;
 @Path("/api/reservations")
 public class ReservationResource {
     @Inject
-    private ReservationRepository reservationRepository;
+    ReservationRepository reservationRepository;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -23,6 +23,7 @@ public class ReservationResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public void addReservation(Reservation reservation){
         this.reservationRepository.addReservation(reservation);
     }
