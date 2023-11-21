@@ -116,7 +116,7 @@ public class ReservationRepository {
             else if (currRes.getEndTime().isAfter(reservation.getStartTime()) && currRes.getEndTime().isBefore(reservation.getEndTime())){
                 return false;
             }
-            else if(reservation.getEndTime() == currRes.getEndTime() || reservation.getStartTime() == currRes.getStartTime()){
+            else if(reservation.getEndTime().isEqual(currRes.getEndTime()) || reservation.getStartTime().isEqual(currRes.getStartTime())){
                 return false;
             }
         }
