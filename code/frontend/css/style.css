@@ -92,7 +92,7 @@ td:hover {
     z-index: 1;
     left: 0;
     top: 0;
-    width: 19%;
+    width: 16.9rem;
     height: 100%;
     overflow: auto;
     margin-left: auto;
@@ -102,7 +102,7 @@ td:hover {
   #error_content {
     background-color: #fff;
     margin-top: 52rem;
-    width: 20rem;
+    width: 16.9rem;
     height: 8.7rem;
     text-align: left;
     box-sizing: border-box;

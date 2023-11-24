@@ -173,8 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 await addReservationToDatabase(reservation);
             } catch (error) {
-                const message: string = `Reservation already exists! \n Can't overwrite existing reservation! `;
-                showErrorMessage(message);
+                showErrorMessage("Reservation already exists! \n Can't overwrite existing reservation!");
             } 
 
             getReservationsFromDatabase();
@@ -243,18 +242,22 @@ function getColumnId(reservation: Reservation) {
 function getReservationsFromDatabase() {
 // Example usage
     const getUrl = url + '/list';
-    fetchDataFromUrl(getUrl)
-        .then(data => {
-            if (data) {
-                reservations.length = 0;
-                data.forEach(singleReservation => {
-                    const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
-                    reservations.push(reservation);
-                    loadReservation(reservation);
-            });
-        }
-        })
-        .catch(error => console.error(`Error: ${error.message}`));
+    try {
+        fetchDataFromUrl(getUrl)
+            .then(data => {
+                if (data) {
+                    reservations.length = 0;
+                    data.forEach(singleReservation => {
+                        const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
+                        reservations.push(reservation);
+                        loadReservation(reservation);
+                    });
+                }
+            })
+    }
+    catch(error) {
+        showErrorMessage('Failed to fetch data from server! \n Pleas check your internet connection!');
+    }
 }
 
 function loadReservation(reservation: Reservation) {
@@ -370,9 +373,7 @@ async function fetchDataFromUrl(url: string): Promise<any | null> {
             return null;
         }
     } catch (error) {
-        // Handle exceptions
-        console.error(`Error: ${error.message}`);
-        return null;
+        showErrorMessage('Failed to fetch the data from server! Check your internet connection!');
     }
 }
 
