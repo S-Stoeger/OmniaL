@@ -90,30 +90,45 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Reserving room per onlick
-function openModalWithOnclick(cellId: string) {
-    // get modal
-    const modal = document.getElementById("myModal") as HTMLDivElement;
+    function openModalWithOnclick(cellId: string) {
+    const isReservated = reservations.some(function (reservation) {
+        let columnAsString = getColumnId(reservation);
 
-    // show modall
-    modal.style.display = "block";
+        for (let i = 0; i < columnAsString.length; i++) {
+            if (columnAsString[i] === cellId) {
+                showReservationInfo(reservation);
+                return true;
+            }
+        }
 
-    // get dropdown elements
-    const dropdownDay = document.getElementById("day") as HTMLSelectElement;
-    const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
-    const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
-
-    // split id into row and column
-    let array:string[] = cellId.split("_");
+        return false;
+    });
     
-    // get data from column
-    const day: string = dayArray[Number(array[2]) - 1];
-    const startTime: string = startTimeArray[Number(array[1]) -1];
-    const endTime: string = endTimeArray[Number(array[1]) - 1];7
-    
-    // set value of dropdown in modal
-    dropdownDay.value = day;
-    dropdownStartTime.value = startTime;
-    dropdownEndTime.value = endTime;
+    if(!isReservated) {
+        // get modal
+        const modal = document.getElementById("myModal") as HTMLDivElement;
+
+        // show modall
+        modal.style.display = "block";
+
+        // get dropdown elements
+        const dropdownDay = document.getElementById("day") as HTMLSelectElement;
+        const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
+        const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
+
+        // split id into row and column
+        let array:string[] = cellId.split("_");
+        
+        // get data from column
+        const day: string = dayArray[Number(array[2]) - 1];
+        const startTime: string = startTimeArray[Number(array[1]) -1];
+        const endTime: string = endTimeArray[Number(array[1]) - 1];7
+        
+        // set value of dropdown in modal
+        dropdownDay.value = day;
+        dropdownStartTime.value = startTime;
+        dropdownEndTime.value = endTime;
+    }
 }
 
 function showErrorMessage(message: string) {
@@ -386,3 +401,23 @@ async function addReservationToDatabase(reservation: Reservation) {
         throw new Error('Failed to add reservation');
     }
 }
+
+function showReservationInfo(reservation: Reservation) {
+    const infoBox = document.getElementById("InfoBox");
+    const infoMessage = document.getElementById("info_content");
+    infoBox.style.display = "block";
+    infoMessage.innerHTML = reservationToString(reservation);
+    
+
+    window.addEventListener("click", (event) => {
+        // Close modal when clicking outside of it
+        if (event.target === infoBox) {
+            infoBox.style.display = "none";
+        }
+    });
+}
+
+function reservationToString(reservation: Reservation): string {
+    let result: string = `Name(id): ${reservation.personId} \n Date: ${reservation.reservationDate} \n Start: ${parseTime(reservation.startTime)}, End: ${parseTime(reservation.endTime)}`;
+    return result;
+  }  
