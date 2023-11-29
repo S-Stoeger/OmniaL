@@ -1,7 +1,5 @@
-package at.htlleonding.omnial.boundary;
+package at.htlleonding.omnial.reservation;
 
-import at.htlleonding.omnial.reservation.Reservation;
-import at.htlleonding.omnial.repository.ReservationRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -15,9 +13,9 @@ public class ReservationResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/list")
+    @jakarta.ws.rs.Path("/list")
     public List<Reservation> reservationList() {
-        return this.reservationRepository.getAllReservation();
+        return this.reservationRepository.getAllReservations();
     }
 
     @POST
@@ -29,7 +27,7 @@ public class ReservationResource {
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
+    @jakarta.ws.rs.Path("/{id}")
     public void deleteReservation(@PathParam("id") int id){
         this.reservationRepository.deleteReservation(id);
     }
@@ -37,7 +35,7 @@ public class ReservationResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
+    @jakarta.ws.rs.Path("/{id}")
     public void updateReservation(@PathParam("id") int id, Reservation reservation){
         this.reservationRepository.updateReservation(id,reservation);
     }

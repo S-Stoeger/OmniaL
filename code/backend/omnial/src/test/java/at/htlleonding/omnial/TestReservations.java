@@ -2,8 +2,8 @@ package at.htlleonding.omnial;
 
 import at.htlleonding.omnial.person.Person;
 import at.htlleonding.omnial.reservation.Reservation;
+import at.htlleonding.omnial.reservation.ReservationRepository;
 import at.htlleonding.omnial.room.Room;
-import at.htlleonding.omnial.repository.ReservationRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TestReservations {
 
     private static ReservationRepository repository = new ReservationRepository();
+
+
     static Person person = new Person("lol", "hi");
     static Room room = new Room("ja", "kkk");
     @BeforeAll
@@ -23,16 +25,16 @@ public class TestReservations {
         Reservation reservation = new Reservation(room,person, LocalDateTime.of(2023,11,15,15, 00,00), LocalDateTime.of(2023,11,15,20, 50,00), LocalDate.of(2023,11,15));
         repository.addReservation(reservation);
     }
-    @Test
+    /*@Test
     void testReadFromFile() {
         String text = repository.getReservationsFromFile();
 
         System.out.println(text);
-    }
+    }*/
 
     @Test
     void TestGetAllReservations() {
-        List<Reservation> reservations = repository.getAllReservation();
+        List<Reservation> reservations = repository.getAllReservations();
 
         System.out.println(reservations);
     }
