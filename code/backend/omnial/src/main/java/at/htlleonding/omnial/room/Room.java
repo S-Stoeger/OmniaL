@@ -1,11 +1,11 @@
-package at.htlleonding.omnial.model;
+package at.htlleonding.omnial.room;
 
 import jakarta.persistence.*;
 
 @Entity
 public class Room {
     @Id
-    @SequenceGenerator(name = "room_seq", sequenceName = "room_seq")
+    @SequenceGenerator(name = "room_seq", sequenceName = "room_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_seq")
     private Long id;
 
@@ -34,5 +34,13 @@ public class Room {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Room(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Room() {
     }
 }

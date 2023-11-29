@@ -1,35 +1,36 @@
-package at.htlleonding.omnial.model;
+package at.htlleonding.omnial.reservation;
 
+import at.htlleonding.omnial.person.Person;
+import at.htlleonding.omnial.room.Room;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 public class Reservation {
     @Id
-    @SequenceGenerator(name = "reservation_seq", sequenceName = "reservation_seq")
+    @SequenceGenerator(name = "reservation_seq", sequenceName = "reservation_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_seq")
     private int id;
     private static int countId;
-    //@ManyToOne
-    //@JoinColumn(name = "roomId")
-    private int roomId;
+    @ManyToOne
+    @JoinColumn(name = "roomId")
+    private Room room;
 
-    //@ManyToOne
-    //@JoinColumn(name = "personId")
-    private int personId;
+    @ManyToOne
+    @JoinColumn(name = "personId")
+    private Person person;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalDate reservationDate;
 
-    public Reservation(int roomId, int personId, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
+    public Reservation(Room room, Person person, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
         countId = countId+2;
         id =countId;
-        this.roomId = roomId;
-        this.personId = personId;
+        this.room = room;
+        this.person = person;
         this.startTime = startTime;
         this.endTime = endTime;
         this.reservationDate = date;
@@ -42,20 +43,22 @@ public class Reservation {
         return id;
     }
 
-    public int getRoomId() {
-        return roomId;
+
+
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoomId(int room) {
-        this.roomId= room;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
-    public int getPersonId() {
-        return personId;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setPersonId(int person) {
-        this.personId = person;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public LocalDateTime getStartTime() {
@@ -86,8 +89,8 @@ public class Reservation {
     public String toString() {
         return "Reservation{" +
                 "id=" + id +
-                ", roomId=" + roomId +
-                ", personId=" + personId +
+                ", roomId=" + room +
+                ", personId=" + person +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", reservationDate=" + reservationDate +

@@ -20,14 +20,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @ApplicationScoped
-public class ReservationRepository {
+public class ReservationRepositoryJSON {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
     List<Reservation> allReservations = new LinkedList<>();
 
 
-    public ReservationRepository() {
+    public ReservationRepositoryJSON() {
         objectMapper.registerModule(new JSR310Module());
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -137,7 +137,7 @@ public class ReservationRepository {
         for (Reservation currRes: allReservations) {
             //checks if reservation is between another reservation
             if(reservation.getStartTime().isAfter(currRes.getStartTime()) && reservation.getStartTime().isBefore(currRes.getEndTime())){
-               return false;
+                return false;
             }
             else if (reservation.getEndTime().isAfter(currRes.getStartTime()) && reservation.getEndTime().isBefore(currRes.getEndTime())){
                 return false;

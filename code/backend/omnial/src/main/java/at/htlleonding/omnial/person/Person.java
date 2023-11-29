@@ -1,11 +1,11 @@
-package at.htlleonding.omnial.model;
+package at.htlleonding.omnial.person;
 
 import jakarta.persistence.*;
 
 @Entity
 public class Person {
     @Id
-    @SequenceGenerator(name = "person_seq", sequenceName = "person_seq")
+    @SequenceGenerator(name = "person_seq", sequenceName = "person_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
     private int id;
 
@@ -34,5 +34,13 @@ public class Person {
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
+    }
+
+    public Person( String surname, String firstname) {
+        this.surname = surname;
+        this.firstname = firstname;
+    }
+
+    public Person() {
     }
 }
