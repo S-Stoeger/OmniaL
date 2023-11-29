@@ -28,9 +28,8 @@ public class ReservationRepository {
 
     @Transactional
     public void addReservation(Reservation reservation){
-        if (findByIdRervation(reservation.getId()) == null){
+
             entityManager.persist(reservation);
-        }
     }
 
     @Transactional

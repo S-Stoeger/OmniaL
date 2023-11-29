@@ -11,23 +11,26 @@ public class ReservationResource {
     @Inject
     ReservationRepository reservationRepository;
 
+    @Inject
+    ReservationMapper reservationMapper;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @jakarta.ws.rs.Path("/list")
-    public List<Reservation> reservationList() {
-        return this.reservationRepository.getAllReservations();
+    @Path("/list")
+    public List<ReservationDTO> reservationList() {
+        return this.reservationRepository.getAllReservations().stream().map(reservationMapper::toDTO).toList();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void addReservation(Reservation reservation){
-        this.reservationRepository.addReservation(reservation);
+    public void addReservation(ReservationDTO reservationDTO){
+        this.reservationRepository.addReservation(reservationMapper.toEntity(reservationDTO));
     }
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
-    @jakarta.ws.rs.Path("/{id}")
+    @Path("/{id}")
     public void deleteReservation(@PathParam("id") int id){
         this.reservationRepository.deleteReservation(id);
     }
@@ -35,8 +38,8 @@ public class ReservationResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @jakarta.ws.rs.Path("/{id}")
-    public void updateReservation(@PathParam("id") int id, Reservation reservation){
-        this.reservationRepository.updateReservation(id,reservation);
+    @Path("/{id}")
+    public void updateReservation(@PathParam("id") int id, ReservationDTO reservationDTO){
+        this.reservationRepository.updateReservation(id,reservationMapper.toEntity(reservationDTO));
     }
 }

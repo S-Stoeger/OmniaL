@@ -51,14 +51,13 @@ public class Reservation {
     private LocalDate reservationDate;
 
     public Reservation(Room room, Person person, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
-        countId = countId+2;
-        id =countId;
         this.room = room;
         this.person = person;
         this.startTime = startTime;
         this.endTime = endTime;
         this.reservationDate = date;
     }
+
 
     public Reservation() {
     }

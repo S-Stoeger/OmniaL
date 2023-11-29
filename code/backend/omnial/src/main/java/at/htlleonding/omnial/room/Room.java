@@ -7,16 +7,16 @@ public class Room {
     @Id
     @SequenceGenerator(name = "room_seq", sequenceName = "room_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_seq")
-    private Long id;
+    private Integer id;
 
     private String name;
     private String description;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
