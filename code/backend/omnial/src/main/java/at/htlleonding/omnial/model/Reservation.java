@@ -6,9 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-//@Entity
+@Entity
 public class Reservation {
-    //@Id
+    @Id
+    @SequenceGenerator(name = "reservation_seq", sequenceName = "reservation_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_seq")
     private int id;
     private static int countId;
     //@ManyToOne

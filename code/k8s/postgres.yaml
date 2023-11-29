@@ -72,7 +72,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: postgres
-          image: postgres:14
+          image: postgres:16
           ports:
             - containerPort: 5432
               protocol: TCP

@@ -1,6 +1,5 @@
 package at.htlleonding.omnial.boundary;
 
-
 import at.htlleonding.omnial.model.Reservation;
 import at.htlleonding.omnial.repository.ReservationRepository;
 import jakarta.inject.Inject;
