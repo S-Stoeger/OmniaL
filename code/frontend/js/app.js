@@ -41,7 +41,7 @@ var startTimeArray = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:
 var endTimeArray = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 var dayArray = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 var dayAsDateArray = ["2023-11-13", "2023-11-14", "2023-11-15", "2023-11-16", "2023-11-17"];
-var allRooms = ["Fotostudio", "Audiostudie", "Viedeoschnitt", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10", "EDV11", "EDV12", "EDV13", "EDV14", "EDV15", "EDV16", "EDV17", "EDV18"];
+var allRooms = ["Fotostudio", "Audiostudio", "Viedeoschnitt", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10", "EDV11", "EDV12", "EDV13", "EDV14", "EDV15", "EDV16", "EDV17", "EDV18"];
 var dayDefaultValue = "Montag";
 var startTimeDefaultValue = "-- Startzeit --";
 var endTimeDefaultValue = "-- Endzeit --";
@@ -93,6 +93,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 var cell = rows[j].children[i];
                 // Generate a unique ID based on the column index and row index
                 cell.id = "cell_".concat(j, "_").concat(i);
+                //set attribute to drag and drop
+                cell.setAttribute("ondrop", "drop(event, ".concat(cell.id, ")"));
+                cell.setAttribute("ondragover", "allowDrop(event)");
                 cell.addEventListener('click', function () {
                     openModalWithOnclick(cell.id);
                 });
@@ -177,9 +180,11 @@ function parseToLocalDateTimeFormat(date, time) {
 // adding color to box
 function paintColumnsReservated(array) {
     for (var i = 0; i < array.length; i++) {
-        var id = document.getElementById(array[i]);
-        if (id) {
-            id.style.backgroundColor = "#cd7f35";
+        var td = document.getElementById(array[i]);
+        if (td) {
+            //id.style.backgroundColor = "#cd7f35";
+            var imgId = array[i] + "Img";
+            td.innerHTML = "<img id=\"".concat(imgId, "\" src=\"../img/test.png\" draggable=\"true\" ondragstart=\"drag(event, ").concat(array[i], ")\">");
         }
     }
 }
@@ -197,7 +202,7 @@ function getColumnId(reservation) {
     for (var i = 0; i < startTimeArray.length; i++) {
         if (startTimeArray[i] === parseTime(reservation.startTime)) {
             startTimeId = i;
-            // get units
+            // get unit s
             for (var j = i; j < endTimeArray.length; j++) {
                 units++;
                 if (endTimeArray[j] === parseTime(reservation.endTime)) {
@@ -360,5 +365,110 @@ function addReservationToDatabase(reservation) {
                     return [2 /*return*/];
             }
         });
+    });
+}
+function updateReservationInDatabase(reservation) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, result, error_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, fetch("".concat(url, "/").concat(reservation.id), {
+                            method: 'PUT', // Assuming you use PUT for updates, adjust if necessary
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(reservation),
+                        })];
+                case 1:
+                    response = _a.sent();
+                    if (!response.ok) {
+                        throw new Error('Failed to update reservation');
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    result = _a.sent();
+                    console.log('Reservation updated successfully:', result);
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_3 = _a.sent();
+                    // Handle any errors that occurred during the fetch operation
+                    console.error('Error updating reservation:', error_3.message);
+                    // You may choose to rethrow the error or handle it differently based on your requirements
+                    throw error_3;
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+var oldReservation;
+function drag(ev, cell) {
+    oldReservation = getReservation(cell.id);
+    console.log(oldReservation);
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+function drop(ev, cell) {
+    console.log(checkIfContains(cell.id));
+    if (!checkIfContains(cell.id)) {
+        updateReservation(oldReservation, cell.id);
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        var draggedElement = document.getElementById(data);
+        if (draggedElement) {
+            ev.target.appendChild(draggedElement);
+        }
+    }
+}
+function checkIfContains(cell) {
+    var array = [];
+    reservations.forEach(function (res) {
+        var temp = getColumnId(res);
+        temp.forEach(function (t) {
+            array.push(t);
+        });
+    });
+    return array.some(function (table) {
+        return table === cell;
+    });
+}
+function extractNumbersFromString(inputString) {
+    // Use a regular expression to match digits
+    var matches = inputString.match(/\d+/g);
+    // Convert the matched strings to numbers
+    var numbers = matches ? matches.map(function (match) { return parseInt(match, 10); }) : [];
+    return numbers;
+}
+function reverseParse(arr) {
+    var array = [];
+    array.push(dayAsDateArray[arr[1] - 1]);
+    array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1] - 1], startTimeArray[arr[0] - 1]));
+    array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1] - 1], endTimeArray[arr[0] - 1]));
+    return array;
+}
+function getReservation(cellId) {
+    for (var _i = 0, reservations_1 = reservations; _i < reservations_1.length; _i++) {
+        var reservation = reservations_1[_i];
+        var temp = getColumnId(reservation);
+        for (var _a = 0, temp_1 = temp; _a < temp_1.length; _a++) {
+            var element = temp_1[_a];
+            if (element === cellId) {
+                return reservation;
+            }
+        }
+    }
+    return null;
+}
+function updateReservation(oldReservation, cell) {
+    var arr = reverseParse(extractNumbersFromString(cell));
+    reservations.forEach(function (res) {
+        if (res === oldReservation) {
+            res.startTime = arr[1];
+            res.endTime = arr[2];
+            res.reservationDate = arr[0];
+        }
     });
 }

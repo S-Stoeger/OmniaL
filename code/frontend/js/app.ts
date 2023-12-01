@@ -13,7 +13,7 @@ const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 const dayAsDateArray: string[] = ["2023-11-13", "2023-11-14", "2023-11-15", "2023-11-16", "2023-11-17"];
-const allRooms: string[] = ["Fotostudio", "Audiostudio", "Videoschnitt", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10", "EDV11", "EDV12", "EDV13", "EDV14", "EDV15", "EDV16", "EDV17", "EDV18"];
+const allRooms: string[] = ["Fotostudio", "Audiostudio", "Viedeoschnitt", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10", "EDV11", "EDV12", "EDV13", "EDV14", "EDV15", "EDV16", "EDV17", "EDV18"];
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
 const endTimeDefaultValue: string = "-- Endzeit --";
@@ -78,6 +78,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Generate a unique ID based on the column index and row index
                 cell.id = `cell_${j}_${i}`;
+
+                //set attribute to drag and drop
+                cell.setAttribute(`ondrop`, `drop(event, ${cell.id})`);
+                cell.setAttribute(`ondragover`, `allowDrop(event)`);
+
+
                 cell.addEventListener('click', function() {
                     openModalWithOnclick(cell.id);
                 });
@@ -90,74 +96,32 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Reserving room per onlick
-    function openModalWithOnclick(cellId: string) {
-    const isReservated = reservations.some(function (reservation) {
-        let columnAsString = getColumnId(reservation);
+function openModalWithOnclick(cellId: string) {
+    // get modal
+    const modal = document.getElementById("myModal") as HTMLDivElement;
 
-        for (let i = 0; i < columnAsString.length; i++) {
-            if (columnAsString[i] === cellId) {
-                showReservationInfo(reservation);
-                return true;
-            }
-        }
+    // show modall
+    modal.style.display = "block";
 
-        return false;
-    });
+    // get dropdown elements
+    const dropdownDay = document.getElementById("day") as HTMLSelectElement;
+    const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
+    const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
+
+    // split id into row and column
+    let array:string[] = cellId.split("_");
     
-    if(!isReservated) {
-        // get modal
-        const modal = document.getElementById("myModal") as HTMLDivElement;
-
-        // show modall
-        modal.style.display = "block";
-
-        // get dropdown elements
-        const dropdownDay = document.getElementById("day") as HTMLSelectElement;
-        const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
-        const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
-
-        // split id into row and column
-        let array:string[] = cellId.split("_");
-        
-        // get data from column
-        const day: string = dayArray[Number(array[2]) - 1];
-        const startTime: string = startTimeArray[Number(array[1]) -1];
-        const endTime: string = endTimeArray[Number(array[1]) - 1];7
-        
-        // set value of dropdown in modal
-        dropdownDay.value = day;
-        dropdownStartTime.value = startTime;
-        dropdownEndTime.value = endTime;
-    }
+    // get data from column
+    const day: string = dayArray[Number(array[2]) - 1];
+    const startTime: string = startTimeArray[Number(array[1]) -1];
+    const endTime: string = endTimeArray[Number(array[1]) - 1];7
+    
+    // set value of dropdown in modal
+    dropdownDay.value = day;
+    dropdownStartTime.value = startTime;
+    dropdownEndTime.value = endTime;
 }
 
-function showErrorMessage(message: string) {
-    const errorMessageBox = document.getElementById("errorMessageBox") as HTMLDivElement;
-    const errorMessage = document.getElementById("error_message") as HTMLParagraphElement;
-    errorMessageBox.style.display = "block";
-    errorMessage.innerHTML = message;
-    var i = 100;
-    if (i == 100) {
-        i = 99;
-        var elem = document.getElementById("progressBar");
-        var width = 99;
-        var id = setInterval(frame, -10);
-        function frame() {
-          if (width <= 0) {
-            clearInterval(id);
-            i = 100;
-          } else {
-            width -= 0.09;
-            elem.style.width = width + "%";
-          }
-        }
-      }
-
-    setTimeout(function () {
-        errorMessageBox.style.display = "none";
-        errorMessage.innerHTML = "";
-    }, 4800);
-}
 
 // get all values from dropdown & do reservation
 document.addEventListener("DOMContentLoaded", () => {
@@ -188,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 await addReservationToDatabase(reservation);
             } catch (error) {
-                showErrorMessage("Reservation already exists! \n Can't overwrite existing reservation!");
+                console.error('Error occured while adding reservation to Database!');
             } 
 
             getReservationsFromDatabase();
@@ -204,9 +168,12 @@ function parseToLocalDateTimeFormat(date, time) {
 // adding color to box
 function paintColumnsReservated(array: string[]) {
     for (let i: number = 0; i < array.length; i++) {
-        let id = document.getElementById(array[i]);
-        if (id) {
-            id.style.backgroundColor = "#cd7f35";
+        let td = document.getElementById(array[i]);
+        if (td) {
+            //id.style.backgroundColor = "#cd7f35";
+            let imgId: string = array[i] + "Img";
+            
+            td.innerHTML = `<img id="${imgId}" src="../img/test.png" draggable="true" ondragstart="drag(event, ${array[i]})">`
         }
     }
 }
@@ -228,7 +195,7 @@ function getColumnId(reservation: Reservation) {
         if (startTimeArray[i] === parseTime(reservation.startTime)) {
             startTimeId = i;
 
-            // get units
+            // get unit s
             for (let j: number = i; j < endTimeArray.length; j++) {
                 units++;
                 if (endTimeArray[j] === parseTime(reservation.endTime)) {
@@ -257,22 +224,17 @@ function getColumnId(reservation: Reservation) {
 function getReservationsFromDatabase() {
 // Example usage
     const getUrl = url + '/list';
-    try {
-        fetchDataFromUrl(getUrl)
-            .then(data => {
-                if (data) {
-                    reservations.length = 0;
-                    data.forEach(singleReservation => {
-                        const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
-                        reservations.push(reservation);
-                        loadReservation(reservation);
-                    });
-                }
-            })
-    }
-    catch(error) {
-        showErrorMessage('Failed to fetch data from server! \n Pleas check your internet connection!');
-    }
+    fetchDataFromUrl(getUrl)
+        .then(data => {
+            if (data) {
+                data.forEach(singleReservation => {
+                    const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
+                    reservations.push(reservation);
+                    loadReservation(reservation);
+            });
+        }
+        })
+        .catch(error => console.error(`Error: ${error.message}`));
 }
 
 function loadReservation(reservation: Reservation) {
@@ -388,7 +350,9 @@ async function fetchDataFromUrl(url: string): Promise<any | null> {
             return null;
         }
     } catch (error) {
-        showErrorMessage('Failed to fetch the data from server! Check your internet connection!');
+        // Handle exceptions
+        console.error(`Error: ${error.message}`);
+        return null;
     }
 }
 
@@ -400,24 +364,122 @@ async function addReservationToDatabase(reservation: Reservation) {
     if (!response.ok) {
         throw new Error('Failed to add reservation');
     }
+} 
+
+async function updateReservationInDatabase(reservation: Reservation) {
+    try {
+        const response = await fetch(`${url}/${reservation.id}`, {
+            method: 'PUT', // Assuming you use PUT for updates, adjust if necessary
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reservation),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update reservation');
+        }
+
+        // If the response is OK, you can optionally parse the response JSON
+        const result = await response.json();
+        console.log('Reservation updated successfully:', result);
+    } catch (error) {
+        // Handle any errors that occurred during the fetch operation
+        console.error('Error updating reservation:', error.message);
+        // You may choose to rethrow the error or handle it differently based on your requirements
+        throw error;
+    }
 }
 
-function showReservationInfo(reservation: Reservation) {
-    const infoBox = document.getElementById("InfoBox");
-    const infoMessage = document.getElementById("info_content");
-    infoBox.style.display = "block";
-    infoMessage.innerHTML = reservationToString(reservation);
-    
 
-    window.addEventListener("click", (event) => {
-        // Close modal when clicking outside of it
-        if (event.target === infoBox) {
-            infoBox.style.display = "none";
+function allowDrop(ev: DragEvent) {
+    ev.preventDefault();
+}
+let oldReservation: Reservation;
+function drag(ev: DragEvent, cell: HTMLTableCellElement) {
+    
+    oldReservation = getReservation(cell.id)
+    console.log(oldReservation);
+    
+    
+    ev.dataTransfer.setData("text", (ev.target as HTMLElement).id);
+}
+
+function drop(ev: DragEvent, cell:  HTMLTableCellElement) {
+    
+    console.log(checkIfContains(cell.id));
+    
+    if (!checkIfContains(cell.id)) {
+        updateReservation(oldReservation, cell.id);
+
+        ev.preventDefault();
+        const data = ev.dataTransfer.getData("text");
+        const draggedElement = document.getElementById(data);
+
+        if (draggedElement) {
+            (ev.target as HTMLElement).appendChild(draggedElement);   
         }
+    }    
+}
+
+function checkIfContains(cell: string) {
+    let array: string[] = [];
+    reservations.forEach(res => {
+        let temp = getColumnId(res);
+        temp.forEach(t => {
+            array.push(t);
+        });
+    });
+
+    return array.some(table => {
+        return table === cell;
     });
 }
 
-function reservationToString(reservation: Reservation): string {
-    let result: string = `Name(id): ${reservation.personId} \n Date: ${reservation.reservationDate} \n Start: ${parseTime(reservation.startTime)}, End: ${parseTime(reservation.endTime)}`;
-    return result;
-  }  
+function extractNumbersFromString(inputString: string): number[] {
+    // Use a regular expression to match digits
+    const matches = inputString.match(/\d+/g);
+
+    // Convert the matched strings to numbers
+    const numbers = matches ? matches.map(match => parseInt(match, 10)) : [];
+
+    return numbers;
+}
+
+function reverseParse(arr: number[]) {
+    let array: string[] = [];
+
+    array.push(dayAsDateArray[arr[1]-1]);
+    array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1]-1], startTimeArray[arr[0]-1]));
+    array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1]-1], endTimeArray[arr[0]-1]));
+
+    return array;
+}
+
+
+function getReservation(cellId: string) {
+    for (const reservation of reservations) {
+        const temp = getColumnId(reservation);
+        for (const element of temp) {
+            if (element === cellId) {
+                return reservation;
+            }
+        }
+    }
+    return null;
+}
+
+
+function updateReservation(oldReservation: Reservation, cell: string) {
+    let arr = reverseParse(extractNumbersFromString(cell));
+
+    reservations.forEach(res => {
+        if (res === oldReservation) {
+            res.startTime = arr[1];
+            res.endTime = arr[2];
+            res.reservationDate = arr[0];
+        }
+    });
+    
+    
+}
