@@ -21,6 +21,13 @@ public class ReservationResource {
         return this.reservationRepository.getAllReservations().stream().map(reservationMapper::toDTO).toList();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    public ReservationDTO reservationById(@PathParam("id") int id){
+        return reservationMapper.toDTO(this.reservationRepository.findByIdReservation(id));
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

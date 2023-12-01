@@ -14,7 +14,7 @@ public class ReservationRepository {
     @Inject
     EntityManager entityManager;
 
-    public Reservation findByIdRervation(int id){
+    public Reservation findByIdReservation(int id){
         Reservation reservation = entityManager.find(Reservation.class, id);
         if (reservation == null){
             throw new NotFoundException();
@@ -34,13 +34,13 @@ public class ReservationRepository {
 
     @Transactional
     public void deleteReservation(int id){
-        Reservation reservation = findByIdRervation(id);
+        Reservation reservation = findByIdReservation(id);
         entityManager.remove(reservation);
     }
 
     @Transactional
     public void updateReservation(int id, Reservation reservation){
-        Reservation oldReservation = findByIdRervation(id);
+        Reservation oldReservation = findByIdReservation(id);
         oldReservation.setReservationDate(reservation.getReservationDate());
         oldReservation.setPerson(reservation.getPerson());
         oldReservation.setRoom(reservation.getRoom());
