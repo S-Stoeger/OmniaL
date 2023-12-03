@@ -236,12 +236,13 @@ function getColumnId(reservation: Reservation) {
 
 function getReservationsFromDatabase() {
 // Example usage
+    reservations = [];
     const getUrl = url + '/list';
     fetchDataFromUrl(getUrl)
         .then(data => {
             if (data) {
                 data.forEach(singleReservation => {
-                    const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
+                    const reservation: Reservation = {id: reservations.length +1, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
                     reservations.push(reservation);
                     loadReservation(reservation);
             });
@@ -370,6 +371,7 @@ async function fetchDataFromUrl(url: string): Promise<any | null> {
 }
 
 async function addReservationToDatabase(reservation: Reservation) {
+    const infoBox = document.getElementById("InfoBox");
     try {
         const response = await fetch(url, {
             method: 'POST',
@@ -378,10 +380,35 @@ async function addReservationToDatabase(reservation: Reservation) {
             },
             body: JSON.stringify(reservation),
         });
+        if (!response.ok) {
+            showErrorMessage('Failed to add reservation! Please check your Internet connection!');
+        }
     } catch (error) {
         showErrorMessage('Failed to add reservation! Please check your Internet connection!');
     }
+    infoBox.style.display = "none";
 } 
+
+/*
+function removeReservation(reservation:Reservation) {
+    try {
+        const removeButton = document.getElementById("remove") as HTMLButtonElement;
+        removeButton.addEventListener("click", async () => {
+            const response = await fetch(url + `/${reservation.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                showErrorMessage("Failed to remove Reservation");
+            }
+        })
+    } catch(error) {
+        showErrorMessage("Failed to remove Reservation");
+    }
+}
+*/
 
 async function updateReservationInDatabase(reservation: Reservation) {
     try {
@@ -536,6 +563,10 @@ function showReservationInfo(reservation: Reservation) {
     infoBox.style.display = "block";
     infoMessage.innerHTML = reservationToString(reservation);
 
+    console.log(reservation);
+    
+    //removeReservation(reservation);
+
     window.addEventListener("click", (event) => {
         // Close modal when clicking outside of it
         if (event.target === infoBox) {
@@ -545,6 +576,6 @@ function showReservationInfo(reservation: Reservation) {
 }
 
 function reservationToString(reservation: Reservation): string {
-    let result: string = `Name(id): ${reservation.personId} \n Date: ${reservation.reservationDate} \n Start: ${parseTime(reservation.startTime)}, End: ${parseTime(reservation.endTime)}`;
+    let result: string = `Name(id):${reservation.id} \n Date:${reservation.reservationDate} \n Start:${parseTime(reservation.startTime)}, End:${parseTime(reservation.endTime)}`;
     return result;
-} 
+}

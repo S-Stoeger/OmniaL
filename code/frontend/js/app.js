@@ -240,12 +240,13 @@ function getColumnId(reservation) {
 }
 function getReservationsFromDatabase() {
     // Example usage
+    reservations = [];
     var getUrl = url + '/list';
     fetchDataFromUrl(getUrl)
         .then(function (data) {
         if (data) {
             data.forEach(function (singleReservation) {
-                var reservation = { id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate };
+                var reservation = { id: reservations.length + 1, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate };
                 reservations.push(reservation);
                 loadReservation(reservation);
             });
@@ -363,11 +364,14 @@ function fetchDataFromUrl(url) {
 }
 function addReservationToDatabase(reservation) {
     return __awaiter(this, void 0, void 0, function () {
-        var response, error_3;
+        var infoBox, response, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
+                    infoBox = document.getElementById("InfoBox");
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, fetch(url, {
                             method: 'POST',
                             headers: {
@@ -375,18 +379,43 @@ function addReservationToDatabase(reservation) {
                             },
                             body: JSON.stringify(reservation),
                         })];
-                case 1:
-                    response = _a.sent();
-                    return [3 /*break*/, 3];
                 case 2:
+                    response = _a.sent();
+                    if (!response.ok) {
+                        showErrorMessage('Failed to add reservation! Please check your Internet connection!');
+                    }
+                    return [3 /*break*/, 4];
+                case 3:
                     error_3 = _a.sent();
                     showErrorMessage('Failed to add reservation! Please check your Internet connection!');
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    return [3 /*break*/, 4];
+                case 4:
+                    infoBox.style.display = "none";
+                    return [2 /*return*/];
             }
         });
     });
 }
+/*
+function removeReservation(reservation:Reservation) {
+    try {
+        const removeButton = document.getElementById("remove") as HTMLButtonElement;
+        removeButton.addEventListener("click", async () => {
+            const response = await fetch(url + `/${reservation.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                showErrorMessage("Failed to remove Reservation");
+            }
+        })
+    } catch(error) {
+        showErrorMessage("Failed to remove Reservation");
+    }
+}
+*/
 function updateReservationInDatabase(reservation) {
     return __awaiter(this, void 0, void 0, function () {
         var response, result, error_4;
@@ -524,6 +553,8 @@ function showReservationInfo(reservation) {
     var infoMessage = document.getElementById("info_content");
     infoBox.style.display = "block";
     infoMessage.innerHTML = reservationToString(reservation);
+    console.log(reservation);
+    //removeReservation(reservation);
     window.addEventListener("click", function (event) {
         // Close modal when clicking outside of it
         if (event.target === infoBox) {
@@ -532,6 +563,6 @@ function showReservationInfo(reservation) {
     });
 }
 function reservationToString(reservation) {
-    var result = "Name(id): ".concat(reservation.personId, " \n Date: ").concat(reservation.reservationDate, " \n Start: ").concat(parseTime(reservation.startTime), ", End: ").concat(parseTime(reservation.endTime));
+    var result = "Name(id):".concat(reservation.id, " \n Date:").concat(reservation.reservationDate, " \n Start:").concat(parseTime(reservation.startTime), ", End:").concat(parseTime(reservation.endTime));
     return result;
 }
