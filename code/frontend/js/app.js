@@ -111,24 +111,36 @@ document.addEventListener("DOMContentLoaded", function () {
 // Reserving room per onlick
 function openModalWithOnclick(cellId) {
     // get modal
-    var modal = document.getElementById("myModal");
-    // show modall
-    modal.style.display = "block";
-    // get dropdown elements
-    var dropdownDay = document.getElementById("day");
-    var dropdownStartTime = document.getElementById("time");
-    var dropdownEndTime = document.getElementById("timeE");
-    // split id into row and column
-    var array = cellId.split("_");
-    // get data from column
-    var day = dayArray[Number(array[2]) - 1];
-    var startTime = startTimeArray[Number(array[1]) - 1];
-    var endTime = endTimeArray[Number(array[1]) - 1];
-    7;
-    // set value of dropdown in modal
-    dropdownDay.value = day;
-    dropdownStartTime.value = startTime;
-    dropdownEndTime.value = endTime;
+    var isReservated = reservations.some(function (reservation) {
+        var columnAsString = getColumnId(reservation);
+        for (var i = 0; i < columnAsString.length; i++) {
+            if (columnAsString[i] === cellId) {
+                showReservationInfo(reservation);
+                return true;
+            }
+        }
+        return false;
+    });
+    if (!isReservated) {
+        var modal = document.getElementById("myModal");
+        // show modall
+        modal.style.display = "block";
+        // get dropdown elements
+        var dropdownDay = document.getElementById("day");
+        var dropdownStartTime = document.getElementById("time");
+        var dropdownEndTime = document.getElementById("timeE");
+        // split id into row and column
+        var array = cellId.split("_");
+        // get data from column
+        var day = dayArray[Number(array[2]) - 1];
+        var startTime = startTimeArray[Number(array[1]) - 1];
+        var endTime = endTimeArray[Number(array[1]) - 1];
+        7;
+        // set value of dropdown in modal
+        dropdownDay.value = day;
+        dropdownStartTime.value = startTime;
+        dropdownEndTime.value = endTime;
+    }
 }
 // get all values from dropdown & do reservation
 document.addEventListener("DOMContentLoaded", function () {
@@ -351,25 +363,33 @@ function fetchDataFromUrl(url) {
 }
 function addReservationToDatabase(reservation) {
     return __awaiter(this, void 0, void 0, function () {
-        var response;
+        var response, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch(url, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json', }, body: JSON.stringify(reservation)
-                    })];
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(reservation),
+                        })];
                 case 1:
                     response = _a.sent();
-                    if (!response.ok) {
-                        throw new Error('Failed to add reservation');
-                    }
-                    return [2 /*return*/];
+                    return [3 /*break*/, 3];
+                case 2:
+                    error_3 = _a.sent();
+                    showErrorMessage('Failed to add reservation! Please check your Internet connection!');
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
     });
 }
 function updateReservationInDatabase(reservation) {
     return __awaiter(this, void 0, void 0, function () {
-        var response, result, error_3;
+        var response, result, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -392,11 +412,11 @@ function updateReservationInDatabase(reservation) {
                     console.log('Reservation updated successfully:', result);
                     return [3 /*break*/, 4];
                 case 3:
-                    error_3 = _a.sent();
+                    error_4 = _a.sent();
                     // Handle any errors that occurred during the fetch operation
-                    console.error('Error updating reservation:', error_3.message);
+                    console.error('Error updating reservation:', error_4.message);
                     // You may choose to rethrow the error or handle it differently based on your requirements
-                    throw error_3;
+                    throw error_4;
                 case 4: return [2 /*return*/];
             }
         });
@@ -471,4 +491,47 @@ function updateReservation(oldReservation, cell) {
             res.reservationDate = arr[0];
         }
     });
+}
+function showErrorMessage(message) {
+    var errorMessageBox = document.getElementById("errorMessageBox");
+    var errorMessage = document.getElementById("error_message");
+    errorMessageBox.style.display = "block";
+    errorMessage.innerHTML = message;
+    var i = 100;
+    if (i == 100) {
+        i = 99;
+        var elem = document.getElementById("progressBar");
+        var width = 99;
+        var id = setInterval(frame, -10);
+        function frame() {
+            if (width <= 0) {
+                clearInterval(id);
+                i = 100;
+            }
+            else {
+                width -= 0.09;
+                elem.style.width = width + "%";
+            }
+        }
+    }
+    setTimeout(function () {
+        errorMessageBox.style.display = "none";
+        errorMessage.innerHTML = "";
+    }, 4800);
+}
+function showReservationInfo(reservation) {
+    var infoBox = document.getElementById("InfoBox");
+    var infoMessage = document.getElementById("info_content");
+    infoBox.style.display = "block";
+    infoMessage.innerHTML = reservationToString(reservation);
+    window.addEventListener("click", function (event) {
+        // Close modal when clicking outside of it
+        if (event.target === infoBox) {
+            infoBox.style.display = "none";
+        }
+    });
+}
+function reservationToString(reservation) {
+    var result = "Name(id): ".concat(reservation.personId, " \n Date: ").concat(reservation.reservationDate, " \n Start: ").concat(parseTime(reservation.startTime), ", End: ").concat(parseTime(reservation.endTime));
+    return result;
 }
