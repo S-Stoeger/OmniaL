@@ -2,8 +2,10 @@ package at.htlleonding.omnial.reservation;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
@@ -28,8 +30,10 @@ public class ReservationRepository {
 
     @Transactional
     public void addReservation(Reservation reservation){
-
-            entityManager.persist(reservation);
+       if (!checkReservation(reservation)) {
+         throw new BadRequestException();
+       }
+       entityManager.persist(reservation);
     }
 
     @Transactional
@@ -48,7 +52,30 @@ public class ReservationRepository {
         oldReservation.setStartTime(reservation.getStartTime());
     }
 
+    public boolean checkReservation(Reservation reservation){
 
+        for (Reservation currRes: getAllReservations()) {
+            //checks if reservation is between another reservation
+            if(reservation.getStartTime().isAfter(currRes.getStartTime()) && reservation.getStartTime().isBefore(currRes.getEndTime())){
+                return false;
+            }
+            else if (reservation.getEndTime().isAfter(currRes.getStartTime()) && reservation.getEndTime().isBefore(currRes.getEndTime())){
+                return false;
+            }
+
+            else if(currRes.getStartTime().isAfter(reservation.getStartTime()) && currRes.getStartTime().isBefore(reservation.getEndTime())){
+                return false;
+            }
+            else if (currRes.getEndTime().isAfter(reservation.getStartTime()) && currRes.getEndTime().isBefore(reservation.getEndTime())){
+                return false;
+            }
+            else if(reservation.getEndTime().isEqual(currRes.getEndTime() )|| reservation.getStartTime().isEqual(currRes.getStartTime())){
+                return false;
+            }
+        }
+        return true;
+
+    }
 
 
 
