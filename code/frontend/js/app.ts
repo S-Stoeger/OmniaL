@@ -439,12 +439,12 @@ async function updateReservationInDatabase(oldReservation: Reservation, newReser
         // If the response is OK, you can optionally parse the response JSON
         const result = response.ok;
         if (response.ok) console.log("Reservation updated successfully");
-        else console.error("Error updating reservation:", await response.text());
+        else showErrorMessage("Error updating reservation:"+ await response.text());
         location.reload()
         
     } catch (error) {
         // Handle any errors that occurred during the fetch operation
-        console.error('Error updating reservation:', error.message);
+        showErrorMessage('Error updating reservation:'+ error.message);
         // You may choose to rethrow the error or handle it differently based on your requirements
         throw error;
     }
@@ -457,25 +457,27 @@ function allowDrop(ev: DragEvent) {
 let oldReservation: Reservation;
 function drag(ev: DragEvent, cell: HTMLTableCellElement) {
     oldReservation = getReservation(cell.id)
-    //console.log(oldReservation);
     
     ev.dataTransfer.setData("text", (ev.target as HTMLElement).id);
 }
 
 function drop(ev: DragEvent, cell:  HTMLTableCellElement) {
-    if (!checkIfContains(cell.id)) {
-        updateReservation(oldReservation, cell.id);
-
-        ev.preventDefault();
-        const data = ev.dataTransfer.getData("text");
-        const draggedElement = document.getElementById(data);
-
-        if (draggedElement) {
-            (ev.target as HTMLElement).appendChild(draggedElement);   
-        }
-
-    }   
-     
+    try {
+        if (!checkIfContains(cell.id)) {
+            updateReservation(oldReservation, cell.id);
+    
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            const draggedElement = document.getElementById(data);
+    
+            if (draggedElement) {
+                (ev.target as HTMLElement).appendChild(draggedElement);   
+            }
+    
+        }  
+    } catch(error) {
+        
+    }
 }
 
 function checkIfContains(cell: string) {
@@ -515,7 +517,6 @@ function reverseParse(arr: number[], length: number) {
     } else {
         array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1]-1], endTimeArray[arr[0]-1]));
     }
-console.log(array);
 
     return array;
 }
@@ -534,9 +535,19 @@ function getReservation(cellId: string) {
 
 
 function updateReservation(oldReservation: Reservation, cell: string) {
-
-
     let arr = reverseParse(extractNumbersFromString(cell), getColumnId(oldReservation).length);
+
+    let temp: ReservationDTO = {
+        roomId: 1,
+        personId: oldReservation.personId,
+        startTime: arr[1], 
+        endTime: arr[2],
+        reservationDate: arr[0]
+    };
+
+    if (isInRange(temp)) {
+        throw new Error("reservation is in range of a other!");
+    }
 
     reservations.forEach(res => {
         if (res === oldReservation) {
@@ -546,14 +557,6 @@ function updateReservation(oldReservation: Reservation, cell: string) {
         }
     });
     
-    let temp: ReservationDTO = {
-        roomId: 1,
-        personId: oldReservation.personId,
-        startTime: arr[1], 
-        endTime: arr[2],
-        reservationDate: arr[0]
-    };
-
     updateReservationInDatabase(oldReservation, temp);
 }
 
@@ -644,4 +647,20 @@ function getFormattedDatesFromMondayToFriday(): string[] {
 
 function formatDate(date: Date): string {
     return date.toISOString().slice(0, 10);
+}
+
+function isInRange(update: ReservationDTO): boolean {
+    const array: Reservation[] = reservations.filter(item => item.reservationDate === update.reservationDate);
+    const startTimeId: number = startTimeArray.indexOf(parseTime(update.startTime).slice(0, -3));
+    const endTimeId: number = endTimeArray.indexOf(parseTime(update.endTime).slice(0, -3));
+
+    for (const element of array) {
+        const elementStartTimeId = startTimeArray.indexOf(parseTime(element.startTime));
+
+        if (elementStartTimeId >= startTimeId && elementStartTimeId <= endTimeId) {
+            return true;
+        }
+    }
+
+    return false;
 }
