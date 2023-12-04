@@ -243,23 +243,29 @@ function getColumnId(reservation: Reservation) {
 }
 
 function getReservationsFromDatabase() {
-// Example usage
     reservations = [];
+
     const getUrl = url + '/list';
     fetchDataFromUrl(getUrl)
         .then(data => {
             if (data) {
                 data.forEach(singleReservation => {
-                    const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
+                    const reservation: Reservation = {
+                        id: singleReservation.id,
+                        roomId: singleReservation.roomId,
+                        personId: singleReservation.personId,
+                        startTime: singleReservation.startTime,
+                        endTime: singleReservation.endTime,
+                        reservationDate: singleReservation.reservationDate
+                    };
                     reservations.push(reservation);
-                    console.log(reservation);
-                    
                     loadReservation(reservation);
-            });
-        }
+                });
+            }
         })
         .catch(error => console.error(`Error: ${error.message}`));
 }
+
 
 function loadReservation(reservation: Reservation) {
     reservation.startTime = reservation.startTime.slice(0, -3);
@@ -278,9 +284,6 @@ function parseDay(dateString) {
 
     // adjust index, becaus getDay() starts and ends with Sunday
     dayIndex = (dayIndex + 6) % 7;
-
-    //console.log(array[0]);
-    //console.log(dayArray[dayIndex]);
 
     return dayArray[dayIndex];
 }
@@ -399,26 +402,21 @@ async function addReservationToDatabase(reservation: ReservationDTO) {
     infoBox.style.display = "none";
 } 
 
-/*
-function removeReservation(reservation:Reservation) {
+async function removeReservation(reservationId: number) {
     try {
-        const removeButton = document.getElementById("remove") as HTMLButtonElement;
-        removeButton.addEventListener("click", async () => {
-            const response = await fetch(url + `/${reservation.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            if (!response.ok) {
-                showErrorMessage("Failed to remove Reservation");
+        const response = await fetch(url + `/${reservationId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
             }
-        })
+        });
+        if (!response.ok) {
+            showErrorMessage("Failed to remove Reservation");
+        }
     } catch(error) {
         showErrorMessage("Failed to remove Reservation");
     }
 }
-*/
 
 async function updateReservationInDatabase(reservation: Reservation) {
     try {
@@ -570,12 +568,22 @@ function showErrorMessage(message: string) {
 function showReservationInfo(reservation: Reservation) {
     const infoBox = document.getElementById("InfoBox");
     const infoMessage = document.getElementById("info_content");
+    document.getElementById("remove").remove();
+    const removeButton = document.createElement("button");
+    removeButton.id = "remove";
+    document.querySelector("#InfoBox > *:last-child").appendChild(removeButton)
+
     infoBox.style.display = "block";
     infoMessage.innerHTML = reservationToString(reservation);
-
-    console.log(reservation);
     
-    //removeReservation(reservation);
+    removeButton.addEventListener("click", async () => {
+        const column = document.getElementById(`${getColumnId(reservation)}`) as HTMLTableCellElement;
+        column.innerHTML = "";
+        infoBox.style.display = "none";
+
+        await removeReservation(reservation.id);
+        getReservationsFromDatabase();
+    });     
 
     window.addEventListener("click", (event) => {
         // Close modal when clicking outside of it
@@ -586,6 +594,6 @@ function showReservationInfo(reservation: Reservation) {
 }
 
 function reservationToString(reservation: Reservation): string {
-    let result: string = `Name(id):${reservation.id} \n Date:${reservation.reservationDate} \n Start:${parseTime(reservation.startTime)}, End:${parseTime(reservation.endTime)}`;
+    let result: string = `Name(id):${reservation.personId} \n Date:${reservation.reservationDate} \n Start:${parseTime(reservation.startTime)}, End:${parseTime(reservation.endTime)}`;
     return result;
 }
