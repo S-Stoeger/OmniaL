@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
             try {
                 await addReservationToDatabase(reservation);
             } catch (error) {
-                console.error('Error occured while adding reservation to Database!');
+                showErrorMessage('Error occured while adding reservation to Database!');
             } 
 
             getReservationsFromDatabase();
@@ -268,7 +268,7 @@ function getReservationsFromDatabase() {
                 });
             }
         })
-        .catch(error => console.error(`Error: ${error.message}`));
+        .catch(error => showErrorMessage(error.message));
 }
 
 
@@ -377,12 +377,12 @@ async function fetchDataFromUrl(url: string): Promise<any | null> {
             return await response.json();
         } else {
             // Print an error message if the request was not successful
-            console.error(`Error: Unable to fetch data. Status code: ${response.status}`);
+            showErrorMessage(`Error: Unable to fetch data. Status code: ${response.status}`);
             return null;
         }
     } catch (error) {
         // Handle exceptions
-        console.error(`Error: ${error.message}`);
+        showErrorMessage(`Error: ${error.message}`);
         return null;
     }
 }
@@ -441,7 +441,7 @@ async function updateReservationInDatabase(reservation: Reservation) {
         console.log('Reservation updated successfully:', result);
     } catch (error) {
         // Handle any errors that occurred during the fetch operation
-        console.error('Error updating reservation:', error.message);
+        showErrorMessage('Error updating reservation:'+ error.message);
         // You may choose to rethrow the error or handle it differently based on your requirements
         throw error;
     }
