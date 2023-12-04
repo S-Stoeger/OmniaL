@@ -7,6 +7,14 @@ interface Reservation {
     reservationDate: string;
 }
 
+interface ReservationDTO {
+    roomId: number;
+    personId: number;
+    startTime: string;
+    endTime: string;
+    reservationDate: string;
+}
+
 // constatnts
 let reservations: Reservation[] = [];
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
@@ -160,7 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     dayId = i;
                 }
             }
-            const reservation: Reservation = {id: reservations.length + 1, roomId: 1, personId: 1, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
+            const reservation: ReservationDTO = {roomId: 1, personId: 1, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
 
             try {
                 await addReservationToDatabase(reservation);
@@ -242,8 +250,10 @@ function getReservationsFromDatabase() {
         .then(data => {
             if (data) {
                 data.forEach(singleReservation => {
-                    const reservation: Reservation = {id: reservations.length +1, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
+                    const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
                     reservations.push(reservation);
+                    console.log(reservation);
+                    
                     loadReservation(reservation);
             });
         }
@@ -370,7 +380,7 @@ async function fetchDataFromUrl(url: string): Promise<any | null> {
     }
 }
 
-async function addReservationToDatabase(reservation: Reservation) {
+async function addReservationToDatabase(reservation: ReservationDTO) {
     const infoBox = document.getElementById("InfoBox");
     try {
         const response = await fetch(url, {
