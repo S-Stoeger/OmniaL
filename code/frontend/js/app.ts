@@ -253,13 +253,20 @@ function getReservationsFromDatabase() {
         .then(data => {
             if (data) {
                 data.forEach(singleReservation => {
-                    const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
-                    reservations.push(reservation);
-                    console.log(reservation);
-                    
-                    loadReservation(reservation);
-            });
-        }
+                    if (dayAsDateArray.indexOf(singleReservation.reservationDate) !== -1) {
+                        const reservation: Reservation = {
+                            id: singleReservation.id,
+                            roomId: singleReservation.roomId,
+                            personId: singleReservation.personId,
+                            startTime: singleReservation.startTime,
+                            endTime: singleReservation.endTime,
+                            reservationDate: singleReservation.reservationDate
+                        };
+                        reservations.push(reservation);
+                        loadReservation(reservation);
+                    }
+                });
+            }
         })
         .catch(error => showErrorMessage(error.message));
 }
@@ -416,8 +423,6 @@ async function removeReservation(reservationId: number) {
 }
 
 async function updateReservationInDatabase(oldReservation: Reservation, newReservation: ReservationDTO) {
-    
-    
     try {
         const response = await fetch(`${url}/${oldReservation.id}`, {
             method: 'PUT', // Assuming you use PUT for updates, adjust if necessary
@@ -591,10 +596,15 @@ function showReservationInfo(reservation: Reservation) {
 
     infoBox.style.display = "block";
     infoMessage.innerHTML = reservationToString(reservation);
-
-    console.log(reservation);
     
-    //removeReservation(reservation);
+    removeButton.addEventListener("click", async () => {
+        const column = document.getElementById(`${getColumnId(reservation)}`) as HTMLTableCellElement;
+        column.innerHTML = "";
+        infoBox.style.display = "none";
+
+        await removeReservation(reservation.id);
+        getReservationsFromDatabase();
+    });
 
     window.addEventListener("click", (event) => {
         // Close modal when clicking outside of it
