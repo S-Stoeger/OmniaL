@@ -58,6 +58,11 @@ public class Reservation {
         this.reservationDate = date;
     }
 
+    public Reservation(int id,Room room, Person person, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
+        this(room,person,startTime,endTime,date);
+        this.id = id;
+    }
+
 
     public Reservation() {
     }
