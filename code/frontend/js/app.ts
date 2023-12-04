@@ -253,20 +253,13 @@ function getReservationsFromDatabase() {
         .then(data => {
             if (data) {
                 data.forEach(singleReservation => {
-                    if (dayAsDateArray.indexOf(singleReservation.reservationDate) !== -1) {
-                        const reservation: Reservation = {
-                            id: singleReservation.id,
-                            roomId: singleReservation.roomId,
-                            personId: singleReservation.personId,
-                            startTime: singleReservation.startTime,
-                            endTime: singleReservation.endTime,
-                            reservationDate: singleReservation.reservationDate
-                        };
-                        reservations.push(reservation);
-                        loadReservation(reservation);
-                    }
-                });
-            }
+                    const reservation: Reservation = {id: singleReservation.id, roomId: singleReservation.roomId, personId: singleReservation.personId, startTime: singleReservation.startTime, endTime: singleReservation.endTime, reservationDate: singleReservation.reservationDate }
+                    reservations.push(reservation);
+                    console.log(reservation);
+                    
+                    loadReservation(reservation);
+            });
+        }
         })
         .catch(error => showErrorMessage(error.message));
 }
@@ -422,14 +415,16 @@ async function removeReservation(reservationId: number) {
     }
 }
 
-async function updateReservationInDatabase(reservation: Reservation) {
+async function updateReservationInDatabase(oldReservation: Reservation, newReservation: ReservationDTO) {
+    
+    
     try {
-        const response = await fetch(`${url}/${reservation.id}`, {
+        const response = await fetch(`${url}/${oldReservation.id}`, {
             method: 'PUT', // Assuming you use PUT for updates, adjust if necessary
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(reservation),
+            body: JSON.stringify(newReservation),
         });
 
         if (!response.ok) {
@@ -437,11 +432,14 @@ async function updateReservationInDatabase(reservation: Reservation) {
         }
 
         // If the response is OK, you can optionally parse the response JSON
-        const result = await response.json();
-        console.log('Reservation updated successfully:', result);
+        const result = response.ok;
+        if (response.ok) console.log("Reservation updated successfully");
+        else console.error("Error updating reservation:", await response.text());
+        location.reload()
+        
     } catch (error) {
         // Handle any errors that occurred during the fetch operation
-        showErrorMessage('Error updating reservation:'+ error.message);
+        console.error('Error updating reservation:', error.message);
         // You may choose to rethrow the error or handle it differently based on your requirements
         throw error;
     }
@@ -453,18 +451,13 @@ function allowDrop(ev: DragEvent) {
 }
 let oldReservation: Reservation;
 function drag(ev: DragEvent, cell: HTMLTableCellElement) {
-    
     oldReservation = getReservation(cell.id)
-    console.log(oldReservation);
-    
+    //console.log(oldReservation);
     
     ev.dataTransfer.setData("text", (ev.target as HTMLElement).id);
 }
 
 function drop(ev: DragEvent, cell:  HTMLTableCellElement) {
-    
-    console.log(checkIfContains(cell.id));
-    
     if (!checkIfContains(cell.id)) {
         updateReservation(oldReservation, cell.id);
 
@@ -475,7 +468,9 @@ function drop(ev: DragEvent, cell:  HTMLTableCellElement) {
         if (draggedElement) {
             (ev.target as HTMLElement).appendChild(draggedElement);   
         }
-    }    
+
+    }   
+     
 }
 
 function checkIfContains(cell: string) {
@@ -502,16 +497,23 @@ function extractNumbersFromString(inputString: string): number[] {
     return numbers;
 }
 
-function reverseParse(arr: number[]) {
+function reverseParse(arr: number[], length: number) {
     let array: string[] = [];
 
     array.push(dayAsDateArray[arr[1]-1]);
     array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1]-1], startTimeArray[arr[0]-1]));
-    array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1]-1], endTimeArray[arr[0]-1]));
+    
+
+    if (length > 1) {
+        
+        array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1]-1], endTimeArray[arr[0]-2+length]));    
+    } else {
+        array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1]-1], endTimeArray[arr[0]-1]));
+    }
+console.log(array);
 
     return array;
 }
-
 
 function getReservation(cellId: string) {
     for (const reservation of reservations) {
@@ -527,7 +529,9 @@ function getReservation(cellId: string) {
 
 
 function updateReservation(oldReservation: Reservation, cell: string) {
-    let arr = reverseParse(extractNumbersFromString(cell));
+
+
+    let arr = reverseParse(extractNumbersFromString(cell), getColumnId(oldReservation).length);
 
     reservations.forEach(res => {
         if (res === oldReservation) {
@@ -537,7 +541,15 @@ function updateReservation(oldReservation: Reservation, cell: string) {
         }
     });
     
-    
+    let temp: ReservationDTO = {
+        roomId: 1,
+        personId: oldReservation.personId,
+        startTime: arr[1], 
+        endTime: arr[2],
+        reservationDate: arr[0]
+    };
+
+    updateReservationInDatabase(oldReservation, temp);
 }
 
 
@@ -579,15 +591,10 @@ function showReservationInfo(reservation: Reservation) {
 
     infoBox.style.display = "block";
     infoMessage.innerHTML = reservationToString(reservation);
-    
-    removeButton.addEventListener("click", async () => {
-        const column = document.getElementById(`${getColumnId(reservation)}`) as HTMLTableCellElement;
-        column.innerHTML = "";
-        infoBox.style.display = "none";
 
-        await removeReservation(reservation.id);
-        getReservationsFromDatabase();
-    });     
+    console.log(reservation);
+    
+    //removeReservation(reservation);
 
     window.addEventListener("click", (event) => {
         // Close modal when clicking outside of it
