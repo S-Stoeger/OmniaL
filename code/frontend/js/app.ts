@@ -395,7 +395,7 @@ async function addReservationToDatabase(reservation: ReservationDTO) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(reservation),
+            body: JSON.stringify(reservation)
         });
         if (!response.ok) {
             showErrorMessage('Failed to add reservation! Please check your Internet connection!');
