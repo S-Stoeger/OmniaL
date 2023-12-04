@@ -598,8 +598,12 @@ function showReservationInfo(reservation: Reservation) {
     infoMessage.innerHTML = reservationToString(reservation);
     
     removeButton.addEventListener("click", async () => {
-        const column = document.getElementById(`${getColumnId(reservation)}`) as HTMLTableCellElement;
-        column.innerHTML = "";
+        const affectedColumns: string[] = getColumnId(reservation);
+
+        affectedColumns.forEach(affectedColumn => {
+            const column = document.getElementById(`${affectedColumn}`) as HTMLTableCellElement;
+            column.innerHTML = "";
+        })
         infoBox.style.display = "none";
 
         await removeReservation(reservation.id);
