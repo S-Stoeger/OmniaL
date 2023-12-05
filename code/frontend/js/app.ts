@@ -473,10 +473,11 @@ function drop(ev: DragEvent, cell:  HTMLTableCellElement) {
             if (draggedElement) {
                 (ev.target as HTMLElement).appendChild(draggedElement);   
             }
-    
-        }  
+        } else {
+            showErrorMessage("Reservation with same date and time already exists!")
+        }
     } catch(error) {
-        
+        showErrorMessage(error);
     }
 }
 
@@ -545,8 +546,8 @@ function updateReservation(oldReservation: Reservation, cell: string) {
         reservationDate: arr[0]
     };
 
-    if (isInRange(temp)) {
-        throw new Error("reservation is in range of a other!");
+    if (isInRange(temp, oldReservation.id)) {
+        throw new Error("reservation is in range of an other!");
     }
 
     reservations.forEach(res => {
@@ -592,8 +593,10 @@ function showErrorMessage(message: string) {
 function showReservationInfo(reservation: Reservation) {
     const infoBox = document.getElementById("InfoBox");
     const infoMessage = document.getElementById("info_content");
+    infoMessage.style.color = "#fff";
     document.getElementById("remove").remove();
     const removeButton = document.createElement("button");
+    removeButton.innerHTML = "Remove";
     removeButton.id = "remove";
     document.querySelector("#InfoBox > *:last-child").appendChild(removeButton)
 
@@ -622,8 +625,9 @@ function showReservationInfo(reservation: Reservation) {
 }
 
 function reservationToString(reservation: Reservation): string {
-    let result: string = `Name(id):${reservation.personId} \n Date:${reservation.reservationDate} \n Start:${parseTime(reservation.startTime)}, End:${parseTime(reservation.endTime)}`;
-    return result;
+    let result: string = `Person(id):${reservation.personId} \n Date:${reservation.reservationDate} \n Start at:${parseTime(reservation.startTime)} \n Ends at:${parseTime(reservation.endTime)} \n ${roomValue}`;
+    const formattedResult = result.replace(/\n/g, '<br>');
+    return formattedResult;
 }
 
 function getFormattedDatesFromMondayToFriday(): string[] {
@@ -649,16 +653,21 @@ function formatDate(date: Date): string {
     return date.toISOString().slice(0, 10);
 }
 
-function isInRange(update: ReservationDTO): boolean {
-    const array: Reservation[] = reservations.filter(item => item.reservationDate === update.reservationDate);
+function isInRange(update: ReservationDTO, id: number): boolean {
+    let array: Reservation[] = reservations.filter(item => item.reservationDate === update.reservationDate);
+
     const startTimeId: number = startTimeArray.indexOf(parseTime(update.startTime).slice(0, -3));
     const endTimeId: number = endTimeArray.indexOf(parseTime(update.endTime).slice(0, -3));
 
+    console.log(startTimeId);
+    console.log(endTimeId);
+    
     for (const element of array) {
-        const elementStartTimeId = startTimeArray.indexOf(parseTime(element.startTime));
-
-        if (elementStartTimeId >= startTimeId && elementStartTimeId <= endTimeId) {
-            return true;
+        if (element.id !== id) {
+            const elementStartTimeId = startTimeArray.indexOf(parseTime(element.startTime));
+            if (elementStartTimeId >= startTimeId && elementStartTimeId <= endTimeId) {
+                return true;
+            }
         }
     }
 
