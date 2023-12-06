@@ -25,13 +25,18 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
-import static at.htlleonding.omnial.reservation.Reservation.FIND_ALL_RESERVATIONS;
+import static at.htlleonding.omnial.reservation.Reservation.*;
 
 @Entity
 @NamedQuery(name = FIND_ALL_RESERVATIONS, query = "Select r from Reservation r")
+@NamedQuery(name = FIND_RESERVATIONS_BY_ROOM, query = "SELECT r from Reservation r where r.room.id = :roomId")
+@NamedQuery(name = FIND_RESERVATIONS_BY_PERSON, query = "SELECT r from Reservation r where r.person.id = :personId")
 public class Reservation {
 
     public static final String FIND_ALL_RESERVATIONS = "Reservation.findAll";
+    public static final String FIND_RESERVATIONS_BY_ROOM = "Reservation.filterByRoom";
+
+    public static final String FIND_RESERVATIONS_BY_PERSON = "Reservation.filterByPerson";
 
     @Id
     @SequenceGenerator(name = "reservation_seq", sequenceName = "reservation_seq", allocationSize = 1, initialValue = 1)

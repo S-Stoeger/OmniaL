@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
@@ -26,6 +27,18 @@ public class ReservationRepository {
 
     public List<Reservation> getAllReservations(){
         return entityManager.createNamedQuery(Reservation.FIND_ALL_RESERVATIONS, Reservation.class).getResultList();
+    }
+
+        public List<Reservation> getReservationsByRoom(int roomId){
+            TypedQuery<Reservation> query = entityManager.createNamedQuery(Reservation.FIND_RESERVATIONS_BY_ROOM, Reservation.class);
+            query.setParameter("roomId", roomId);
+            return query.getResultList();
+        }
+
+    public List<Reservation> getReservationsByPerson(int personId){
+        TypedQuery<Reservation> query = entityManager.createNamedQuery(Reservation.FIND_RESERVATIONS_BY_PERSON, Reservation.class);
+        query.setParameter("personId", personId);
+        return query.getResultList();
     }
 
     @Transactional
