@@ -450,8 +450,7 @@ async function updateReservationInDatabase(oldReservation: Reservation, newReser
 
         // If the response is OK, you can optionally parse the response JSON
         const result = response.ok;
-        if (response.ok) console.log("Reservation updated successfully");
-        else showErrorMessage("Error updating reservation:"+ await response.text());
+        if (!response.ok) showErrorMessage("Error updating reservation:"+ await response.text());
         location.reload()
         
     } catch (error) {
@@ -525,7 +524,6 @@ function reverseParse(arr: number[], length: number) {
     
 
     if (length > 1) {
-        
         array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1]-1], endTimeArray[arr[0]-2+length]));    
     } else {
         array.push(parseToLocalDateTimeFormat(dayAsDateArray[arr[1]-1], endTimeArray[arr[0]-1]));
@@ -549,7 +547,7 @@ function getReservation(cellId: string) {
 
 function updateReservation(oldReservation: Reservation, cell: string) {
     let arr = reverseParse(extractNumbersFromString(cell), getColumnId(oldReservation).length);
-
+    
     let temp: ReservationDTO = {
         roomId: 1,
         personId: oldReservation.personId,
@@ -670,9 +668,6 @@ function isInRange(update: ReservationDTO, id: number): boolean {
 
     const startTimeId: number = startTimeArray.indexOf(parseTime(update.startTime).slice(0, -3));
     const endTimeId: number = endTimeArray.indexOf(parseTime(update.endTime).slice(0, -3));
-
-    console.log(startTimeId);
-    console.log(endTimeId);
     
     for (const element of array) {
         if (element.id !== id) {
