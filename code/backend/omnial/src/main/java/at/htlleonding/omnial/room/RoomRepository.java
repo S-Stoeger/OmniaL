@@ -5,6 +5,8 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.List;
+
 
 @ApplicationScoped
 public class RoomRepository {
@@ -20,4 +22,9 @@ public class RoomRepository {
 
         return room;
     }
+
+    public List<Room> getAllRooms(){
+        return entityManager.createNamedQuery(Room.FIND_ALL_ROOMS, Room.class).getResultList();
+    }
+
 }

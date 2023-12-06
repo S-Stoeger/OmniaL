@@ -10,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.ws.rs.NotFoundException;
 
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+import java.util.List;
+
 import java.util.List;
 
 @ApplicationScoped
@@ -63,6 +66,16 @@ public class PersonRepository {
         }
 
         persons.stream().forEach(a -> entityManager.persist(a));
+    }
+
+    public List<Person> getAll(){
+        return entityManager.createNamedQuery(Person.FIND_ALL_PERSONS, Person.class).getResultList();
+    }
+
+    public Person getByEmail(String email){
+        TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_PERSON_BY_EMAIL, Person.class);
+        query.setParameter("email", email);
+        return query.getSingleResult();
     }
 
 }
