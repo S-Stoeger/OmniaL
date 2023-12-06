@@ -1,0 +1,38 @@
+[
+  {
+    "firstname" : "admin",
+    "lastname" : "admin",
+    "grade": "admin",
+    "email": "admin.admin@gmail.com"
+  },
+  {
+    "firstname" : "Max",
+    "lastname" : "Mustermann",
+    "grade": "1AHITM",
+    "email": "max.mustermann@gmail.com"
+  },
+  {
+    "firstname" : "Mia",
+    "lastname" : "Muster",
+    "grade": "5BHITM",
+    "email": "mia.muster@gmail.com"
+  },
+  {
+    "firstname" : "Theo",
+    "lastname" : "Temp",
+    "grade": "2CHITM",
+    "email": "theo.temp@gmail.com"
+  },
+  {
+    "firstname" : "Sarah",
+    "lastname" : "Super",
+    "grade": "3BHITM",
+    "email": "sarah.super@gmail.com"
+  },
+  {
+    "firstname" : "Fabian",
+    "lastname" : "Film",
+    "grade": "4AHITM",
+    "email": "fabian.film@gmail.com"
+  }
+]

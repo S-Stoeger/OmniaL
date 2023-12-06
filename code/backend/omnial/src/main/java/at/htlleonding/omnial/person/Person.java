@@ -12,6 +12,11 @@ public class Person {
     private String surname;
     private String firstname;
 
+    private String email;
+
+    private String grade;
+
+
     public int getId() {
         return id;
     }
