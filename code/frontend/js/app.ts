@@ -596,7 +596,7 @@ function showReservationInfo(reservation: Reservation) {
     infoMessage.style.color = "#fff";
     document.getElementById("remove").remove();
     const removeButton = document.createElement("button");
-    removeButton.innerHTML = "Remove";
+    removeButton.innerHTML = "L&ouml;schen";
     removeButton.id = "remove";
     document.querySelector("#InfoBox > *:last-child").appendChild(removeButton)
 
@@ -625,7 +625,7 @@ function showReservationInfo(reservation: Reservation) {
 }
 
 function reservationToString(reservation: Reservation): string {
-    let result: string = `Person(id):${reservation.personId} \n Date:${reservation.reservationDate} \n Start at:${parseTime(reservation.startTime)} \n Ends at:${parseTime(reservation.endTime)} \n ${roomValue}`;
+    let result: string = `Person(id):${reservation.personId} \n Datum:${reservation.reservationDate} \n Von:${parseTime(reservation.startTime)} \n Bis:${parseTime(reservation.endTime)} \n ${roomValue}`;
     const formattedResult = result.replace(/\n/g, '<br>');
     return formattedResult;
 }
