@@ -45,13 +45,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("myModal") as HTMLDivElement;
     const closeIcon = document.querySelector(".close") as HTMLElement;
     const timeTableHeader = document.getElementById("week");
+    const montag = document.getElementById("montag");
+    const dienstag = document.getElementById("dienstag");
+    const mittwoch = document.getElementById("mittwoch");
+    const donnerstag = document.getElementById("donnerstag");
+    const freitag = document.getElementById("freitag");
 
     // get dropdowns
     const dropdownDay = document.getElementById("day") as HTMLSelectElement;
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
 
-    timeTableHeader.innerHTML = `${dayAsDateArray[0]} / ${dayAsDateArray[4]}`;
+    //timeTableHeader.innerHTML = `${dayAsDateArray[0]} / ${dayAsDateArray[4]}`;
+    timeTableHeader.innerHTML = `${roomValue}`;
+    montag.innerHTML += `<br>${dayAsDateArray[0]}`;
+    dienstag.innerHTML += `<br>${dayAsDateArray[1]}`;
+    mittwoch.innerHTML += `<br>${dayAsDateArray[2]}`;
+    donnerstag.innerHTML += `<br>${dayAsDateArray[3]}`;
+    freitag.innerHTML += `<br>${dayAsDateArray[4]}`;
+
 
     openPopupButton.addEventListener("click", () => {
         modal.style.display = "block";
