@@ -156,6 +156,9 @@ function openModalWithOnclick(cellId: string) {
         dropdownStartTime.value = startTime;
         dropdownEndTime.value = endTime;
     }
+    else if (isReservated) {
+        showReservationInfo(getReservation(cellId));
+    }
 }
 
 
