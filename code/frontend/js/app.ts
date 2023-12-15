@@ -21,7 +21,7 @@ const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 const dayAsDateArray: string[] = getFormattedDatesFromMondayToFriday();
-const allRooms: string[] = ["Fotostudio", "Audiostudio", "Viedeoschnitt", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10", "EDV11", "EDV12", "EDV13", "EDV14", "EDV15", "EDV16", "EDV17", "EDV18"];
+const allRooms: string[] = ["Fotostudio", "Streamingraum",  "Audiostudio", "Viedeoschnitt", "Musikraum", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10"];
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
 const endTimeDefaultValue: string = "-- Endzeit --";
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const openPopupButton = document.getElementById("openPopupButton") as HTMLButtonElement;
     const modal = document.getElementById("myModal") as HTMLDivElement;
     const closeIcon = document.querySelector(".close") as HTMLElement;
-    const timeTableHeader = document.getElementById("week");
+    const roomTableHeader = document.getElementById("displayRoom");
     const montag = document.getElementById("montag");
     const dienstag = document.getElementById("dienstag");
     const mittwoch = document.getElementById("mittwoch");
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
 
     //timeTableHeader.innerHTML = `${dayAsDateArray[0]} / ${dayAsDateArray[4]}`;
-    timeTableHeader.innerHTML = `${roomValue}`;
+    roomTableHeader.innerHTML = `${roomValue}`;
     montag.innerHTML += `<br>${dayAsDateArray[0]}`;
     dienstag.innerHTML += `<br>${dayAsDateArray[1]}`;
     mittwoch.innerHTML += `<br>${dayAsDateArray[2]}`;
@@ -186,8 +186,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     dayId = i;
                 }
             }
-            const reservation: ReservationDTO = {roomId: 1, personId: 1, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
-
+            const reservation: ReservationDTO = {roomId: allRooms.indexOf(roomValue) +1, personId: 1, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
+            console.log(reservation);
+            
             try {
                 await addReservationToDatabase(reservation);
             } catch (error) {
@@ -277,8 +278,11 @@ function getReservationsFromDatabase() {
                             endTime: singleReservation.endTime,
                             reservationDate: singleReservation.reservationDate
                         };
-                        reservations.push(reservation);
-                        loadReservation(reservation);
+                        
+                        if (reservation.roomId === (allRooms.indexOf(roomValue)+1)) {    
+                            reservations.push(reservation);
+                            loadReservation(reservation);
+                        }
                     }
                 });
             }
@@ -413,6 +417,8 @@ async function addReservationToDatabase(reservation: ReservationDTO) {
             body: JSON.stringify(reservation)
         });
         if (!response.ok) {
+            console.log(response);
+            
             showErrorMessage('Failed to add reservation! Please check your Internet connection!');
         }
     } catch (error) {
@@ -552,7 +558,7 @@ function updateReservation(oldReservation: Reservation, cell: string) {
     let arr = reverseParse(extractNumbersFromString(cell), getColumnId(oldReservation).length);
     
     let temp: ReservationDTO = {
-        roomId: 1,
+        roomId: allRooms.indexOf(roomValue)+1,
         personId: oldReservation.personId,
         startTime: arr[1], 
         endTime: arr[2],

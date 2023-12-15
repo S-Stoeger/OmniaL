@@ -8,7 +8,7 @@ Content-Type: application/json
 {
   "roomId": 1,
   "personId": 1,
-  "startTime": "2044-12-02T11:50:00",
+  "startTime": "2023-12-02T11:50:00",
   "endTime": "2023-12-02T15:50:00",
   "reservationDate": "2023-12-02"
 }
@@ -34,3 +34,24 @@ Content-Type: application/json
 
 DELETE http://localhost:8080/api/reservations/1
 Content-Type: application/json
+
+###
+//test
+
+POST http://localhost:8080/api/reservations/
+Content-Type: application/json
+
+{
+  "roomId": 1,
+  "personId": 1,
+  "startTime": "2023-12-14T08:00:00",
+  "endTime": "2023-12-14T08:50:00",
+  "reservationDate": "2023-12-14"
+}
+
+###
+
+DELETE http://localhost:8080/api/reservations/1
+Content-Type: application/json
+
+###
