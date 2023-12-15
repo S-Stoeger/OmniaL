@@ -1,12 +1,55 @@
+
+insert into Person
+values (nextval('person_seq'),'teacher.teacher@gmail.com', 'teacher', 'teacher', 'teacher');
+
+
+
+--Insert Rooms
 insert into Room
 values (nextval('room_seq'),'Das Fotostudio steht für Schüler der Medientechnik zur verfügung um an Foto- und Videoprojekten zu arbeiten','Fotostudio');
 
-insert into Person
-values (nextval('person_seq'),'teacher', 'teacher', 'teacher', 'teacher.teacher@gmail.com');
-
-insert into reservation
-values (nextval('reservation_seq'), 1, '2023-11-15',1,'2023-11-15T20:00:00','2023-11-15T10:55:00');
-
-
 insert into Room
 values (nextval('room_seq'),'Sehr cool','Streamingraum');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','Audiostudio');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','Videoschnittraum');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','Musikraum');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','EDV-1');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','EDV-2');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','EDV-3');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','EDV-4');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','EDV-5');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','EDV-6');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','EDV-7');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','EDV-8');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','EDV-9');
+
+insert into Room
+values (nextval('room_seq'),'Sehr cool','EDV-10');
+
+--Insert Person
+insert into reservation
+values (nextval('reservation_seq'), 1, '2023-11-15',1,'2023-11-15T20:00:00','2023-11-15T10:55:00');
