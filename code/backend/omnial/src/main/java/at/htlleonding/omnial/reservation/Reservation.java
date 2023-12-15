@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import static at.htlleonding.omnial.reservation.Reservation.*;
 
@@ -131,6 +132,16 @@ public class Reservation {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return Objects.equals(room, that.room) && Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime) && Objects.equals(reservationDate, that.reservationDate);
+    }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(room, startTime, endTime, reservationDate);
+    }
 }

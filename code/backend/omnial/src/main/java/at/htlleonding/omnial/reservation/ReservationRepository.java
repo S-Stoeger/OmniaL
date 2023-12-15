@@ -67,27 +67,26 @@ public class ReservationRepository {
 
     public boolean checkReservation(Reservation reservation){
 
+        boolean result = true;
+
         for (Reservation currRes: getAllReservations()) {
             //checks if reservation is between another reservation
-            if(reservation.getStartTime().isAfter(currRes.getStartTime()) && reservation.getStartTime().isBefore(currRes.getEndTime())){
-                return false;
-            }
-            else if (reservation.getEndTime().isAfter(currRes.getStartTime()) && reservation.getEndTime().isBefore(currRes.getEndTime())){
-                return false;
-            }
+            if (reservation.getId() == currRes.getId()) {
 
-            else if(currRes.getStartTime().isAfter(reservation.getStartTime()) && currRes.getStartTime().isBefore(reservation.getEndTime())){
-                return false;
-            }
-            else if (currRes.getEndTime().isAfter(reservation.getStartTime()) && currRes.getEndTime().isBefore(reservation.getEndTime())){
-                return false;
-            }
-            else if(reservation.getEndTime().isEqual(currRes.getEndTime() )|| reservation.getStartTime().isEqual(currRes.getStartTime())){
-                return false;
+                if (reservation.getStartTime().isAfter(currRes.getStartTime()) && reservation.getStartTime().isBefore(currRes.getEndTime())) {
+                    result =  false;
+                } else if (reservation.getEndTime().isAfter(currRes.getStartTime()) && reservation.getEndTime().isBefore(currRes.getEndTime())) {
+                    result =  false;
+                } else if (currRes.getStartTime().isAfter(reservation.getStartTime()) && currRes.getStartTime().isBefore(reservation.getEndTime())) {
+                    result =  false;
+                } else if (currRes.getEndTime().isAfter(reservation.getStartTime()) && currRes.getEndTime().isBefore(reservation.getEndTime())) {
+                    result =  false;
+                } else if (reservation.getEndTime().isEqual(currRes.getEndTime()) || reservation.getStartTime().isEqual(currRes.getStartTime())) {
+                    result = false;
+                }
             }
         }
-        return true;
-
+            return result;
     }
 
 
