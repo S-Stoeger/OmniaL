@@ -263,13 +263,20 @@ function parseToLocalDateTimeFormat(date, time) {
 }
 
 // adding color to box
-function paintColumnsReservated(array: string[], isMulti: boolean) {
+function paintColumnsReservated(array: string[], isMulti: boolean, personId: number) {
+    const person = getPersonFromId(personId);
     for (let i: number = 0; i < array.length; i++) {
         let td = document.getElementById(array[i]);
         if (td) {
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
-            td.innerHTML = `<img id="${imgId}" src="../img/farbe3.png" draggable="true" ondragstart="drag(event, ${array[i]})">`
+            if (person.grade.charAt(0) === "a") {
+                td.innerHTML = `<img id="${imgId}" src="../img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})">`
+            } else {
+                td.innerHTML = `<img id="${imgId}" src="../img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})">`
+            }
+            console.log(person.grade);
+            
             if (!isMulti) {
                 let img = document.getElementById(`${imgId}`);
                 img.style.height = "3.3rem";
@@ -361,7 +368,7 @@ function loadReservation(reservation: Reservation) {
         isMulti = true;
     }
 
-    paintColumnsReservated(columns, isMulti);
+    paintColumnsReservated(columns, isMulti, reservation.personId);
 }
 
 // parse day received from beckand
