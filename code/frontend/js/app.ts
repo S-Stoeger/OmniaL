@@ -223,7 +223,7 @@ function paintColumnsReservated(array: string[], isMulti: boolean) {
         if (td) {
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
-            td.innerHTML = `<img id="${imgId}" src="../img/test.png" draggable="true" ondragstart="drag(event, ${array[i]})">`
+            td.innerHTML = `<img id="${imgId}" src="../img/farbe3.png" draggable="true" ondragstart="drag(event, ${array[i]})">`
             if (!isMulti) {
                 let img = document.getElementById(`${imgId}`);
                 img.style.height = "3.3rem";
