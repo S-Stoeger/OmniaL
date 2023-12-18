@@ -31,6 +31,7 @@ const roomValue = urlParams.get('roomValue');
 const newUri: string = "../html/index.html?roomValue=Fotostudio";
 
 const url: string = 'http://localhost:8080/api/reservations'
+var olderReservation: Reservation = null;
 
 var isRoomShown = false;
 
@@ -125,14 +126,15 @@ function openModalWithOnclick(cellId: string) {
         let columnAsString = getColumnId(reservation);
         for (let i = 0; i < columnAsString.length; i++) {
             if (columnAsString[i] === cellId) {
-                showReservationInfo(reservation);
                 return true;
             }
         }
         return false;
     });
 
-    if (!isReservated) {
+    const submit = document.getElementById("submitButton") as HTMLButtonElement;
+
+    if (!isReservated || submit.innerHTML === "Speichern") {
         const modal = document.getElementById("myModal") as HTMLDivElement;
 
         // show modall
@@ -156,18 +158,19 @@ function openModalWithOnclick(cellId: string) {
         dropdownStartTime.value = startTime;
         dropdownEndTime.value = endTime;
     }
-    else if (isReservated) {
+    else {
         showReservationInfo(getReservation(cellId));
     }
 }
-
 
 // get all values from dropdown & do reservation
 document.addEventListener("DOMContentLoaded", () => {
     const dropdownDay = document.getElementById("day") as HTMLSelectElement;
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
-    const submitButton = document.getElementById("submitButton");
+    const submitButton = document.getElementById("submitButton") as HTMLButtonElement;
+
+    submitButton.value = "Reserviere";
 
     submitButton?.addEventListener("click", async () => {
         const modal = document.getElementById("myModal") as HTMLDivElement;
@@ -187,15 +190,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
             const reservation: ReservationDTO = {roomId: allRooms.indexOf(roomValue) +1, personId: 1, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
-            console.log(reservation);
             
-            try {
-                await addReservationToDatabase(reservation);
-            } catch (error) {
-                showErrorMessage('Error occured while adding reservation to Database!');
-            } 
-
-            getReservationsFromDatabase();
+            if (submitButton.innerHTML === "Speichern") {
+                try {
+                    await updateReservationInDatabase(olderReservation, reservation)
+                } catch (error) {
+                    showErrorMessage("Error occured while updating reservation");
+                    console.log(error); 
+                }
+            }
+            else if (submitButton.innerHTML === "Reserviere") {
+                try {
+                    await addReservationToDatabase(reservation);
+                    getReservationsFromDatabase();
+                } catch (error) {
+                    showErrorMessage('Error occured while adding reservation to Database!');
+                } 
+            }
         }
     });
 });
@@ -264,7 +275,7 @@ function getColumnId(reservation: Reservation) {
     return columnIds;
 }
 
-function getReservationsFromDatabase() {
+function getReservationsFromDatabase() { 
     reservations = [];
 
     const getUrl = url + '/list';
@@ -303,10 +314,6 @@ function loadReservation(reservation: Reservation) {
     if (columns.length > 1) {
         isMulti = true;
     }
-    console.log(reservation);
-    console.log(columns.length);
-    
-    
 
     paintColumnsReservated(columns, isMulti);
 }
@@ -624,12 +631,22 @@ function showErrorMessage(message: string) {
 function showReservationInfo(reservation: Reservation) {
     const infoBox = document.getElementById("InfoBox");
     const infoMessage = document.getElementById("info_content");
+    const columnId = getColumnId(reservation);
     infoMessage.style.color = "#fff";
+
     document.getElementById("remove").remove();
+    document.getElementById("edit").remove();
+
+    const editButton = document.createElement("button");
     const removeButton = document.createElement("button");
+
     removeButton.innerHTML = "L&ouml;schen";
     removeButton.id = "remove";
-    document.querySelector("#InfoBox > *:last-child").appendChild(removeButton)
+    editButton.innerHTML = "Bearbeiten";
+    editButton.id = "edit";
+
+    document.querySelector("#InfoBox > *:last-child").appendChild(removeButton);
+    document.querySelector("#InfoBox > *:last-child").appendChild(editButton);
 
     infoBox.style.display = "block";
     infoMessage.innerHTML = reservationToString(reservation);
@@ -646,6 +663,16 @@ function showReservationInfo(reservation: Reservation) {
         await removeReservation(reservation.id);
         getReservationsFromDatabase();
     });
+
+    editButton.addEventListener("click", async () => {
+        const addButton = document.getElementById("submitButton") as HTMLButtonElement;
+        addButton.innerHTML = "Speichern";
+
+        infoBox.style.display = "none";
+        
+        olderReservation = reservation;
+        openModalWithOnclick(columnId[0]);
+    })
 
     window.addEventListener("click", (event) => {
         // Close modal when clicking outside of it
