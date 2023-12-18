@@ -217,3 +217,8 @@ button:hover {
 #displayRoom {
     font-size: larger;
 }
+
+#info_content {
+    text-align: left;
+    margin-left: 20%;
+}

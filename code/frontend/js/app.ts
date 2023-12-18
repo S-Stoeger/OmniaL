@@ -15,8 +15,17 @@ interface ReservationDTO {
     reservationDate: string;
 }
 
+interface Person {
+    id: number;
+    surname: String;
+    firstname: String;
+    email: String;
+    grade: String;
+}
+
 // constatnts
 let reservations: Reservation[] = [];
+let persons: Person[] = [];
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
@@ -51,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const mittwoch = document.getElementById("mittwoch");
     const donnerstag = document.getElementById("donnerstag");
     const freitag = document.getElementById("freitag");
+    const submitButton = document.getElementById("submitButton");
 
     // get dropdowns
     const dropdownDay = document.getElementById("day") as HTMLSelectElement;
@@ -65,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     donnerstag.innerHTML += `<br>${dayAsDateArray[3]}`;
     freitag.innerHTML += `<br>${dayAsDateArray[4]}`;
 
+    loadPersonsFromDatabase();
 
     openPopupButton.addEventListener("click", () => {
         modal.style.display = "block";
@@ -77,12 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeIcon?.addEventListener("click", () => {
         modal.style.display = "none";
+        submitButton.innerHTML = "Reserviere";
     });
 
     window.addEventListener("click", (event) => {
         // Close modal when clicking outside of it
         if (event.target === modal) {
             modal.style.display = "none";
+            submitButton.innerHTML = "Reserviere";
         }
     });
 });
@@ -135,6 +148,15 @@ function openModalWithOnclick(cellId: string) {
     const submit = document.getElementById("submitButton") as HTMLButtonElement;
 
     if (!isReservated || submit.innerHTML === "Speichern") {
+        //let email = getPersonFromId(getReservation(cellId).personId).email;
+        let email;
+        let reservation = getReservation(cellId);
+        if (reservation != null) {
+            email = getPersonFromId(reservation.personId).email;
+        } else {
+            email = persons[0].email;
+        }
+        
         const modal = document.getElementById("myModal") as HTMLDivElement;
 
         // show modall
@@ -144,6 +166,7 @@ function openModalWithOnclick(cellId: string) {
         const dropdownDay = document.getElementById("day") as HTMLSelectElement;
         const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
         const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
+        const dropdrownEmail = document.getElementById("email") as HTMLSelectElement;
 
         // split id into row and column
         let array:string[] = cellId.split("_");
@@ -157,6 +180,7 @@ function openModalWithOnclick(cellId: string) {
         dropdownDay.value = day;
         dropdownStartTime.value = startTime;
         dropdownEndTime.value = endTime;
+        dropdrownEmail.value = email +"";
     }
     else {
         showReservationInfo(getReservation(cellId));
@@ -168,6 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownDay = document.getElementById("day") as HTMLSelectElement;
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
+    const dropDownEmails = document.getElementById("email") as HTMLSelectElement;
     const submitButton = document.getElementById("submitButton") as HTMLButtonElement;
 
     submitButton.value = "Reserviere";
@@ -179,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const startTime = dropdownStartTime.value;
         const endTime = dropdownEndTime.value;
         const day = dropdownDay.value;
+        const personId = getPersonFromEmail(dropDownEmails.value).id;
         let dayId;
 
         // ceck if all set
@@ -189,14 +215,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     dayId = i;
                 }
             }
-            const reservation: ReservationDTO = {roomId: allRooms.indexOf(roomValue) +1, personId: 1, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
+            const reservation: ReservationDTO = {roomId: allRooms.indexOf(roomValue) +1, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
             
             if (submitButton.innerHTML === "Speichern") {
                 try {
                     await updateReservationInDatabase(olderReservation, reservation)
                 } catch (error) {
                     showErrorMessage("Error occured while updating reservation");
-                    console.log(error); 
                 }
             }
             else if (submitButton.innerHTML === "Reserviere") {
@@ -208,8 +233,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 } 
             }
         }
+        submitButton.innerHTML = "Reserviere";
     });
 });
+
+function getPersonFromEmail(email: String) {
+    let result: Person = null;
+    persons.forEach(person => {;
+        if(person.email === email) {
+            result = person;
+        }
+    });
+    return result;
+}
+
+function getPersonFromId(id: number) {
+    let result: Person = null;
+    persons.forEach(person => {;
+        if(person.id === id) {
+            result = person;
+        }
+    });
+    return result;
+}
 
 function parseToLocalDateTimeFormat(date, time) {
     const localDateTime = date +"T"+ time +":00";
@@ -436,8 +482,6 @@ async function addReservationToDatabase(reservation: ReservationDTO) {
             body: JSON.stringify(reservation)
         });
         if (!response.ok) {
-            console.log(response);
-            
             showErrorMessage('Failed to add reservation! Please check your Internet connection!');
         }
     } catch (error) {
@@ -683,7 +727,8 @@ function showReservationInfo(reservation: Reservation) {
 }
 
 function reservationToString(reservation: Reservation): string {
-    let result: string = `Person(id):${reservation.personId} \n Datum:${reservation.reservationDate} \n Von:${parseTime(reservation.startTime)} \n Bis:${parseTime(reservation.endTime)} \n ${roomValue}`;
+    const person: Person = getPersonFromId(reservation.personId);
+    let result: string = `Person: ${person.firstname + " " + person.surname} \n Email: ${person.email} \n Grade: ${person.grade} \n Datum: ${reservation.reservationDate} \n Von: ${parseTime(reservation.startTime)} \n Bis: ${parseTime(reservation.endTime)} \n Raum: ${roomValue}`;
     const formattedResult = result.replace(/\n/g, '<br>');
     return formattedResult;
 }
@@ -727,4 +772,30 @@ function isInRange(update: ReservationDTO, id: number): boolean {
     }
 
     return false;
+}
+async function loadPersonsFromDatabase() {
+    const emailSelect = document.getElementById("email") as HTMLSelectElement;
+    const getUrl = "http://localhost:8080/api/persons/list"
+    fetchDataFromUrl(getUrl)
+        .then(data => {
+            if (data) {
+                data.forEach(singePerson => {
+                    const person: Person = {
+                        id: singePerson.id,
+                        surname: singePerson.surname,
+                        firstname: singePerson.firstname,
+                        email: singePerson.email,
+                        grade: singePerson.grade
+                    }
+                    const option = document.createElement("option");
+                    option.value = person.email +"";
+                    option.text = person.email +"";
+
+                    persons.push(person);
+
+                    emailSelect.add(option);
+                });
+            }
+        })
+        .catch(error => showErrorMessage(error.message));   
 }
