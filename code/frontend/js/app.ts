@@ -206,14 +206,17 @@ function parseToLocalDateTimeFormat(date, time) {
 }
 
 // adding color to box
-function paintColumnsReservated(array: string[]) {
+function paintColumnsReservated(array: string[], isMulti: boolean) {
     for (let i: number = 0; i < array.length; i++) {
         let td = document.getElementById(array[i]);
         if (td) {
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
-            
             td.innerHTML = `<img id="${imgId}" src="../img/test.png" draggable="true" ondragstart="drag(event, ${array[i]})">`
+            if (!isMulti) {
+                let img = document.getElementById(`${imgId}`);
+                img.style.height = "3.3rem";
+            }
         }
     }
 }
@@ -295,8 +298,17 @@ function loadReservation(reservation: Reservation) {
     reservation.startTime = reservation.startTime.slice(0, -3);
     reservation.endTime = reservation.endTime.slice(0, -3);
     let columns = getColumnId(reservation);
+    let isMulti: boolean = false;
 
-    paintColumnsReservated(columns);
+    if (columns.length > 1) {
+        isMulti = true;
+    }
+    console.log(reservation);
+    console.log(columns.length);
+    
+    
+
+    paintColumnsReservated(columns, isMulti);
 }
 
 // parse day received from beckand
