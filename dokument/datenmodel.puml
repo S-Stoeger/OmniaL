@@ -6,7 +6,7 @@ abstract Reservable {
 - description
 }
 
-entity Inventory{
+entity Inventory {
 - id
 - typeId
 - name
@@ -14,7 +14,7 @@ entity Inventory{
 - available
 }
 
-entity Equipment{
+entity Equipment {
 - type
 - labelNr
 }
