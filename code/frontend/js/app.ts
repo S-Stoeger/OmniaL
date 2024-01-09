@@ -271,11 +271,12 @@ function paintColumnsReservated(array: string[], isMulti: boolean, personId: num
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
             if (person.grade.charAt(0) === "a") {
-                td.innerHTML = `<img id="${imgId}" src="../img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})">`
+                td.innerHTML = `<p style="position: absolute; color: #000; ">${person.firstname}</p>
+                                <img id="${imgId}" src="../img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.7;">`
             } else {
-                td.innerHTML = `<img id="${imgId}" src="../img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})">`
+                td.innerHTML = `<p style="position: absolute; ">${person.firstname}</p>
+                                <img id="${imgId}" src="../img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.7;">`
             }
-            console.log(person.grade);
             
             if (!isMulti) {
                 let img = document.getElementById(`${imgId}`);
