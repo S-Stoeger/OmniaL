@@ -271,11 +271,11 @@ function paintColumnsReservated(array: string[], isMulti: boolean, personId: num
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
             if (person.grade.charAt(0) === "a") {
-                td.innerHTML = `<p style="position: absolute; color: #000; ">${person.firstname} ${person.surname}</p>
-                                <img id="${imgId}" src="../img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.7;">`
+                td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 6.8rem;">${person.firstname} ${person.surname}</p>
+                                <img id="${imgId}" src="../img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             } else {
-                td.innerHTML = `<p style="position: absolute; ">${person.firstname} ${person.surname}</p>
-                                <img id="${imgId}" src="../img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.7;">`
+                td.innerHTML = `<p style="position: absolute; padding-left: 6.8rem;">${person.firstname} ${person.surname}</p>
+                                <img id="${imgId}" src="../img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             }
             
             if (!isMulti) {
