@@ -15,8 +15,17 @@ interface ReservationDTO {
     reservationDate: string;
 }
 
+interface Person {
+    id: number;
+    surname: String;
+    firstname: String;
+    email: String;
+    grade: String;
+}
+
 // constatnts
 let reservations: Reservation[] = [];
+let persons: Person[] = [];
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
@@ -31,6 +40,7 @@ const roomValue = urlParams.get('roomValue');
 const newUri: string = "../html/index.html?roomValue=Fotostudio";
 
 const url: string = 'http://localhost:8080/api/reservations'
+var olderReservation: Reservation = null;
 
 var isRoomShown = false;
 
@@ -50,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const mittwoch = document.getElementById("mittwoch");
     const donnerstag = document.getElementById("donnerstag");
     const freitag = document.getElementById("freitag");
+    const submitButton = document.getElementById("submitButton");
 
     // get dropdowns
     const dropdownDay = document.getElementById("day") as HTMLSelectElement;
@@ -64,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     donnerstag.innerHTML += `<br>${dayAsDateArray[3]}`;
     freitag.innerHTML += `<br>${dayAsDateArray[4]}`;
 
+    loadPersonsFromDatabase();
 
     openPopupButton.addEventListener("click", () => {
         modal.style.display = "block";
@@ -76,12 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeIcon?.addEventListener("click", () => {
         modal.style.display = "none";
+        submitButton.innerHTML = "Reserviere";
     });
 
     window.addEventListener("click", (event) => {
         // Close modal when clicking outside of it
         if (event.target === modal) {
             modal.style.display = "none";
+            submitButton.innerHTML = "Reserviere";
         }
     });
 });
@@ -125,14 +139,24 @@ function openModalWithOnclick(cellId: string) {
         let columnAsString = getColumnId(reservation);
         for (let i = 0; i < columnAsString.length; i++) {
             if (columnAsString[i] === cellId) {
-                showReservationInfo(reservation);
                 return true;
             }
         }
         return false;
     });
 
-    if (!isReservated) {
+    const submit = document.getElementById("submitButton") as HTMLButtonElement;
+
+    if (!isReservated || submit.innerHTML === "Speichern") {
+        //let email = getPersonFromId(getReservation(cellId).personId).email;
+        let email;
+        let reservation = getReservation(cellId);
+        if (reservation != null) {
+            email = getPersonFromId(reservation.personId).email;
+        } else {
+            email = persons[0].email;
+        }
+        
         const modal = document.getElementById("myModal") as HTMLDivElement;
 
         // show modall
@@ -142,6 +166,7 @@ function openModalWithOnclick(cellId: string) {
         const dropdownDay = document.getElementById("day") as HTMLSelectElement;
         const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
         const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
+        const dropdrownEmail = document.getElementById("email") as HTMLSelectElement;
 
         // split id into row and column
         let array:string[] = cellId.split("_");
@@ -155,19 +180,22 @@ function openModalWithOnclick(cellId: string) {
         dropdownDay.value = day;
         dropdownStartTime.value = startTime;
         dropdownEndTime.value = endTime;
+        dropdrownEmail.value = email +"";
     }
-    else if (isReservated) {
+    else {
         showReservationInfo(getReservation(cellId));
     }
 }
-
 
 // get all values from dropdown & do reservation
 document.addEventListener("DOMContentLoaded", () => {
     const dropdownDay = document.getElementById("day") as HTMLSelectElement;
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
-    const submitButton = document.getElementById("submitButton");
+    const dropDownEmails = document.getElementById("email") as HTMLSelectElement;
+    const submitButton = document.getElementById("submitButton") as HTMLButtonElement;
+
+    submitButton.value = "Reserviere";
 
     submitButton?.addEventListener("click", async () => {
         const modal = document.getElementById("myModal") as HTMLDivElement;
@@ -176,6 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const startTime = dropdownStartTime.value;
         const endTime = dropdownEndTime.value;
         const day = dropdownDay.value;
+        const personId = getPersonFromEmail(dropDownEmails.value).id;
         let dayId;
 
         // ceck if all set
@@ -186,19 +215,47 @@ document.addEventListener("DOMContentLoaded", () => {
                     dayId = i;
                 }
             }
-            const reservation: ReservationDTO = {roomId: allRooms.indexOf(roomValue) +1, personId: 1, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
-            console.log(reservation);
+            const reservation: ReservationDTO = {roomId: allRooms.indexOf(roomValue) +1, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
             
-            try {
-                await addReservationToDatabase(reservation);
-            } catch (error) {
-                showErrorMessage('Error occured while adding reservation to Database!');
-            } 
-
-            getReservationsFromDatabase();
+            if (submitButton.innerHTML === "Speichern") {
+                try {
+                    await updateReservationInDatabase(olderReservation, reservation)
+                } catch (error) {
+                    showErrorMessage("Error occured while updating reservation");
+                }
+            }
+            else if (submitButton.innerHTML === "Reserviere") {
+                try {
+                    await addReservationToDatabase(reservation);
+                    getReservationsFromDatabase();
+                } catch (error) {
+                    showErrorMessage('Error occured while adding reservation to Database!');
+                } 
+            }
         }
+        submitButton.innerHTML = "Reserviere";
     });
 });
+
+function getPersonFromEmail(email: String) {
+    let result: Person = null;
+    persons.forEach(person => {;
+        if(person.email === email) {
+            result = person;
+        }
+    });
+    return result;
+}
+
+function getPersonFromId(id: number) {
+    let result: Person = null;
+    persons.forEach(person => {;
+        if(person.id === id) {
+            result = person;
+        }
+    });
+    return result;
+}
 
 function parseToLocalDateTimeFormat(date, time) {
     const localDateTime = date +"T"+ time +":00";
@@ -206,14 +263,25 @@ function parseToLocalDateTimeFormat(date, time) {
 }
 
 // adding color to box
-function paintColumnsReservated(array: string[]) {
+function paintColumnsReservated(array: string[], isMulti: boolean, personId: number) {
+    const person = getPersonFromId(personId);
     for (let i: number = 0; i < array.length; i++) {
         let td = document.getElementById(array[i]);
         if (td) {
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
+            if (person.grade.charAt(0) === "a") {
+                td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 6.8rem;">${person.firstname} ${person.surname}</p>
+                                <img id="${imgId}" src="../img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
+            } else {
+                td.innerHTML = `<p style="position: absolute; padding-left: 6.8rem;">${person.firstname} ${person.surname}</p>
+                                <img id="${imgId}" src="../img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
+            }
             
-            td.innerHTML = `<img id="${imgId}" src="../img/test.png" draggable="true" ondragstart="drag(event, ${array[i]})">`
+            if (!isMulti) {
+                let img = document.getElementById(`${imgId}`);
+                img.style.height = "3.3rem";
+            }
         }
     }
 }
@@ -261,7 +329,7 @@ function getColumnId(reservation: Reservation) {
     return columnIds;
 }
 
-function getReservationsFromDatabase() {
+function getReservationsFromDatabase() { 
     reservations = [];
 
     const getUrl = url + '/list';
@@ -295,8 +363,13 @@ function loadReservation(reservation: Reservation) {
     reservation.startTime = reservation.startTime.slice(0, -3);
     reservation.endTime = reservation.endTime.slice(0, -3);
     let columns = getColumnId(reservation);
+    let isMulti: boolean = false;
 
-    paintColumnsReservated(columns);
+    if (columns.length > 1) {
+        isMulti = true;
+    }
+
+    paintColumnsReservated(columns, isMulti, reservation.personId);
 }
 
 // parse day received from beckand
@@ -417,8 +490,6 @@ async function addReservationToDatabase(reservation: ReservationDTO) {
             body: JSON.stringify(reservation)
         });
         if (!response.ok) {
-            console.log(response);
-            
             showErrorMessage('Failed to add reservation! Please check your Internet connection!');
         }
     } catch (error) {
@@ -612,12 +683,22 @@ function showErrorMessage(message: string) {
 function showReservationInfo(reservation: Reservation) {
     const infoBox = document.getElementById("InfoBox");
     const infoMessage = document.getElementById("info_content");
+    const columnId = getColumnId(reservation);
     infoMessage.style.color = "#fff";
+
     document.getElementById("remove").remove();
+    document.getElementById("edit").remove();
+
+    const editButton = document.createElement("button");
     const removeButton = document.createElement("button");
+
     removeButton.innerHTML = "L&ouml;schen";
     removeButton.id = "remove";
-    document.querySelector("#InfoBox > *:last-child").appendChild(removeButton)
+    editButton.innerHTML = "Bearbeiten";
+    editButton.id = "edit";
+
+    document.querySelector("#InfoBox > *:last-child").appendChild(removeButton);
+    document.querySelector("#InfoBox > *:last-child").appendChild(editButton);
 
     infoBox.style.display = "block";
     infoMessage.innerHTML = reservationToString(reservation);
@@ -635,6 +716,16 @@ function showReservationInfo(reservation: Reservation) {
         getReservationsFromDatabase();
     });
 
+    editButton.addEventListener("click", async () => {
+        const addButton = document.getElementById("submitButton") as HTMLButtonElement;
+        addButton.innerHTML = "Speichern";
+
+        infoBox.style.display = "none";
+        
+        olderReservation = reservation;
+        openModalWithOnclick(columnId[0]);
+    })
+
     window.addEventListener("click", (event) => {
         // Close modal when clicking outside of it
         if (event.target === infoBox) {
@@ -644,7 +735,8 @@ function showReservationInfo(reservation: Reservation) {
 }
 
 function reservationToString(reservation: Reservation): string {
-    let result: string = `Person(id):${reservation.personId} \n Datum:${reservation.reservationDate} \n Von:${parseTime(reservation.startTime)} \n Bis:${parseTime(reservation.endTime)} \n ${roomValue}`;
+    const person: Person = getPersonFromId(reservation.personId);
+    let result: string = `Person: ${person.firstname + " " + person.surname} \n Email: ${person.email} \n Grade: ${person.grade} \n Datum: ${reservation.reservationDate} \n Von: ${parseTime(reservation.startTime)} \n Bis: ${parseTime(reservation.endTime)} \n Raum: ${roomValue}`;
     const formattedResult = result.replace(/\n/g, '<br>');
     return formattedResult;
 }
@@ -688,4 +780,30 @@ function isInRange(update: ReservationDTO, id: number): boolean {
     }
 
     return false;
+}
+async function loadPersonsFromDatabase() {
+    const emailSelect = document.getElementById("email") as HTMLSelectElement;
+    const getUrl = "http://localhost:8080/api/persons/list"
+    fetchDataFromUrl(getUrl)
+        .then(data => {
+            if (data) {
+                data.forEach(singePerson => {
+                    const person: Person = {
+                        id: singePerson.id,
+                        surname: singePerson.surname,
+                        firstname: singePerson.firstname,
+                        email: singePerson.email,
+                        grade: singePerson.grade
+                    }
+                    const option = document.createElement("option");
+                    option.value = person.email +"";
+                    option.text = person.email +"";
+
+                    persons.push(person);
+
+                    emailSelect.add(option);
+                });
+            }
+        })
+        .catch(error => showErrorMessage(error.message));   
 }
