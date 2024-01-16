@@ -6,6 +6,24 @@
     --grey: #eae2cd;
 }
 
+@media print {
+    body {
+        margin: 0;
+        color: #000;
+      }
+    button {
+        display: none;
+    }
+    p {
+        padding-left: 1rem;
+    }
+    th, td {
+    border: 1px solid #000;
+    
+    }   
+}
+  
+
 body {
     font-family: Arial, sans-serif;
     background-color: #fff;

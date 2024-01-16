@@ -49,6 +49,8 @@ if (roomValue == null) {
     window.location.href = newUri;
 }
 
+let promise;
+
 // MODAL
 document.addEventListener("DOMContentLoaded", () => {
     const openPopupButton = document.getElementById("openPopupButton") as HTMLButtonElement;
@@ -75,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     donnerstag.innerHTML += `<br>${dayAsDateArray[3]}`;
     freitag.innerHTML += `<br>${dayAsDateArray[4]}`;
 
-    loadPersonsFromDatabase();
+    promise = loadPersonsFromDatabase();
 
     openPopupButton.addEventListener("click", () => {
         modal.style.display = "block";
@@ -128,8 +130,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    getReservationsFromDatabase();
-    displayRooms();
+    promise.then(() => {
+        displayRooms();
+        getReservationsFromDatabase();
+    });
 });
 
 // Reserving room per onlick
@@ -239,6 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function getPersonFromEmail(email: String) {
     let result: Person = null;
+    
     persons.forEach(person => {;
         if(person.email === email) {
             result = person;
@@ -249,6 +254,7 @@ function getPersonFromEmail(email: String) {
 
 function getPersonFromId(id: number) {
     let result: Person = null;
+    
     persons.forEach(person => {;
         if(person.id === id) {
             result = person;
@@ -271,10 +277,10 @@ function paintColumnsReservated(array: string[], isMulti: boolean, personId: num
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
             if (person.grade.charAt(0) === "a") {
-                td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 6.8rem;">${person.firstname} ${person.surname}</p>
+                td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="../img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             } else {
-                td.innerHTML = `<p style="position: absolute; padding-left: 6.8rem;">${person.firstname} ${person.surname}</p>
+                td.innerHTML = `<p style="position: absolute; padding-left: 6%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="../img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             }
             
@@ -784,7 +790,7 @@ function isInRange(update: ReservationDTO, id: number): boolean {
 async function loadPersonsFromDatabase() {
     const emailSelect = document.getElementById("email") as HTMLSelectElement;
     const getUrl = "http://localhost:8080/api/persons/list"
-    fetchDataFromUrl(getUrl)
+    await fetchDataFromUrl(getUrl)
         .then(data => {
             if (data) {
                 data.forEach(singePerson => {
@@ -795,6 +801,7 @@ async function loadPersonsFromDatabase() {
                         email: singePerson.email,
                         grade: singePerson.grade
                     }
+                    
                     const option = document.createElement("option");
                     option.value = person.email +"";
                     option.text = person.email +"";
@@ -805,5 +812,5 @@ async function loadPersonsFromDatabase() {
                 });
             }
         })
-        .catch(error => showErrorMessage(error.message));   
+        .catch(error => showErrorMessage(error.message)); 
 }
