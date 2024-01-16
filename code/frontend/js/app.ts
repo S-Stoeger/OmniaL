@@ -29,7 +29,7 @@ let persons: Person[] = [];
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
-const dayAsDateArray: string[] = getFormattedDatesFromMondayToFriday();
+const dayAsDateArray: string[] = getCurrentWeek(new Date(localStorage.getItem("date")));
 const allRooms: string[] = ["Fotostudio", "Streamingraum",  "Audiostudio", "Viedeoschnitt", "Musikraum", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10"];
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
@@ -486,6 +486,8 @@ async function fetchDataFromUrl(url: string): Promise<any | null> {
 }
 
 async function addReservationToDatabase(reservation: ReservationDTO) {
+    console.log(reservation);
+    
     const infoBox = document.getElementById("InfoBox");
     try {
         const response = await fetch(url, {
@@ -496,10 +498,10 @@ async function addReservationToDatabase(reservation: ReservationDTO) {
             body: JSON.stringify(reservation)
         });
         if (!response.ok) {
-            showErrorMessage('Failed to add reservation! Please check your Internet connection!');
+            showErrorMessage('Failed to add reservation! Please check your Internet connection!' + response);
         }
     } catch (error) {
-        showErrorMessage('Failed to add reservation! Please check your Internet connection!');
+        showErrorMessage('Failed to add reservation! Please check your Internet connection!' + error);
     }
     infoBox.style.display = "none";
 } 
@@ -747,24 +749,6 @@ function reservationToString(reservation: Reservation): string {
     return formattedResult;
 }
 
-function getFormattedDatesFromMondayToFriday(): string[] {
-    const currentDate = new Date();
-    const currentDay = currentDate.getDay();
-    const daysToMonday = currentDay === 0 ? 1 : -currentDay + 1;
-
-    const mondayDate = new Date(currentDate);
-    mondayDate.setDate(currentDate.getDate() + daysToMonday);
-
-    const formattedDates: string[] = [formatDate(mondayDate)];
-
-    for (let i = 1; i < 5; i++) {
-        const nextDay = new Date(mondayDate);
-        nextDay.setDate(mondayDate.getDate() + i);
-        formattedDates.push(formatDate(nextDay));
-    }
-
-    return formattedDates;
-}
 
 function formatDate(date: Date): string {
     return date.toISOString().slice(0, 10);
@@ -812,5 +796,99 @@ async function loadPersonsFromDatabase() {
                 });
             }
         })
-        .catch(error => showErrorMessage(error.message)); 
+        .catch(error => showErrorMessage(error.message));   
 }
+
+//##################### Wochen Wechsel ########################
+function calcNextWeek() {
+    const monday = new Date(localStorage.getItem("date"));
+    const nextMonday = getNextMonday(monday);
+    localStorage.setItem("date", nextMonday +"");
+    location.reload();
+}
+
+function calcNowWeek() {
+    const nowMonday = getCurrentMonday(new Date)
+    localStorage.setItem("date", nowMonday +"");
+    location.reload();
+}
+
+function calcPrevWeek() {
+    const monday = new Date(localStorage.getItem("date"));
+    const prevMonday = getPreviousMonday(monday);
+    localStorage.setItem("date", prevMonday +"");
+    location.reload();
+}
+
+function getNextMonday(inputDate: Date): Date {
+    const daysUntilNextMonday = (1 + 7 - inputDate.getDay()) % 7;
+    const nextMonday = new Date(inputDate);
+    nextMonday.setDate(inputDate.getDate() + daysUntilNextMonday + 7); 
+    nextMonday.setHours(0, 0, 0, 0);
+  
+    return nextMonday;
+}
+
+function getCurrentMonday(d) {
+    d = new Date(d);
+    var day = d.getDay(),
+    diff = d.getDate() - day + (day == 0 ? -6 : 1); 
+    return new Date(d.setDate(diff));
+}
+
+function getPreviousMonday(inputDate: Date): Date {
+    const daysSincePreviousMonday = (inputDate.getDay() + 6) % 7;
+    const previousMonday = new Date(inputDate);
+    previousMonday.setDate(inputDate.getDate() - daysSincePreviousMonday - 6);
+    previousMonday.setHours(0, 0, 0, 0); // Set to the beginning of the day
+    
+    return getCurrentMonday(previousMonday);
+}
+
+function getCurrentWeek(monday: Date) {
+    const weekDates: string[] = [];
+
+  // Set the input date to Monday to ensure consistency
+  monday.setHours(0, 0, 0, 0);
+  const currentDate = new Date(monday);
+
+  // Iterate from Monday to Friday and add each date to the array
+  for (let i = 0; i < 5; i++) {
+    weekDates.push(parseDateToCalendarFormat(currentDate) +"");
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return weekDates;
+}
+
+function setAndStoreDate() {
+    const currentMonday = getCurrentMonday(new Date);
+    localStorage.setItem("date", "" + currentMonday);
+}
+
+window.onload = function () {
+    const storedDate = localStorage.getItem("date");
+  
+    if (storedDate) {
+      //parse to date object
+      const parsedDate = new Date(storedDate);
+      console.log("Retrieved date from local storage:", parsedDate);
+    } else {
+      // if no date found => save in local storage
+      setAndStoreDate();
+    }
+};
+
+  function pad(value: number, length: number): string {
+    return value.toString().length < length
+      ? '0'.repeat(length - value.toString().length) + value
+      : value.toString();
+  }
+
+  function parseDateToCalendarFormat(date: Date): string {
+    const day = pad(date.getDate(), 2);
+    const month = pad(date.getMonth() + 1, 2); // Months are 0-based
+    const year = pad(date.getFullYear(), 4);
+  
+    return `${year}-${month}-${day}`;
+  }
