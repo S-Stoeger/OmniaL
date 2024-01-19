@@ -37,7 +37,7 @@ const endTimeDefaultValue: string = "-- Endzeit --";
 
 const urlParams = new URLSearchParams(window.location.search);
 const roomValue = urlParams.get('roomValue');
-const newUri: string = "../html/index.html?roomValue=Fotostudio";
+const newUri: string = "../index.html?roomValue=Fotostudio";
 
 const url: string = 'http://localhost:8080/api/reservations'
 var olderReservation: Reservation = null;
@@ -278,10 +278,10 @@ function paintColumnsReservated(array: string[], isMulti: boolean, personId: num
             let imgId: string = array[i] + "Img";
             if (person.grade.charAt(0) === "a") {
                 td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5%;">${person.firstname} ${person.surname}</p>
-                                <img id="${imgId}" src="../img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
+                                <img id="${imgId}" src="img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             } else {
                 td.innerHTML = `<p style="position: absolute; padding-left: 6%;">${person.firstname} ${person.surname}</p>
-                                <img id="${imgId}" src="../img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
+                                <img id="${imgId}" src="img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             }
             
             if (!isMulti) {
@@ -455,7 +455,7 @@ function displayRooms() {
         }
 
         // reload page with correct room
-        anchor.href = `../html/index.html?roomValue=${currentRoomId}`;
+        anchor.href = `../index.html?roomValue=${currentRoomId}`;
 
         box.appendChild(anchor);
     }
