@@ -37,9 +37,9 @@ const endTimeDefaultValue: string = "-- Endzeit --";
 
 const urlParams = new URLSearchParams(window.location.search);
 const roomValue = urlParams.get('roomValue');
-const newUri: string = "../index.html?roomValue=Fotostudio";
+const newUri: string = "index.html?roomValue=Fotostudio";
 
-const url: string = 'http://localhost:8080/api/reservations'
+const url: string = 'http://localhost:8080/api/reservations';
 var olderReservation: Reservation = null;
 
 var isRoomShown = false;
@@ -455,7 +455,7 @@ function displayRooms() {
         }
 
         // reload page with correct room
-        anchor.href = `../index.html?roomValue=${currentRoomId}`;
+        anchor.href = `index.html?roomValue=${currentRoomId}`;
 
         box.appendChild(anchor);
     }
