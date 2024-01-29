@@ -28,6 +28,20 @@ public class ReservationResource {
         return reservationMapper.toDTO(this.reservationRepository.findByIdReservation(id));
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/room/{id}")
+    public List<ReservationDTO> reservationByRoom(@PathParam("id") int id){
+        return reservationRepository.getReservationsByRoom(id).stream().map(reservationMapper::toDTO).toList();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/person/{id}")
+    public List<ReservationDTO> reservationByPerson(@PathParam("id") int id){
+        return reservationRepository.getReservationsByPerson(id).stream().map(reservationMapper::toDTO).toList();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

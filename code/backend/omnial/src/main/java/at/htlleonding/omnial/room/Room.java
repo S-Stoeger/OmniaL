@@ -2,8 +2,15 @@ package at.htlleonding.omnial.room;
 
 import jakarta.persistence.*;
 
+import static at.htlleonding.omnial.person.Person.FIND_ALL_PERSONS;
+import static at.htlleonding.omnial.room.Room.FIND_ALL_ROOMS;
+
 @Entity
+@NamedQuery(name = FIND_ALL_ROOMS, query = "SELECT r from Room r")
 public class Room {
+
+    public static final String FIND_ALL_ROOMS = "Room.findAll";
+
     @Id
     @SequenceGenerator(name = "room_seq", sequenceName = "room_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_seq")

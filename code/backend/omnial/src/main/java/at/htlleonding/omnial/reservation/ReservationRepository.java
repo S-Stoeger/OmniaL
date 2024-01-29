@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
@@ -26,6 +27,18 @@ public class ReservationRepository {
 
     public List<Reservation> getAllReservations(){
         return entityManager.createNamedQuery(Reservation.FIND_ALL_RESERVATIONS, Reservation.class).getResultList();
+    }
+
+        public List<Reservation> getReservationsByRoom(int roomId){
+            TypedQuery<Reservation> query = entityManager.createNamedQuery(Reservation.FIND_RESERVATIONS_BY_ROOM, Reservation.class);
+            query.setParameter("roomId", roomId);
+            return query.getResultList();
+        }
+
+    public List<Reservation> getReservationsByPerson(int personId){
+        TypedQuery<Reservation> query = entityManager.createNamedQuery(Reservation.FIND_RESERVATIONS_BY_PERSON, Reservation.class);
+        query.setParameter("personId", personId);
+        return query.getResultList();
     }
 
     @Transactional
@@ -54,27 +67,26 @@ public class ReservationRepository {
 
     public boolean checkReservation(Reservation reservation){
 
+        boolean result = true;
+
         for (Reservation currRes: getAllReservations()) {
             //checks if reservation is between another reservation
-            if(reservation.getStartTime().isAfter(currRes.getStartTime()) && reservation.getStartTime().isBefore(currRes.getEndTime())){
-                return false;
-            }
-            else if (reservation.getEndTime().isAfter(currRes.getStartTime()) && reservation.getEndTime().isBefore(currRes.getEndTime())){
-                return false;
-            }
+            if (reservation.getId() == currRes.getId()) {
 
-            else if(currRes.getStartTime().isAfter(reservation.getStartTime()) && currRes.getStartTime().isBefore(reservation.getEndTime())){
-                return false;
-            }
-            else if (currRes.getEndTime().isAfter(reservation.getStartTime()) && currRes.getEndTime().isBefore(reservation.getEndTime())){
-                return false;
-            }
-            else if(reservation.getEndTime().isEqual(currRes.getEndTime() )|| reservation.getStartTime().isEqual(currRes.getStartTime())){
-                return false;
+                if (reservation.getStartTime().isAfter(currRes.getStartTime()) && reservation.getStartTime().isBefore(currRes.getEndTime())) {
+                    result =  false;
+                } else if (reservation.getEndTime().isAfter(currRes.getStartTime()) && reservation.getEndTime().isBefore(currRes.getEndTime())) {
+                    result =  false;
+                } else if (currRes.getStartTime().isAfter(reservation.getStartTime()) && currRes.getStartTime().isBefore(reservation.getEndTime())) {
+                    result =  false;
+                } else if (currRes.getEndTime().isAfter(reservation.getStartTime()) && currRes.getEndTime().isBefore(reservation.getEndTime())) {
+                    result =  false;
+                } else if (reservation.getEndTime().isEqual(currRes.getEndTime()) || reservation.getStartTime().isEqual(currRes.getStartTime())) {
+                    result = false;
+                }
             }
         }
-        return true;
-
+            return result;
     }
 
 
