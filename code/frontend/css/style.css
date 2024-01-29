@@ -20,7 +20,10 @@
     th, td {
     border: 1px solid #000;
     
-    }   
+    }
+    #print-only-page {
+        page-break-before: always;
+      }   
 }
   
 
@@ -88,7 +91,13 @@ td:hover {
 
 #changeRoom {
     position: fixed;
-    bottom: 140px;
+    bottom: 8.75rem;
+    right: 1.25rem;
+}
+
+#openCalender {
+    position: fixed;
+    bottom: 16.25rem;
     right: 1.25rem;
 }
 .modal {
@@ -149,7 +158,7 @@ td:hover {
     margin-bottom: 15px;
   }
 
-button {
+.button {
     background-color: var(--dark_orange);
     color: white;
     padding: 10px 20px;
@@ -158,9 +167,34 @@ button {
     font-size: 16px;
 }
 
-button:hover {
+.button:hover {
     background-color: var(--light_orange);
 }
+
+.switchWeek {
+    font-size: 1.45rem;
+    background-color: var(--dark_blue);
+    color: #fff;
+    border: none;
+    padding: 0;
+}
+.flex {
+    display: flex;
+    justify-content: space-around;
+}
+#now:hover {
+    color: var(--dark_orange);
+    transition: color 0.5s;
+}
+#prev:hover {
+  color: var(--dark_orange);
+  transition: color 0.5s;
+}
+#next:hover {
+  color: var(--dark_orange);
+  transition: color 0.5s;
+}
+
 #rooms {
     margin-top: 0;
     padding: 5% 0 3% 0;

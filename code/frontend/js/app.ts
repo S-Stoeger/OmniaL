@@ -70,7 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
 
     //timeTableHeader.innerHTML = `${dayAsDateArray[0]} / ${dayAsDateArray[4]}`;
-    roomTableHeader.innerHTML = `${roomValue}`;
+    roomTableHeader.innerHTML = `<div class="flex">
+    <button class="switchWeek" id="prev" onclick="calcPrevWeek()" style="width:5%;"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="switchWeek" id="now" onclick="calcNowWeek()">${roomValue}</button>
+    <button class="switchWeek" id="next" onclick="calcNextWeek()" style="width:5%;"><i class="fa-solid fa-arrow-right"></i></button>
+</div>`;
     montag.innerHTML += `<br>${dayAsDateArray[0]}`;
     dienstag.innerHTML += `<br>${dayAsDateArray[1]}`;
     mittwoch.innerHTML += `<br>${dayAsDateArray[2]}`;
@@ -485,9 +489,7 @@ async function fetchDataFromUrl(url: string): Promise<any | null> {
     }
 }
 
-async function addReservationToDatabase(reservation: ReservationDTO) {
-    console.log(reservation);
-    
+async function addReservationToDatabase(reservation: ReservationDTO) {    
     const infoBox = document.getElementById("InfoBox");
     try {
         const response = await fetch(url, {
@@ -705,6 +707,9 @@ function showReservationInfo(reservation: Reservation) {
     editButton.innerHTML = "Bearbeiten";
     editButton.id = "edit";
 
+    removeButton.classList.add("button");
+    editButton.classList.add("button");
+
     document.querySelector("#InfoBox > *:last-child").appendChild(removeButton);
     document.querySelector("#InfoBox > *:last-child").appendChild(editButton);
 
@@ -872,7 +877,6 @@ window.onload = function () {
     if (storedDate) {
       //parse to date object
       const parsedDate = new Date(storedDate);
-      console.log("Retrieved date from local storage:", parsedDate);
     } else {
       // if no date found => save in local storage
       setAndStoreDate();
