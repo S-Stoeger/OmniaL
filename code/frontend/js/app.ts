@@ -30,7 +30,7 @@ const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 const dayAsDateArray: string[] = getCurrentWeek(new Date(localStorage.getItem("date")));
-const allRooms: string[] = ["Fotostudio", "Streamingraum",  "Audiostudio", "Viedeoschnitt", "Musikraum", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10"];
+const allRooms: string[] = ["Fotostudio", "Streamingraum",  "Audiostudio", "Videoschnitt", "Musikraum", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10"];
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
 const endTimeDefaultValue: string = "-- Endzeit --";
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <button class="switchWeek" id="prev" onclick="calcPrevWeek()" style="width:5%;"><i class="fa-solid fa-arrow-left"></i></button>
     <button class="switchWeek" id="now" onclick="calcNowWeek()">${roomValue}</button>
     <button class="switchWeek" id="next" onclick="calcNextWeek()" style="width:5%;"><i class="fa-solid fa-arrow-right"></i></button>
-</div>`;
+    </div>`;
     montag.innerHTML += `<br>${dayAsDateArray[0]}`;
     dienstag.innerHTML += `<br>${dayAsDateArray[1]}`;
     mittwoch.innerHTML += `<br>${dayAsDateArray[2]}`;
@@ -749,9 +749,19 @@ function showReservationInfo(reservation: Reservation) {
 
 function reservationToString(reservation: Reservation): string {
     const person: Person = getPersonFromId(reservation.personId);
-    let result: string = `Person: ${person.firstname + " " + person.surname} \n Email: ${person.email} \n Grade: ${person.grade} \n Datum: ${reservation.reservationDate} \n Von: ${parseTime(reservation.startTime)} \n Bis: ${parseTime(reservation.endTime)} \n Raum: ${roomValue}`;
-    const formattedResult = result.replace(/\n/g, '<br>');
-    return formattedResult;
+    let result: string = `
+    <div id="flex">
+        <div class="displayInfo">
+            <h3>${person.surname} ${person.firstname}</h3>
+            <h4>Klasse: ${person.grade}</h4>
+        </div>
+        <div class="displayInfo">
+            <h4>Datum: ${reservation.reservationDate}</h4>
+            <h4>Zeit: ${parseTime(reservation.startTime)}-${parseTime(reservation.endTime)}</h4>
+        </div>
+    </div>
+    <h3 style="text-decoration: underline">E-Mail: ${person.email}</h3>`;
+    return result;
 }
 
 
