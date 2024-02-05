@@ -23,14 +23,19 @@ interface Person {
     grade: String;
 }
 
+interface Room {
+    id: number;
+    name: string;
+    description: string;
+}
 // constatnts
 let reservations: Reservation[] = [];
 let persons: Person[] = [];
+let rooms: Room[] = []
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 const dayAsDateArray: string[] = getCurrentWeek(new Date(localStorage.getItem("date")));
-const allRooms: string[] = ["Fotostudio", "Streamingraum",  "Audiostudio", "Videoschnitt", "Musikraum", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10"];
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
 const endTimeDefaultValue: string = "-- Endzeit --";
@@ -69,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
 
+    getRoomsFromDatabase();
+    
     //timeTableHeader.innerHTML = `${dayAsDateArray[0]} / ${dayAsDateArray[4]}`;
     roomTableHeader.innerHTML = `<h3>${roomValue}</h3>`;
     montag.innerHTML += `<br>${dayAsDateArray[0]}`;
@@ -219,7 +226,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     dayId = i;
                 }
             }
-            const reservation: ReservationDTO = {roomId: allRooms.indexOf(roomValue) +1, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
+            console.log(roomValue);
+            
+            const reservation: ReservationDTO = {roomId: getRoomFromName(roomValue).id, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
             
             if (submitButton.innerHTML === "Speichern") {
                 try {
@@ -353,7 +362,7 @@ function getReservationsFromDatabase() {
                             reservationDate: singleReservation.reservationDate
                         };
                         
-                        if (reservation.roomId === (allRooms.indexOf(roomValue)+1)) {    
+                        if (reservation.roomId === getRoomFromName(roomValue).id) {    
                             reservations.push(reservation);
                             loadReservation(reservation);
                         }
@@ -442,30 +451,26 @@ function displayRooms() {
     box.innerHTML = '';
 
     // Assuming allRooms is an array of strings
-    for (let i = 0; i < allRooms.length; i++) {
+    for (let i = 0; i < rooms.length; i++) {
         // Use textContent instead of innerHTML
         var anchor = document.createElement("a");
-        anchor.textContent = allRooms[i];
-        anchor.id = allRooms[i];
+        anchor.textContent = rooms[i].name;
+        anchor.id = rooms[i].id+"";
 
         let currentRoomId: string = anchor.id;
 
         // set color for selected room
-        if (compareRoom(allRooms[i])) {
+        if (roomValue === rooms[i].name) {
             anchor.style.cssText = "color: #f5b963"; // Matching room
         } else {
             anchor.style.cssText = "color: #fff"; // Non-matching room
         }
 
         // reload page with correct room
-        anchor.href = `index.html?roomValue=${currentRoomId}`;
+        anchor.href = `index.html?roomValue=${rooms[i].name}`;
 
         box.appendChild(anchor);
     }
-}
-
-function compareRoom(room: string) {
-    return roomValue === room;
 }
 
 async function fetchDataFromUrl(url: string): Promise<any | null> {
@@ -638,7 +643,7 @@ function updateReservation(oldReservation: Reservation, cell: string) {
     let arr = reverseParse(extractNumbersFromString(cell), getColumnId(oldReservation).length);
     
     let temp: ReservationDTO = {
-        roomId: allRooms.indexOf(roomValue)+1,
+        roomId: getRoomFromName(roomValue).id,
         personId: oldReservation.personId,
         startTime: arr[1], 
         endTime: arr[2],
@@ -1030,5 +1035,35 @@ window.onload = function () {
     calendarElement.style.display = 'none';
   }
 
-  
-  
+async function getRoomsFromDatabase() {
+    const getUrl = "http://localhost:8080/api/rooms/list";
+    
+    try {
+        const data = await fetchDataFromUrl(getUrl);
+        
+        if (data) {
+            data.forEach(singeRoom => {
+                const room: Room = {
+                    id: singeRoom.id,
+                    name: singeRoom.name,
+                    description: singeRoom.description
+                };
+
+                rooms.push(room);
+            });
+        }
+        displayRooms();
+    } catch (error) {
+        showErrorMessage(error.message);
+    }
+}
+
+function getRoomFromName(roomName: string): Room {
+    let result: Room;
+    rooms.forEach(room => {
+        if (room.name === roomName) {
+            result = room;
+        }
+    })
+    return result;
+}
