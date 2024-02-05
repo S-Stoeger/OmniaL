@@ -203,7 +203,7 @@ td:hover {
 
 #rooms {
     margin-top: 0;
-    padding: 5% 0 3% 0;
+    
     width: 20rem;
     height: 100vh;
     background-color: var(--dark_blue);
