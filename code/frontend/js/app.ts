@@ -48,6 +48,7 @@ const url: string = 'http://localhost:8080/api/reservations';
 var olderReservation: Reservation = null;
 
 var isRoomShown = false;
+var isCalendarShown = false;
 
 // no more room null
 if (roomValue == null) {
@@ -1026,11 +1027,17 @@ window.onload = function () {
   renderCalendar();
 
   function openCalendar() {
-    let calendarElement = document.getElementById('calendar');  
-    calendarElement.style.display = 'block';
-  }
+    if(isCalendarShown) {
+        closeCalendar()
+    } else {
+        isCalendarShown = true;
+        let calendarElement = document.getElementById('calendar');  
+        calendarElement.style.display = 'block';
+    }  
+}
 
   function closeCalendar() {
+    isCalendarShown = false;
     let calendarElement = document.getElementById('calendar');  
     calendarElement.style.display = 'none';
   }
