@@ -758,14 +758,14 @@ function reservationToString(reservation: Reservation): string {
     <div id="flex">
         <div class="displayInfo">
             <h3>${person.surname} ${person.firstname}</h3>
-            <h4>Klasse: ${person.grade}</h4>
+            <h4 style="margin-top: 0.5rem">Klasse: ${person.grade}</h4>
         </div>
         <div class="displayInfo">
             <h4>Datum: ${reservation.reservationDate}</h4>
-            <h4>Zeit: ${parseTime(reservation.startTime)}-${parseTime(reservation.endTime)}</h4>
+            <h4 style="margin-top: 0.5rem" >Zeit: ${parseTime(reservation.startTime)}-${parseTime(reservation.endTime)}</h4>
         </div>
     </div>
-    <h3 style="text-decoration: underline">E-Mail: ${person.email}</h3>`;
+    <h3 style="text-decoration: underline; margin-top: 1rem">E-Mail: ${person.email}</h3>`;
     return result;
 }
 
