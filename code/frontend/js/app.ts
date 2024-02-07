@@ -147,6 +147,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // Reserving room per onlick
 function openModalWithOnclick(cellId: string) {
     // get modal
+    
+    closeCalendar()
     const isReservated = reservations.some(function (reservation) {
         let columnAsString = getColumnId(reservation);
         for (let i = 0; i < columnAsString.length; i++) {
@@ -227,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     dayId = i;
                 }
             }
-            console.log(roomValue);
+
             
             const reservation: ReservationDTO = {roomId: getRoomFromName(roomValue).id, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
             
@@ -287,10 +289,10 @@ function paintColumnsReservated(array: string[], isMulti: boolean, personId: num
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
             if (person.grade.charAt(0) === "a") {
-                td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5%;">${person.firstname} ${person.surname}</p>
+                td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5.3%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             } else {
-                td.innerHTML = `<p style="position: absolute; padding-left: 6%;">${person.firstname} ${person.surname}</p>
+                td.innerHTML = `<p style="position: absolute; padding-left: 6%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             }
             
@@ -699,6 +701,9 @@ function showReservationInfo(reservation: Reservation) {
     const infoBox = document.getElementById("InfoBox");
     const infoMessage = document.getElementById("info_content");
     const columnId = getColumnId(reservation);
+    
+    addBorderToReservation(columnId);
+    
     infoMessage.style.color = "#fff";
 
     document.getElementById("remove").remove();
@@ -729,6 +734,7 @@ function showReservationInfo(reservation: Reservation) {
             column.innerHTML = "";
         })
         infoBox.style.display = "none";
+        removeBorderFromReservation(columnId);
 
         await removeReservation(reservation.id);
         getReservationsFromDatabase();
@@ -739,6 +745,7 @@ function showReservationInfo(reservation: Reservation) {
         addButton.innerHTML = "Speichern";
 
         infoBox.style.display = "none";
+        removeBorderFromReservation(columnId);
         
         olderReservation = reservation;
         openModalWithOnclick(columnId[0]);
@@ -748,9 +755,50 @@ function showReservationInfo(reservation: Reservation) {
         // Close modal when clicking outside of it
         if (event.target === infoBox) {
             infoBox.style.display = "none";
+            removeBorderFromReservation(columnId);
         }
     });
 }
+
+function addBorderToReservation(columnIds: string[]) {
+    if(columnIds.length === 1) {
+        let resColumn = document.getElementById(columnIds[0]);
+        resColumn.style.border = "3px solid #1e444d";
+        resColumn.style.transition = ".5s border";
+
+        let imgId = columnIds[0]+ "Img";
+        let img = document.getElementById(imgId);
+        img.style.height = "3.7rem";
+        
+    } else {
+        for (let i = 0; i < columnIds.length; i++) {
+            let resColumn = document.getElementById(columnIds[i]);
+            resColumn.style.border = "3px solid #1e444d";
+            resColumn.style.transition = ".5s border";
+            if (i === 0) {
+                resColumn.style.borderBottom = "none";
+            } else if (i < columnIds.length-1) {
+                resColumn.style.borderBottom = "none";
+                resColumn.style.borderTop = "none";
+            } else {
+                resColumn.style.borderTop = "none";
+            }
+        }
+    }
+}
+
+function removeBorderFromReservation(columnIds: string[]) {
+    if (columnIds.length === 1) {
+        let imgId = columnIds[0]+ "Img";
+        let img = document.getElementById(imgId);    
+        img.style.height = "3.3rem";
+    }
+    
+    for (let i = 0; i < columnIds.length; i++) {
+        let resColumn = document.getElementById(columnIds[i]);
+        resColumn.style.border = "none";
+    }
+}    
 
 function reservationToString(reservation: Reservation): string {
     const person: Person = getPersonFromId(reservation.personId);
