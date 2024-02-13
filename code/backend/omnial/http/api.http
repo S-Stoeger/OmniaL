@@ -54,4 +54,10 @@ Content-Type: application/json
 DELETE http://localhost:8080/api/reservations/1
 Content-Type: application/json
 
+### Persons ###
+
+### Get Person
+
+GET http://localhost:8080/api/persons/list
+
 ###

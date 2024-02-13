@@ -1,27 +1,5 @@
-interface Reservation {
-    id: number;
-    roomId: number;
-    personId: number;
-    startTime: string;
-    endTime: string;
-    reservationDate: string;
-}
+import { Person, Reservation, ReservationDTO } from "Model/model";
 
-interface ReservationDTO {
-    roomId: number;
-    personId: number;
-    startTime: string;
-    endTime: string;
-    reservationDate: string;
-}
-
-interface Person {
-    id: number;
-    surname: String;
-    firstname: String;
-    email: String;
-    grade: String;
-}
 
 // constatnts
 let reservations: Reservation[] = [];
@@ -49,7 +27,7 @@ if (roomValue == null) {
     window.location.href = newUri;
 }
 
-let promise;
+let promise: Promise<void>;
 
 // MODAL
 document.addEventListener("DOMContentLoaded", () => {
@@ -267,7 +245,7 @@ function getPersonFromId(id: number) {
     return result;
 }
 
-function parseToLocalDateTimeFormat(date, time) {
+function parseToLocalDateTimeFormat(date: string, time: string) {
     const localDateTime = date +"T"+ time +":00";
     return localDateTime;
 }
@@ -339,33 +317,28 @@ function getColumnId(reservation: Reservation) {
     return columnIds;
 }
 
-function getReservationsFromDatabase() { 
-    reservations = [];
-
+async function getReservationsFromDatabase() { 
     const getUrl = url + '/list';
-    fetchDataFromUrl(getUrl)
-        .then(data => {
-            if (data) {
-                data.forEach(singleReservation => {
-                    if (dayAsDateArray.indexOf(singleReservation.reservationDate) !== -1) {
-                        const reservation: Reservation = {
-                            id: singleReservation.id,
-                            roomId: singleReservation.roomId,
-                            personId: singleReservation.personId,
-                            startTime: singleReservation.startTime,
-                            endTime: singleReservation.endTime,
-                            reservationDate: singleReservation.reservationDate
-                        };
-                        
-                        if (reservation.roomId === (allRooms.indexOf(roomValue)+1)) {    
-                            reservations.push(reservation);
-                            loadReservation(reservation);
-                        }
-                    }
-                });
+    const reservations: Reservation[] = await fetchDataFromUrl(getUrl)
+    if (reservations) {
+        reservations.forEach(singleReservation => {
+            if (dayAsDateArray.indexOf(singleReservation.reservationDate) !== -1) {
+                const reservation: Reservation = {
+                    id: singleReservation.id,
+                    roomId: singleReservation.roomId,
+                    personId: singleReservation.personId,
+                    startTime: singleReservation.startTime,
+                    endTime: singleReservation.endTime,
+                    reservationDate: singleReservation.reservationDate
+                };
+                
+                if (reservation.roomId === (allRooms.indexOf(roomValue)+1)) {    
+                    reservations.push(reservation);
+                    loadReservation(reservation);
+                }
             }
         })
-        .catch(error => showErrorMessage(error.message));
+    }
 }
 
 
@@ -383,7 +356,7 @@ function loadReservation(reservation: Reservation) {
 }
 
 // parse day received from beckand
-function parseDay(dateString) {
+function parseDay(dateString: string) {
     let array = dateString.split("T");
     const dateObject = new Date(array[0]);
     let dayIndex = dateObject.getDay();
@@ -469,7 +442,7 @@ function compareRoom(room: string) {
     return roomValue === room;
 }
 
-async function fetchDataFromUrl(url: string): Promise<any | null> {
+async function fetchDataFromUrl<T>(url: string): Promise<T | null> {
     try {
         const response = await fetch(url);
 
@@ -779,29 +752,25 @@ function isInRange(update: ReservationDTO, id: number): boolean {
 async function loadPersonsFromDatabase() {
     const emailSelect = document.getElementById("email") as HTMLSelectElement;
     const getUrl = "http://localhost:8080/api/persons/list"
-    await fetchDataFromUrl(getUrl)
-        .then(data => {
-            if (data) {
-                data.forEach(singePerson => {
-                    const person: Person = {
-                        id: singePerson.id,
-                        surname: singePerson.surname,
-                        firstname: singePerson.firstname,
-                        email: singePerson.email,
-                        grade: singePerson.grade
-                    }
-                    
-                    const option = document.createElement("option");
-                    option.value = person.email +"";
-                    option.text = person.email +"";
+    const persons: Person[] = await fetchDataFromUrl(getUrl)
 
-                    persons.push(person);
+    persons.forEach(singePerson => {
+        const person: Person = {
+            id: singePerson.id,
+            surname: singePerson.surname,
+            firstname: singePerson.firstname,
+            email: singePerson.email,
+            grade: singePerson.grade
+        }
+        
+        const option = document.createElement("option");
+        option.value = person.email +"";
+        option.text = person.email +"";
 
-                    emailSelect.add(option);
-                });
-            }
-        })
-        .catch(error => showErrorMessage(error.message));   
+        persons.push(person);
+
+        emailSelect.add(option);
+    });
 }
 
 //##################### Wochen Wechsel ########################
@@ -834,7 +803,7 @@ function getNextMonday(inputDate: Date): Date {
     return nextMonday;
 }
 
-function getCurrentMonday(d) {
+function getCurrentMonday(d: Date) {
     d = new Date(d);
     var day = d.getDay(),
     diff = d.getDate() - day + (day == 0 ? -6 : 1); 
