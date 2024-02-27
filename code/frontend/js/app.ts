@@ -23,26 +23,32 @@ interface Person {
     grade: String;
 }
 
+interface Room {
+    id: number;
+    name: string;
+    description: string;
+}
 // constatnts
 let reservations: Reservation[] = [];
 let persons: Person[] = [];
+let rooms: Room[] = []
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 const dayAsDateArray: string[] = getCurrentWeek(new Date(localStorage.getItem("date")));
-const allRooms: string[] = ["Fotostudio", "Streamingraum",  "Audiostudio", "Viedeoschnitt", "Musikraum", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10"];
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
 const endTimeDefaultValue: string = "-- Endzeit --";
 
 const urlParams = new URLSearchParams(window.location.search);
 const roomValue = urlParams.get('roomValue');
-const newUri: string = "../index.html?roomValue=Fotostudio";
+const newUri: string = "index.html?roomValue=Fotostudio";
 
-const url: string = 'http://localhost:8080/api/reservations'
+const url: string = 'http://localhost:8080/api/reservations';
 var olderReservation: Reservation = null;
 
 var isRoomShown = false;
+var isCalendarShown = false;
 
 // no more room null
 if (roomValue == null) {
@@ -69,8 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
 
+    getRoomsFromDatabase();
+    
     //timeTableHeader.innerHTML = `${dayAsDateArray[0]} / ${dayAsDateArray[4]}`;
-    roomTableHeader.innerHTML = `${roomValue}`;
+    roomTableHeader.innerHTML = `<h3>${roomValue}</h3>`;
     montag.innerHTML += `<br>${dayAsDateArray[0]}`;
     dienstag.innerHTML += `<br>${dayAsDateArray[1]}`;
     mittwoch.innerHTML += `<br>${dayAsDateArray[2]}`;
@@ -139,6 +147,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // Reserving room per onlick
 function openModalWithOnclick(cellId: string) {
     // get modal
+    
+    closeCalendar()
     const isReservated = reservations.some(function (reservation) {
         let columnAsString = getColumnId(reservation);
         for (let i = 0; i < columnAsString.length; i++) {
@@ -219,7 +229,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     dayId = i;
                 }
             }
-            const reservation: ReservationDTO = {roomId: allRooms.indexOf(roomValue) +1, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
+
+            
+            const reservation: ReservationDTO = {roomId: getRoomFromName(roomValue).id, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
             
             if (submitButton.innerHTML === "Speichern") {
                 try {
@@ -277,10 +289,10 @@ function paintColumnsReservated(array: string[], isMulti: boolean, personId: num
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
             if (person.grade.charAt(0) === "a") {
-                td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5%;">${person.firstname} ${person.surname}</p>
+                td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5.3%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             } else {
-                td.innerHTML = `<p style="position: absolute; padding-left: 6%;">${person.firstname} ${person.surname}</p>
+                td.innerHTML = `<p style="position: absolute; padding-left: 6%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             }
             
@@ -353,7 +365,7 @@ function getReservationsFromDatabase() {
                             reservationDate: singleReservation.reservationDate
                         };
                         
-                        if (reservation.roomId === (allRooms.indexOf(roomValue)+1)) {    
+                        if (reservation.roomId === getRoomFromName(roomValue).id) {    
                             reservations.push(reservation);
                             loadReservation(reservation);
                         }
@@ -402,6 +414,7 @@ function showRooms() {
     var box = document.getElementById("rooms");
     var changeRoom = document.getElementById("changeRoom");
     var openPopupButton = document.getElementById("openPopupButton");
+    var openCalendarId = document.getElementById("openCalendar");
 
     // Check if the rooms are currently shown
     if (isRoomShown) {
@@ -409,6 +422,7 @@ function showRooms() {
         box.style.transform = "translate(100%, -50%)";
         changeRoom.style.transform = "translate(0%, 0%)";
         openPopupButton.style.transform = "translate(0%, 0%)";
+        openCalendarId.style.transform = "translate(0%, 0%)";
 
         // Delay hiding the box until the animation is complete
         setTimeout(function () {
@@ -427,6 +441,7 @@ function showRooms() {
         // Move other elements off-screen when showing the rooms
         changeRoom.style.transform = "translate(-340%, 0%)";
         openPopupButton.style.transform = "translate(-340%, 0%)";
+        openCalendarId.style.transform = "translate(-340%, 0%)";
 
         isRoomShown = true;
     }
@@ -439,30 +454,26 @@ function displayRooms() {
     box.innerHTML = '';
 
     // Assuming allRooms is an array of strings
-    for (let i = 0; i < allRooms.length; i++) {
+    for (let i = 0; i < rooms.length; i++) {
         // Use textContent instead of innerHTML
         var anchor = document.createElement("a");
-        anchor.textContent = allRooms[i];
-        anchor.id = allRooms[i];
+        anchor.textContent = rooms[i].name;
+        anchor.id = rooms[i].id+"";
 
         let currentRoomId: string = anchor.id;
 
         // set color for selected room
-        if (compareRoom(allRooms[i])) {
+        if (roomValue === rooms[i].name) {
             anchor.style.cssText = "color: #f5b963"; // Matching room
         } else {
             anchor.style.cssText = "color: #fff"; // Non-matching room
         }
 
         // reload page with correct room
-        anchor.href = `../index.html?roomValue=${currentRoomId}`;
+        anchor.href = `index.html?roomValue=${rooms[i].name}`;
 
         box.appendChild(anchor);
     }
-}
-
-function compareRoom(room: string) {
-    return roomValue === room;
 }
 
 async function fetchDataFromUrl(url: string): Promise<any | null> {
@@ -485,9 +496,7 @@ async function fetchDataFromUrl(url: string): Promise<any | null> {
     }
 }
 
-async function addReservationToDatabase(reservation: ReservationDTO) {
-    console.log(reservation);
-    
+async function addReservationToDatabase(reservation: ReservationDTO) {    
     const infoBox = document.getElementById("InfoBox");
     try {
         const response = await fetch(url, {
@@ -637,7 +646,7 @@ function updateReservation(oldReservation: Reservation, cell: string) {
     let arr = reverseParse(extractNumbersFromString(cell), getColumnId(oldReservation).length);
     
     let temp: ReservationDTO = {
-        roomId: allRooms.indexOf(roomValue)+1,
+        roomId: getRoomFromName(roomValue).id,
         personId: oldReservation.personId,
         startTime: arr[1], 
         endTime: arr[2],
@@ -692,6 +701,9 @@ function showReservationInfo(reservation: Reservation) {
     const infoBox = document.getElementById("InfoBox");
     const infoMessage = document.getElementById("info_content");
     const columnId = getColumnId(reservation);
+    
+    addBorderToReservation(columnId);
+    
     infoMessage.style.color = "#fff";
 
     document.getElementById("remove").remove();
@@ -704,6 +716,9 @@ function showReservationInfo(reservation: Reservation) {
     removeButton.id = "remove";
     editButton.innerHTML = "Bearbeiten";
     editButton.id = "edit";
+
+    removeButton.classList.add("button");
+    editButton.classList.add("button");
 
     document.querySelector("#InfoBox > *:last-child").appendChild(removeButton);
     document.querySelector("#InfoBox > *:last-child").appendChild(editButton);
@@ -719,6 +734,7 @@ function showReservationInfo(reservation: Reservation) {
             column.innerHTML = "";
         })
         infoBox.style.display = "none";
+        removeBorderFromReservation(columnId);
 
         await removeReservation(reservation.id);
         getReservationsFromDatabase();
@@ -729,6 +745,7 @@ function showReservationInfo(reservation: Reservation) {
         addButton.innerHTML = "Speichern";
 
         infoBox.style.display = "none";
+        removeBorderFromReservation(columnId);
         
         olderReservation = reservation;
         openModalWithOnclick(columnId[0]);
@@ -738,15 +755,66 @@ function showReservationInfo(reservation: Reservation) {
         // Close modal when clicking outside of it
         if (event.target === infoBox) {
             infoBox.style.display = "none";
+            removeBorderFromReservation(columnId);
         }
     });
 }
 
+function addBorderToReservation(columnIds: string[]) {
+    if(columnIds.length === 1) {
+        let resColumn = document.getElementById(columnIds[0]);
+        resColumn.style.border = "3px solid #1e444d";
+        resColumn.style.transition = ".5s border";
+
+        let imgId = columnIds[0]+ "Img";
+        let img = document.getElementById(imgId);
+        img.style.height = "3.7rem";
+        
+    } else {
+        for (let i = 0; i < columnIds.length; i++) {
+            let resColumn = document.getElementById(columnIds[i]);
+            resColumn.style.border = "3px solid #1e444d";
+            resColumn.style.transition = ".5s border";
+            if (i === 0) {
+                resColumn.style.borderBottom = "none";
+            } else if (i < columnIds.length-1) {
+                resColumn.style.borderBottom = "none";
+                resColumn.style.borderTop = "none";
+            } else {
+                resColumn.style.borderTop = "none";
+            }
+        }
+    }
+}
+
+function removeBorderFromReservation(columnIds: string[]) {
+    if (columnIds.length === 1) {
+        let imgId = columnIds[0]+ "Img";
+        let img = document.getElementById(imgId);    
+        img.style.height = "3.3rem";
+    }
+    
+    for (let i = 0; i < columnIds.length; i++) {
+        let resColumn = document.getElementById(columnIds[i]);
+        resColumn.style.border = "none";
+    }
+}    
+
 function reservationToString(reservation: Reservation): string {
     const person: Person = getPersonFromId(reservation.personId);
-    let result: string = `Person: ${person.firstname + " " + person.surname} \n Email: ${person.email} \n Grade: ${person.grade} \n Datum: ${reservation.reservationDate} \n Von: ${parseTime(reservation.startTime)} \n Bis: ${parseTime(reservation.endTime)} \n Raum: ${roomValue}`;
-    const formattedResult = result.replace(/\n/g, '<br>');
-    return formattedResult;
+    let result: string = `
+    <div id="flex">
+        <div class="displayInfo">
+            <h3>${person.surname} ${person.firstname}</h3>
+            <h4 style="margin-top: 0.5rem">Klasse: ${person.grade}</h4>
+        </div>
+        <div class="displayInfo">
+            <h4>Datum: ${reservation.reservationDate}</h4>
+            <h4 style="margin-top: 0.5rem" >Zeit: ${parseTime(reservation.startTime)}-${parseTime(reservation.endTime)}</h4>
+        </div>
+    </div>
+    <h3 style="text-decoration: underline; margin-top: 1rem">E-Mail: ${person.email}</h3>`;
+    return result;
 }
 
 
@@ -872,7 +940,6 @@ window.onload = function () {
     if (storedDate) {
       //parse to date object
       const parsedDate = new Date(storedDate);
-      console.log("Retrieved date from local storage:", parsedDate);
     } else {
       // if no date found => save in local storage
       setAndStoreDate();
@@ -892,3 +959,166 @@ window.onload = function () {
   
     return `${year}-${month}-${day}`;
   }
+
+
+
+  interface SelectedDate {
+    year: number;
+    month: number;
+    day: number;
+  }
+  
+  const header: HTMLElement | null = document.querySelector("#calendar h3");
+  const dates: HTMLElement | null = document.querySelector(".dates");
+  const navs: NodeListOf<Element> = document.querySelectorAll("#prev, #next");
+  
+  const months: string[] = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  
+  let selectedDate: SelectedDate = {
+    year: new Date().getFullYear(),
+    month: new Date().getMonth(),
+    day: new Date().getDate(),
+  };
+  
+  function renderCalendar(): void {
+    const start: number = new Date(selectedDate.year, selectedDate.month, 1).getDay();
+    const endDate: number = new Date(selectedDate.year, selectedDate.month + 1, 0).getDate();
+    const end: number = new Date(selectedDate.year, selectedDate.month, endDate).getDay();
+    const endDatePrev: number = new Date(selectedDate.year, selectedDate.month, 0).getDate();
+  
+    let datesHtml: string = "";
+  
+    for (let i = start; i > 0; i--) {
+      datesHtml += `<li class="inactive" onclick="setSelectedDate(${selectedDate.year}, ${selectedDate.month - 1}, ${endDatePrev - i + 1})">${endDatePrev - i + 1}</li>`;
+    }
+  
+    for (let i = 1; i <= endDate; i++) {
+      let className: string =
+        i === selectedDate.day && selectedDate.month === new Date().getMonth() && selectedDate.year === new Date().getFullYear()
+          ? ' class="today"'
+          : "";
+      datesHtml += `<li${className} onclick="setSelectedDate(${selectedDate.year}, ${selectedDate.month}, ${i})">${i}</li>`;
+    }
+  
+    for (let i = end; i < 6; i++) {
+      datesHtml += `<li class="inactive" onclick="setSelectedDate(${selectedDate.year}, ${selectedDate.month + 1}, ${i - end + 1})">${i - end + 1}</li>`;
+    }
+  
+    if (dates) {
+      dates.innerHTML = datesHtml;
+    }
+    
+    if (header) {
+      header.textContent = `${months[selectedDate.month]} ${selectedDate.year}`;
+    }
+  }
+  
+  function setSelectedDate(year: number, month: number, day: number): void {
+    let newWeek: String = "";
+    const lastDayOfMonth: number = new Date(year, month + 1, 0).getDate();
+    if (day > lastDayOfMonth) {
+      day = lastDayOfMonth;
+    }
+  
+    const selectedDateObject: Date = new Date(year, month, day);
+    const dayOfWeek: number = selectedDateObject.getDay();
+    const mondayOfTheWeek: Date = new Date(selectedDateObject);
+    mondayOfTheWeek.setDate(selectedDateObject.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
+  
+    // Update your selectedDate object or perform any other actions as needed
+    selectedDate = {
+      year: mondayOfTheWeek.getFullYear(),
+      month: mondayOfTheWeek.getMonth(),
+      day: mondayOfTheWeek.getDate(),
+    };
+  
+    newWeek = mondayOfTheWeek.toDateString() + " 00:00:00 GMT+0100 (Central European Standard Time)";
+
+    localStorage.setItem("date", newWeek +"");
+    location.reload();
+    
+    closeCalendar();
+  }
+  
+  
+  navs.forEach((nav) => {
+    nav.addEventListener("click", (e) => {
+      const btnId: string = (e.target as HTMLElement).id;
+  
+      if (btnId === "prev" && selectedDate.month === 0) {
+        selectedDate.year--;
+        selectedDate.month = 11;
+      } else if (btnId === "next" && selectedDate.month === 11) {
+        selectedDate.year++;
+        selectedDate.month = 0;
+      } else {
+        selectedDate.month = btnId === "next" ? selectedDate.month + 1 : selectedDate.month - 1;
+      }
+  
+      renderCalendar();
+    });
+  });
+  
+  renderCalendar();
+
+  function openCalendar() {
+    if(isCalendarShown) {
+        closeCalendar()
+    } else {
+        isCalendarShown = true;
+        let calendarElement = document.getElementById('calendar');  
+        calendarElement.style.display = 'block';
+    }  
+}
+
+  function closeCalendar() {
+    isCalendarShown = false;
+    let calendarElement = document.getElementById('calendar');  
+    calendarElement.style.display = 'none';
+  }
+
+async function getRoomsFromDatabase() {
+    const getUrl = "http://localhost:8080/api/rooms/list";
+    
+    try {
+        const data = await fetchDataFromUrl(getUrl);
+        
+        if (data) {
+            data.forEach(singeRoom => {
+                const room: Room = {
+                    id: singeRoom.id,
+                    name: singeRoom.name,
+                    description: singeRoom.description
+                };
+
+                rooms.push(room);
+            });
+        }
+        displayRooms();
+    } catch (error) {
+        showErrorMessage(error.message);
+    }
+}
+
+function getRoomFromName(roomName: string): Room {
+    let result: Room;
+    rooms.forEach(room => {
+        if (room.name === roomName) {
+            result = room;
+        }
+    })
+    return result;
+}
