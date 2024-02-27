@@ -125,22 +125,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     for (let i = 1; i < headers.length; i++) {
         if (!headers[i].classList.contains("hour")) {
             for (let j = 1; j < rows.length; j++) {
-                const cell = (rows[j].children[i] as HTMLTableCellElement);
+                const cell = rows[j].children[i] as HTMLTableCellElement;
 
                 // Generate a unique ID based on the column index and row index
                 cell.id = `cell_${j}_${i}`;
-
-                // Assign event listeners for ondrop and ondragover
-                cell.addEventListener('drop', function(event) {                    
-                    drop(event, cell);
-                });
-                cell.addEventListener('dragover', function(event) {
-                    allowDrop(event);
-                });
                 
-                cell.addEventListener('click', function() {
-                    openModalWithOnclick(cell.id);
-                });
+                // Add event listeners programmatically
+                cell.addEventListener('drop', (event) => drop(event, cell));
+                cell.addEventListener('dragover', allowDrop);
+                
             }
         }
     }
@@ -154,6 +147,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Reserving room per onlick
 function openModalWithOnclick(cellId: string) {
     closeCalendar();
+    console.log("hier");
+    
 
     // get modal
     const isReservated = reservations.some(function (reservation) {
@@ -300,16 +295,21 @@ function paintColumnsReservated(array: string[], isMulti: boolean, personId: num
             let imgId: string = array[i] + "Img";
             if (person.grade.charAt(0) === "a") {
                 td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
-                                <img id="${imgId}" src="img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
+                                <img id="${imgId}" src="img/farbe0.png" draggable="true" style="z-index:1.5; opacity: 0.5;">`;
             } else {
                 td.innerHTML = `<p style="position: absolute; padding-left: 6%;">${person.firstname} ${person.surname}</p>
-                                <img id="${imgId}" src="img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
+                                <img id="${imgId}" src="img/farbe${person.grade.charAt(0)}.png" draggable="true" style="z-index:1.5; opacity: 0.5;">`;
             }
             
             if (!isMulti) {
                 let img = document.getElementById(`${imgId}`);
                 img.style.height = "3.3rem";
             }
+            
+            // Add event listener for ondragstart
+            document.getElementById(imgId).addEventListener("dragstart", (event) => {
+                drag(event, array[i]);
+            });
         }
     }
 }
@@ -559,8 +559,9 @@ function allowDrop(ev: DragEvent) {
     ev.preventDefault();
 }
 let oldReservation: Reservation;
-function drag(ev: DragEvent, cell: HTMLTableCellElement) {
-    oldReservation = getReservation(cell.id)
+
+function drag(ev: DragEvent, cellID: string) {
+    oldReservation = getReservation(cellID)
     
     ev.dataTransfer.setData("text", (ev.target as HTMLElement).id);
 }
