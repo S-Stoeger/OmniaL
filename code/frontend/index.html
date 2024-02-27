@@ -156,15 +156,40 @@
             <td></td>
         </tr>
     </table>
+    <button class="add-button" id="openCalendar"><i class="fa-solid fa-calendar-days"></i></button>
     <button class="add-button" id="openPopupButton"><i class="fa-solid fa-plus"></i></button>
-    <button class="add-button" id="changeRoom" onclick="showRooms()"><i class="fa-solid fa-door-open"></i></button>
+    <button class="add-button" id="changeRoom"><i class="fa-solid fa-door-open"></i></button>
+
+    <div id="calendar">
+        <header>
+            <h3></h3>
+            <nav>
+                <button id="prev"></button>
+                <button id="next"></button>
+            </nav>
+        </header>
+
+        <section>
+            <ul class="days">
+                <li>So</li>
+                <li>Mo</li>
+                <li>Di</li>
+                <li>Mi</li>
+                <li>Do</li>
+                <li>Fr</li>
+                <li>Sa</li>
+            </ul>
+            <ul class="dates">
+            </ul>
+        </section>
+    </div>
 
     <div id="rooms"></div>
 
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Reservierung</h2>
+            <h1>Reservierung</h1>
             <label for="dropdown">W&auml;hle den Tag:</label>
             <select id="day" name="day">
                 <option value="Montag">Montag</option>
@@ -223,7 +248,7 @@
     </div>
     <div id="InfoBox" class="modal">
         <div class="modal-content">
-            <h2>Reservierungs Information</h2>
+            <h1>Reservierungs Information</h1>
             <p id="info_content"></p>
             <button class="button" id="remove"></button>
             <button class="button" id="edit">Bearbeiten</button>
@@ -236,12 +261,5 @@
             <p id="error_message"></p>
         </div>
     </div>
-
-    <footer>
-        <div id="sticky">
-           
-        </div>
-        
-    </footer>
 </body>
 </html>

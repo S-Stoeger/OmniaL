@@ -25,7 +25,8 @@ const config = {
         }),
         new CopyPlugin({
             patterns: [
-              { from: "./css", to: "css" }
+              { from: "./css", to: "css" },
+              { from: "./img", to: "img" }
             ]
         }),
         new CleanWebpackPlugin()
