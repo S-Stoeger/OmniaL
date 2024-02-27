@@ -17,11 +17,10 @@ Auch der Verleih von Equipment wird hier festgehalten bzw. kann auch durchgefüh
 Das Projektteam besteht aus: 
 
 * Stöger Sophie
-* Binder Sofie
+* Binder Sophie
 * Wagner Moritz
 * Slabschi Maximilian
 
-=== Projektaufbau
 
 
 ==== Technologien
@@ -29,7 +28,3 @@ Das Projektteam besteht aus:
 * Backend: Java, Quarkus
 * Datenbank: Postgres
 
-
-
-=== Projektausführung
-...
