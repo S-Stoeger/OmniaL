@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     // Function to assign unique IDs to the columns
     const table = document.querySelector("table") as HTMLTableElement;
     const headers = table.querySelectorAll("th");
@@ -131,8 +131,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 cell.id = `cell_${j}_${i}`;
 
                 // Assign event listeners for ondrop and ondragover
-                cell.addEventListener('drop', function(event) {
-                    drop(event, cell.id);
+                cell.addEventListener('drop', function(event) {                    
+                    drop(event, cell);
                 });
                 cell.addEventListener('dragover', function(event) {
                     allowDrop(event);
@@ -145,9 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    promise.then(() => {
-        displayRooms();
-        getReservationsFromDatabase();
+    await promise.then(async () => {
+        displayRooms();     
+        await getReservationsFromDatabase();    
     });
 });
 
@@ -166,8 +166,12 @@ function openModalWithOnclick(cellId: string) {
         return false;
     });
 
+    console.log(cellId);
+    console.log(reservations);
+        
     const submit = document.getElementById("submitButton") as HTMLButtonElement;
 
+    console.log(isReservated);
     
     if (!isReservated || submit.innerHTML === "Speichern") {
         //let email = getPersonFromId(getReservation(cellId).personId).email;
@@ -355,23 +359,14 @@ function getColumnId(reservation: Reservation) {
 
 async function getReservationsFromDatabase() { 
     const getUrl = url + '/list';
-    const reservations: Reservation[] = await fetchDataFromUrl(getUrl)
+    // get Reservation from database
+    reservations = await fetchDataFromUrl(getUrl)
     if (reservations) {
-        reservations.forEach(singleReservation => {
-            if (dayAsDateArray.indexOf(singleReservation.reservationDate) !== -1) {
-                const reservation: Reservation = {
-                    id: singleReservation.id,
-                    roomId: singleReservation.roomId,
-                    personId: singleReservation.personId,
-                    startTime: singleReservation.startTime,
-                    endTime: singleReservation.endTime,
-                    reservationDate: singleReservation.reservationDate
-                };
-                
-                if (reservation.roomId === getRoomFromName(roomValue).id) {    
-                    reservations.push(reservation);
-                    loadReservation(reservation);
-                }
+        reservations.forEach(reservation => {
+            // check if correct day and room of reservation
+            if (dayAsDateArray.indexOf(reservation.reservationDate) !== -1 && reservation.roomId === getRoomFromName(roomValue).id) {
+                // print reservation
+                loadReservation(reservation);
             }
         })
     }

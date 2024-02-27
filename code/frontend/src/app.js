@@ -43,7 +43,6 @@ var startTimeArray = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:
 var endTimeArray = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 var dayArray = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
 var dayAsDateArray = getCurrentWeek(new Date(localStorage.getItem("date")));
-var allRooms = ["Fotostudio", "Streamingraum", "Audiostudio", "Viedeoschnitt", "Musikraum", "EDV1", "EDV2", "EDV3", "EDV4", "EDV5", "EDV6", "EDV7", "EDV8", "EDV9", "EDV10"];
 var dayDefaultValue = "Montag";
 var startTimeDefaultValue = "-- Startzeit --";
 var endTimeDefaultValue = "-- Endzeit --";
@@ -53,12 +52,15 @@ var newUri = "index.html?roomValue=Fotostudio";
 var url = 'http://localhost:8080/api/reservations';
 var olderReservation = null;
 var isRoomShown = false;
+var isCalendarShown = false;
 // no more room null
 if (roomValue == null) {
     window.location.href = newUri;
 }
 var promise;
+// HIER EVENT LISTENER BLYAD
 document.getElementById("changeRoom").addEventListener("click", showRooms);
+document.getElementById("openCalendar").addEventListener("click", openCalendar);
 // MODAL
 document.addEventListener("DOMContentLoaded", function () {
     var openPopupButton = document.getElementById("openPopupButton");
@@ -72,11 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
     var freitag = document.getElementById("freitag");
     var submitButton = document.getElementById("submitButton");
     // get dropdowns
+    getRoomsFromDatabase();
     var dropdownDay = document.getElementById("day");
     var dropdownStartTime = document.getElementById("time");
     var dropdownEndTime = document.getElementById("timeE");
     //timeTableHeader.innerHTML = `${dayAsDateArray[0]} / ${dayAsDateArray[4]}`;
-    roomTableHeader.innerHTML = "<div class=\"flex\">\n    <button class=\"switchWeek\" id=\"prev\" onclick=\"calcPrevWeek()\" style=\"width:5%;\"><i class=\"fa-solid fa-arrow-left\"></i></button>\n    <button class=\"switchWeek\" id=\"now\" onclick=\"calcNowWeek()\">".concat(roomValue, "</button>\n    <button class=\"switchWeek\" id=\"next\" onclick=\"calcNextWeek()\" style=\"width:5%;\"><i class=\"fa-solid fa-arrow-right\"></i></button>\n</div>");
+    roomTableHeader.innerHTML = "<h3>".concat(roomValue, "</h3>");
     montag.innerHTML += "<br>".concat(dayAsDateArray[0]);
     dienstag.innerHTML += "<br>".concat(dayAsDateArray[1]);
     mittwoch.innerHTML += "<br>".concat(dayAsDateArray[2]);
@@ -103,37 +106,59 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 // 
-document.addEventListener("DOMContentLoaded", function () {
-    // Function to assign unique IDs to the columns
-    var table = document.querySelector("table");
-    var headers = table.querySelectorAll("th");
-    var rows = table.querySelectorAll("tr");
-    // Iterate through each header and row
-    for (var i = 1; i < headers.length; i++) {
-        if (!headers[i].classList.contains("hour")) {
-            var _loop_1 = function (j) {
-                var cell = rows[j].children[i];
-                // Generate a unique ID based on the column index and row index
-                cell.id = "cell_".concat(j, "_").concat(i);
-                //set attribute to drag and drop
-                cell.setAttribute("ondrop", "drop(event, ".concat(cell.id, ")"));
-                cell.setAttribute("ondragover", "allowDrop(event)");
-                cell.addEventListener('click', function () {
-                    openModalWithOnclick(cell.id);
-                });
-            };
-            for (var j = 1; j < rows.length; j++) {
-                _loop_1(j);
-            }
+document.addEventListener("DOMContentLoaded", function () { return __awaiter(_this, void 0, void 0, function () {
+    var table, headers, rows, i, _loop_1, j;
+    var _this = this;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                table = document.querySelector("table");
+                headers = table.querySelectorAll("th");
+                rows = table.querySelectorAll("tr");
+                // Iterate through each header and row
+                for (i = 1; i < headers.length; i++) {
+                    if (!headers[i].classList.contains("hour")) {
+                        _loop_1 = function (j) {
+                            var cell = rows[j].children[i];
+                            // Generate a unique ID based on the column index and row index
+                            cell.id = "cell_".concat(j, "_").concat(i);
+                            // Assign event listeners for ondrop and ondragover
+                            cell.addEventListener('drop', function (event) {
+                                drop(event, cell);
+                            });
+                            cell.addEventListener('dragover', function (event) {
+                                allowDrop(event);
+                            });
+                            cell.addEventListener('click', function () {
+                                openModalWithOnclick(cell.id);
+                            });
+                        };
+                        for (j = 1; j < rows.length; j++) {
+                            _loop_1(j);
+                        }
+                    }
+                }
+                return [4 /*yield*/, promise.then(function () { return __awaiter(_this, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    displayRooms();
+                                    return [4 /*yield*/, getReservationsFromDatabase()];
+                                case 1:
+                                    _a.sent();
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); })];
+            case 1:
+                _a.sent();
+                return [2 /*return*/];
         }
-    }
-    promise.then(function () {
-        displayRooms();
-        getReservationsFromDatabase();
     });
-});
+}); });
 // Reserving room per onlick
 function openModalWithOnclick(cellId) {
+    closeCalendar();
     // get modal
     var isReservated = reservations.some(function (reservation) {
         var columnAsString = getColumnId(reservation);
@@ -144,7 +169,10 @@ function openModalWithOnclick(cellId) {
         }
         return false;
     });
+    console.log(cellId);
+    console.log(reservations);
     var submit = document.getElementById("submitButton");
+    console.log(isReservated);
     if (!isReservated || submit.innerHTML === "Speichern") {
         //let email = getPersonFromId(getReservation(cellId).personId).email;
         var email = void 0;
@@ -206,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             dayId = i;
                         }
                     }
-                    reservation = { roomId: allRooms.indexOf(roomValue) + 1, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId] };
+                    reservation = { roomId: getRoomFromName(roomValue).id, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId] };
                     if (!(submitButton.innerHTML === "Speichern")) return [3 /*break*/, 5];
                     _a.label = 1;
                 case 1:
@@ -274,7 +302,7 @@ function paintColumnsReservated(array, isMulti, personId) {
             //id.style.backgroundColor = "#cd7f35";
             var imgId = array[i] + "Img";
             if (person.grade.charAt(0) === "a") {
-                td.innerHTML = "<p style=\"position: absolute; color: #000; padding-left: 5%;\">".concat(person.firstname, " ").concat(person.surname, "</p>\n                                <img id=\"").concat(imgId, "\" src=\"img/farbe0.png\" draggable=\"true\" ondragstart=\"drag(event, ").concat(array[i], ")\" style=\"z-index:1.5; opacity: 0.5;\">");
+                td.innerHTML = "<p style=\"position: absolute; color: #000; padding-left: 5%; padding-top: 0.75%;\">".concat(person.firstname, " ").concat(person.surname, "</p>\n                                <img id=\"").concat(imgId, "\" src=\"img/farbe0.png\" draggable=\"true\" ondragstart=\"drag(event, ").concat(array[i], ")\" style=\"z-index:1.5; opacity: 0.5;\">");
             }
             else {
                 td.innerHTML = "<p style=\"position: absolute; padding-left: 6%;\">".concat(person.firstname, " ").concat(person.surname, "</p>\n                                <img id=\"").concat(imgId, "\" src=\"img/farbe").concat(person.grade.charAt(0), ".png\" draggable=\"true\" ondragstart=\"drag(event, ").concat(array[i], ")\" style=\"z-index:1.5; opacity: 0.5;\">");
@@ -326,29 +354,21 @@ function getColumnId(reservation) {
 }
 function getReservationsFromDatabase() {
     return __awaiter(this, void 0, void 0, function () {
-        var getUrl, reservations;
+        var getUrl;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     getUrl = url + '/list';
                     return [4 /*yield*/, fetchDataFromUrl(getUrl)];
                 case 1:
+                    // get Reservation from database
                     reservations = _a.sent();
                     if (reservations) {
-                        reservations.forEach(function (singleReservation) {
-                            if (dayAsDateArray.indexOf(singleReservation.reservationDate) !== -1) {
-                                var reservation = {
-                                    id: singleReservation.id,
-                                    roomId: singleReservation.roomId,
-                                    personId: singleReservation.personId,
-                                    startTime: singleReservation.startTime,
-                                    endTime: singleReservation.endTime,
-                                    reservationDate: singleReservation.reservationDate
-                                };
-                                if (reservation.roomId === (allRooms.indexOf(roomValue) + 1)) {
-                                    reservations.push(reservation);
-                                    loadReservation(reservation);
-                                }
+                        reservations.forEach(function (reservation) {
+                            // check if correct day and room of reservation
+                            if (dayAsDateArray.indexOf(reservation.reservationDate) !== -1 && reservation.roomId === getRoomFromName(roomValue).id) {
+                                // print reservation
+                                loadReservation(reservation);
                             }
                         });
                     }
@@ -387,12 +407,14 @@ function showRooms() {
     var box = document.getElementById("rooms");
     var changeRoom = document.getElementById("changeRoom");
     var openPopupButton = document.getElementById("openPopupButton");
+    var oppenCalendarId = document.getElementById("openCalendar");
     // Check if the rooms are currently shown
     if (isRoomShown) {
         // If shown, animate hiding
         box.style.transform = "translate(100%, -50%)";
         changeRoom.style.transform = "translate(0%, 0%)";
         openPopupButton.style.transform = "translate(0%, 0%)";
+        oppenCalendarId.style.transform = "translate(0%, 0%)";
         // Delay hiding the box until the animation is complete
         setTimeout(function () {
             box.style.display = "none";
@@ -408,6 +430,7 @@ function showRooms() {
         // Move other elements off-screen when showing the rooms
         changeRoom.style.transform = "translate(-340%, 0%)";
         openPopupButton.style.transform = "translate(-340%, 0%)";
+        oppenCalendarId.style.transform = "translate(-340%, 0%)";
         isRoomShown = true;
     }
 }
@@ -416,26 +439,23 @@ function displayRooms() {
     // Clear existing content in the box
     box.innerHTML = '';
     // Assuming allRooms is an array of strings
-    for (var i = 0; i < allRooms.length; i++) {
+    for (var i = 0; i < rooms.length; i++) {
         // Use textContent instead of innerHTML
         var anchor = document.createElement("a");
-        anchor.textContent = allRooms[i];
-        anchor.id = allRooms[i];
+        anchor.textContent = rooms[i].name;
+        anchor.id = rooms[i].id + "";
         var currentRoomId = anchor.id;
         // set color for selected room
-        if (compareRoom(allRooms[i])) {
+        if (roomValue === rooms[i].name) {
             anchor.style.cssText = "color: #f5b963"; // Matching room
         }
         else {
             anchor.style.cssText = "color: #fff"; // Non-matching room
         }
         // reload page with correct room
-        anchor.href = "index.html?roomValue=".concat(currentRoomId);
+        anchor.href = "index.html?roomValue=".concat(rooms[i].name);
         box.appendChild(anchor);
     }
-}
-function compareRoom(room) {
-    return roomValue === room;
 }
 function fetchDataFromUrl(url) {
     return __awaiter(this, void 0, void 0, function () {
@@ -644,7 +664,7 @@ function getReservation(cellId) {
 function updateReservation(oldReservation, cell) {
     var arr = reverseParse(extractNumbersFromString(cell), getColumnId(oldReservation).length);
     var temp = {
-        roomId: allRooms.indexOf(roomValue) + 1,
+        roomId: getRoomFromName(roomValue).id,
         personId: oldReservation.personId,
         startTime: arr[1],
         endTime: arr[2],
@@ -694,6 +714,7 @@ function showReservationInfo(reservation) {
     var infoBox = document.getElementById("InfoBox");
     var infoMessage = document.getElementById("info_content");
     var columnId = getColumnId(reservation);
+    addBorderToReservation(columnId);
     infoMessage.style.color = "#fff";
     document.getElementById("remove").remove();
     document.getElementById("edit").remove();
@@ -720,6 +741,7 @@ function showReservationInfo(reservation) {
                         column.innerHTML = "";
                     });
                     infoBox.style.display = "none";
+                    removeBorderFromReservation(columnId);
                     return [4 /*yield*/, removeReservation(reservation.id)];
                 case 1:
                     _a.sent();
@@ -734,6 +756,7 @@ function showReservationInfo(reservation) {
             addButton = document.getElementById("submitButton");
             addButton.innerHTML = "Speichern";
             infoBox.style.display = "none";
+            removeBorderFromReservation(columnId);
             olderReservation = reservation;
             openModalWithOnclick(columnId[0]);
             return [2 /*return*/];
@@ -743,14 +766,52 @@ function showReservationInfo(reservation) {
         // Close modal when clicking outside of it
         if (event.target === infoBox) {
             infoBox.style.display = "none";
+            removeBorderFromReservation(columnId);
         }
     });
 }
+function addBorderToReservation(columnIds) {
+    if (columnIds.length === 1) {
+        var resColumn = document.getElementById(columnIds[0]);
+        resColumn.style.border = "3px solid #1e444d";
+        resColumn.style.transition = ".5s border";
+        var imgId = columnIds[0] + "Img";
+        var img = document.getElementById(imgId);
+        img.style.height = "3.7rem";
+    }
+    else {
+        for (var i = 0; i < columnIds.length; i++) {
+            var resColumn = document.getElementById(columnIds[i]);
+            resColumn.style.border = "3px solid #1e444d";
+            resColumn.style.transition = ".5s border";
+            if (i === 0) {
+                resColumn.style.borderBottom = "none";
+            }
+            else if (i < columnIds.length - 1) {
+                resColumn.style.borderBottom = "none";
+                resColumn.style.borderTop = "none";
+            }
+            else {
+                resColumn.style.borderTop = "none";
+            }
+        }
+    }
+}
+function removeBorderFromReservation(columnIds) {
+    if (columnIds.length === 1) {
+        var imgId = columnIds[0] + "Img";
+        var img = document.getElementById(imgId);
+        img.style.height = "3.3rem";
+    }
+    for (var i = 0; i < columnIds.length; i++) {
+        var resColumn = document.getElementById(columnIds[i]);
+        resColumn.style.border = "none";
+    }
+}
 function reservationToString(reservation) {
     var person = getPersonFromId(reservation.personId);
-    var result = "Person: ".concat(person.firstname + " " + person.surname, " \n Email: ").concat(person.email, " \n Grade: ").concat(person.grade, " \n Datum: ").concat(reservation.reservationDate, " \n Von: ").concat(parseTime(reservation.startTime), " \n Bis: ").concat(parseTime(reservation.endTime), " \n Raum: ").concat(roomValue);
-    var formattedResult = result.replace(/\n/g, '<br>');
-    return formattedResult;
+    var result = "\n        <div id=\"flex\">\n            <div class=\"displayInfo\">\n                <h3>".concat(person.surname, " ").concat(person.firstname, "</h3>\n                <h4 style=\"margin-top: 0.5rem\">Klasse: ").concat(person.grade, "</h4>\n            </div>\n            <div class=\"displayInfo\">\n                <h4>Datum: ").concat(reservation.reservationDate, "</h4>\n                <h4 style=\"margin-top: 0.5rem\" >Zeit: ").concat(parseTime(reservation.startTime), "-").concat(parseTime(reservation.endTime), "</h4>\n            </div>\n        </div>\n        <h3 style=\"text-decoration: underline; margin-top: 1rem\">E-Mail: ").concat(person.email, "</h3>");
+    return result;
 }
 function formatDate(date) {
     return date.toISOString().slice(0, 10);
@@ -874,4 +935,165 @@ function parseDateToCalendarFormat(date) {
     var month = pad(date.getMonth() + 1, 2); // Months are 0-based
     var year = pad(date.getFullYear(), 4);
     return "".concat(year, "-").concat(month, "-").concat(day);
+}
+var header = document.querySelector("#calendar h3");
+var dates = document.querySelector(".dates");
+var navs = document.querySelectorAll("#prev, #next");
+var months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+var selectedDate = {
+    year: new Date().getFullYear(),
+    month: new Date().getMonth(),
+    day: new Date().getDate(),
+};
+function renderCalendar() {
+    var start = new Date(selectedDate.year, selectedDate.month, 1).getDay();
+    var endDate = new Date(selectedDate.year, selectedDate.month + 1, 0).getDate();
+    var end = new Date(selectedDate.year, selectedDate.month, endDate).getDay();
+    var endDatePrev = new Date(selectedDate.year, selectedDate.month, 0).getDate();
+    var datesHtml = "";
+    for (var i = start; i > 0; i--) {
+        datesHtml += "<li class=\"inactive\">".concat(endDatePrev - i + 1, "</li>");
+    }
+    for (var i = 1; i <= endDate; i++) {
+        var className = i === selectedDate.day && selectedDate.month === new Date().getMonth() && selectedDate.year === new Date().getFullYear()
+            ? ' class="today"'
+            : "";
+        datesHtml += "<li ".concat(className, ">").concat(i, "</li>");
+    }
+    for (var i = end; i < 6; i++) {
+        datesHtml += "<li class=\"inactive\">".concat(i - end + 1, "</li>");
+    }
+    if (dates) {
+        dates.innerHTML = datesHtml;
+        // Select all li elements inside the dates element
+        var dateItems = dates.querySelectorAll("li");
+        // Add event listener to each date item
+        dateItems.forEach(function (item, index) {
+            if (index < start || index >= start + endDate) {
+                return; // Skip inactive dates
+            }
+            item.addEventListener("click", function () {
+                setSelectedDate(selectedDate.year, selectedDate.month, index - start + 1);
+            });
+        });
+    }
+    if (header) {
+        header.textContent = "".concat(months[selectedDate.month], " ").concat(selectedDate.year);
+    }
+}
+function setSelectedDate(year, month, day) {
+    var newWeek = "";
+    var lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+    if (day > lastDayOfMonth) {
+        day = lastDayOfMonth;
+    }
+    var selectedDateObject = new Date(year, month, day);
+    var dayOfWeek = selectedDateObject.getDay();
+    var mondayOfTheWeek = new Date(selectedDateObject);
+    mondayOfTheWeek.setDate(selectedDateObject.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
+    // Update your selectedDate object or perform any other actions as needed
+    selectedDate = {
+        year: mondayOfTheWeek.getFullYear(),
+        month: mondayOfTheWeek.getMonth(),
+        day: mondayOfTheWeek.getDate(),
+    };
+    newWeek = mondayOfTheWeek.toDateString() + " 00:00:00 GMT+0100 (Central European Standard Time)";
+    localStorage.setItem("date", newWeek + "");
+    location.reload();
+    closeCalendar();
+}
+navs.forEach(function (nav) {
+    nav.addEventListener("click", function (e) {
+        var btnId = e.target.id;
+        if (btnId === "prev" && selectedDate.month === 0) {
+            selectedDate.year--;
+            selectedDate.month = 11;
+        }
+        else if (btnId === "next" && selectedDate.month === 11) {
+            selectedDate.year++;
+            selectedDate.month = 0;
+        }
+        else {
+            selectedDate.month = btnId === "next" ? selectedDate.month + 1 : selectedDate.month - 1;
+        }
+        renderCalendar();
+    });
+});
+renderCalendar();
+function openCalendar() {
+    if (isCalendarShown) {
+        closeCalendar();
+    }
+    else {
+        isCalendarShown = true;
+        var calendarElement = document.getElementById('calendar');
+        calendarElement.style.display = 'block';
+    }
+}
+function closeCalendar() {
+    isCalendarShown = false;
+    var calendarElement = document.getElementById('calendar');
+    calendarElement.style.display = 'none';
+}
+function getRoomsFromDatabase() {
+    return __awaiter(this, void 0, void 0, function () {
+        var getUrl, response, data, error_7;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    getUrl = "http://localhost:8080/api/rooms/list";
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, fetch(getUrl)];
+                case 2:
+                    response = _a.sent();
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch room data");
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 3:
+                    data = _a.sent();
+                    if (data) {
+                        data.forEach(function (singleRoom) {
+                            var room = {
+                                id: singleRoom.id,
+                                name: singleRoom.name,
+                                description: singleRoom.description
+                            };
+                            rooms.push(room);
+                        });
+                    }
+                    displayRooms();
+                    return [3 /*break*/, 5];
+                case 4:
+                    error_7 = _a.sent();
+                    showErrorMessage(error_7.message);
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+function getRoomFromName(roomName) {
+    var result;
+    rooms.forEach(function (room) {
+        if (room.name === roomName) {
+            result = room;
+        }
+    });
+    return result;
 }
