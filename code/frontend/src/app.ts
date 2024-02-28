@@ -162,8 +162,6 @@ function openModalWithOnclick(cellId: string) {
         }
         return false;
     });
-    console.log("hallo");
-    
 
     const submit = document.getElementById("submitButton") as HTMLButtonElement;
 
@@ -722,15 +720,17 @@ function showReservationInfo(reservation: Reservation) {
     removeButton.addEventListener("click", async () => {
         const affectedColumns: string[] = getColumnId(reservation);
 
+        removeBorderFromReservation(columnId);
+
         affectedColumns.forEach(affectedColumn => {
             const column = document.getElementById(`${affectedColumn}`) as HTMLTableCellElement;
             column.innerHTML = "";
         })
         infoBox.style.display = "none";
-
-        removeBorderFromReservation(columnId);
+        
 
         await removeReservation(reservation.id);
+        
         getReservationsFromDatabase();
     });
 
@@ -758,7 +758,6 @@ function addBorderToReservation(columnIds: string[]) {
     if(columnIds.length === 1) {
         let resColumn = document.getElementById(columnIds[0]);
         resColumn.style.border = "3px solid #1e444d";
-        resColumn.style.transition = ".5s border";
 
         let imgId = columnIds[0]+ "Img";
         let img = document.getElementById(imgId);
@@ -768,7 +767,7 @@ function addBorderToReservation(columnIds: string[]) {
         for (let i = 0; i < columnIds.length; i++) {
             let resColumn = document.getElementById(columnIds[i]);
             resColumn.style.border = "3px solid #1e444d";
-            resColumn.style.transition = ".5s border";
+
             if (i === 0) {
                 resColumn.style.borderBottom = "none";
             } else if (i < columnIds.length-1) {
@@ -785,12 +784,15 @@ function removeBorderFromReservation(columnIds: string[]) {
     if (columnIds.length === 1) {
         let imgId = columnIds[0]+ "Img";
         let img = document.getElementById(imgId);
-        img.style.height = "3.3rem";
+        if (img != null) {
+            img.style.height = "3.3rem";
+        }
+        
     }
 
     for (let i = 0; i < columnIds.length; i++) {
         let resColumn = document.getElementById(columnIds[i]);
-        resColumn.style.border = "none";
+        resColumn.style.border = "0.063rem solid #ccc";
     }
 }
 
