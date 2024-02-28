@@ -133,6 +133,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // Add event listeners programmatically
                 cell.addEventListener('drop', (event) => drop(event, cell));
                 cell.addEventListener('dragover', allowDrop);
+
+                cell.addEventListener('click', function() {
+                    openModalWithOnclick(cell.id);
+                });
                 
             }
         }
@@ -144,12 +148,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 });
 
+
 // Reserving room per onlick
 function openModalWithOnclick(cellId: string) {
     closeCalendar();
-    console.log("hier");
-    
-
     // get modal
     const isReservated = reservations.some(function (reservation) {
         let columnAsString = getColumnId(reservation);
@@ -160,14 +162,11 @@ function openModalWithOnclick(cellId: string) {
         }
         return false;
     });
+    console.log("hallo");
+    
 
-    console.log(cellId);
-    console.log(reservations);
-        
     const submit = document.getElementById("submitButton") as HTMLButtonElement;
 
-    console.log(isReservated);
-    
     if (!isReservated || submit.innerHTML === "Speichern") {
         //let email = getPersonFromId(getReservation(cellId).personId).email;
         let email;
@@ -179,16 +178,13 @@ function openModalWithOnclick(cellId: string) {
         }
         
         const modal = document.getElementById("myModal") as HTMLDivElement;
-
         // show modall
         modal.style.display = "block";
-
         // get dropdown elements
         const dropdownDay = document.getElementById("day") as HTMLSelectElement;
         const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
         const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
         const dropdrownEmail = document.getElementById("email") as HTMLSelectElement;
-
         // split id into row and column
         let array:string[] = cellId.split("_");
         
@@ -297,7 +293,7 @@ function paintColumnsReservated(array: string[], isMulti: boolean, personId: num
                 td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="img/farbe0.png" draggable="true" style="z-index:1.5; opacity: 0.5;">`;
             } else {
-                td.innerHTML = `<p style="position: absolute; padding-left: 6%;">${person.firstname} ${person.surname}</p>
+                td.innerHTML = `<p style="position: absolute; padding-left: 6%;  padding-top: 0.7%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="img/farbe${person.grade.charAt(0)}.png" draggable="true" style="z-index:1.5; opacity: 0.5;">`;
             }
             
