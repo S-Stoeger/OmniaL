@@ -65,7 +65,8 @@ public class ReservationResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    @RolesAllowed({"admin"})
+    //@RolesAllowed("admin")
+    @PermitAll
     public void deleteReservation(@PathParam("id") int id){
         this.reservationRepository.deleteReservation(id);
     }
@@ -74,7 +75,8 @@ public class ReservationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    @RolesAllowed({"admin"})
+    //@RolesAllowed({"admin"})
+    @PermitAll
     public void updateReservation(@PathParam("id") int id, ReservationDTO reservationDTO){
         this.reservationRepository.updateReservation(id,reservationMapper.toEntity(reservationDTO));
     }
