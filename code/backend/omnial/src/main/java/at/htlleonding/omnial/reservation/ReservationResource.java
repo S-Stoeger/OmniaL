@@ -33,7 +33,7 @@ public class ReservationResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    @RolesAllowed({"admin"})
+    @PermitAll
     public ReservationDTO reservationById(@PathParam("id") int id){
         return reservationMapper.toDTO(this.reservationRepository.findByIdReservation(id));
     }
@@ -41,6 +41,7 @@ public class ReservationResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/room/{id}")
+    @PermitAll
     public List<ReservationDTO> reservationByRoom(@PathParam("id") int id){
         return reservationRepository.getReservationsByRoom(id).stream().map(reservationMapper::toDTO).toList();
     }
@@ -48,12 +49,13 @@ public class ReservationResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/person/{id}")
+    @PermitAll
     public List<ReservationDTO> reservationByPerson(@PathParam("id") int id){
         return reservationRepository.getReservationsByPerson(id).stream().map(reservationMapper::toDTO).toList();
     }
 
     @POST
-    @RolesAllowed({"Admin"})
+    @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void addReservation(ReservationDTO reservationDTO){
@@ -63,6 +65,7 @@ public class ReservationResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
+    @RolesAllowed({"admin"})
     public void deleteReservation(@PathParam("id") int id){
         this.reservationRepository.deleteReservation(id);
     }
@@ -71,6 +74,7 @@ public class ReservationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
+    @RolesAllowed({"admin"})
     public void updateReservation(@PathParam("id") int id, ReservationDTO reservationDTO){
         this.reservationRepository.updateReservation(id,reservationMapper.toEntity(reservationDTO));
     }
