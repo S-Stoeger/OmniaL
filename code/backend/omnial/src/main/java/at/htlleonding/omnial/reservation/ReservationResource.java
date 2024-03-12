@@ -26,7 +26,9 @@ public class ReservationResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list")
     @PermitAll
-    public List<ReservationDTO> reservationList() {
+    public List<ReservationDTO> reservationList(@Context SecurityContext securityContext) {
+        //System.out.println(jwt.claim("name"));
+        //System.out.println(securityContext.getUserPrincipal().getName());
         return this.reservationRepository.getAllReservations().stream().map(reservationMapper::toDTO).toList();
     }
 

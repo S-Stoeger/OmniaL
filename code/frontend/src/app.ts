@@ -466,6 +466,8 @@ function displayRooms() {
     }
 }
 
+
+
 async function fetchDataFromUrl<T>(url: string): Promise<T | null> {
     const token = localStorage.getItem('token').toString()
     try {
