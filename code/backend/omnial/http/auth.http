@@ -1,0 +1,7 @@
+#JWT Token
+POST http://localhost:8000/realms/omnial/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id=backend&client_secret=XyydRLFh9iHBOf91dejPV0qMOoELytPL&username=omnial&password=omnial
+
+###
