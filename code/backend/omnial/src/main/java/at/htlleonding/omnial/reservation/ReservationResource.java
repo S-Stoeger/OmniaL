@@ -1,11 +1,13 @@
 package at.htlleonding.omnial.reservation;
 
+import at.htlleonding.omnial.person.PersonRepository;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.List;
@@ -17,18 +19,24 @@ public class ReservationResource {
     ReservationRepository reservationRepository;
 
     @Inject
+    PersonRepository personRepository;
+    @Inject
     ReservationMapper reservationMapper;
 
     @Inject
     JsonWebToken jwt;
+
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list")
     @PermitAll
     public List<ReservationDTO> reservationList() {
+        personRepository.addPerson(jwt.getClaim(Claims.given_name).toString(),jwt.getClaim(Claims.family_name).toString());
         return this.reservationRepository.getAllReservations().stream().map(reservationMapper::toDTO).toList();
     }
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

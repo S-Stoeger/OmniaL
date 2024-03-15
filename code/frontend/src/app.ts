@@ -469,11 +469,12 @@ function displayRooms() {
 async function fetchDataFromUrl<T>(url: string): Promise<T | null> {
     const token = localStorage.getItem('token').toString()
     try {
-        const headers = {'Authorization': token}
+
+        const headers = {'Authorization': 'Bearer ' + token}
         console.log('token: '+ token)
 
         console.log('header: '+headers.Authorization)
-        const response = await fetch(url,{headers});
+        const response = await fetch(url, {headers});
 
         // Check if the request was successful (status code 200)
         if (response.ok) {
