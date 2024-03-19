@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class PersonRepository {
@@ -82,10 +83,16 @@ public class PersonRepository {
     }
 
     @Transactional
-    public void addPerson(String firstName, String lastName){
-        Person newPerson = new Person(firstName,lastName);
-        System.out.println(newPerson);
-        entityManager.persist(newPerson);
+    public void addPerson(String uuid,String firstName, String lastName, String email){
+        TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_PERSON_BY_UUID, Person.class);
+        query.setParameter("uuid", uuid);
+        Person temp = query.getSingleResult();
+
+      if (temp==null){
+          Person newPerson = new Person(uuid,firstName,lastName, email);
+          System.out.println(newPerson);
+          entityManager.persist(newPerson);
+      }
     }
 
 }
