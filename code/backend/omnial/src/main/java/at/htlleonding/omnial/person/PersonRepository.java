@@ -9,8 +9,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Qualifier;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.io.IOException;
@@ -76,6 +79,13 @@ public class PersonRepository {
         TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_PERSON_BY_EMAIL, Person.class);
         query.setParameter("email", email);
         return query.getSingleResult();
+    }
+
+    @Transactional
+    public void addPerson(String firstName, String lastName){
+        Person newPerson = new Person(firstName,lastName);
+        System.out.println(newPerson);
+        entityManager.persist(newPerson);
     }
 
 }
