@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @NamedQuery(name = Person.FIND_PERSON_BY_EMAIL, query = "SELECT p from Person p where p.email = :email")
-@NamedQuery(name = Person.FIND_PERSON_BY_EMAIL, query = "SELECT p from Person p where p.uuid = :uuid")
+@NamedQuery(name = Person.FIND_PERSON_BY_UUID, query = "SELECT p from Person p where p.uuid = :uuid")
 
 @NamedQuery(name = Person.FIND_ALL_PERSONS, query = "SELECT p from Person p")
 public class Person {
