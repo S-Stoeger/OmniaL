@@ -2,23 +2,29 @@ package at.htlleonding.omnial.person;
 
 import jakarta.persistence.*;
 
-import static at.htlleonding.omnial.person.Person.FIND_ALL_PERSONS;
-import static at.htlleonding.omnial.person.Person.FIND_PERSON_BY_EMAIL;
+import java.util.Objects;
+
+
 
 @Entity
-@NamedQuery(name = FIND_PERSON_BY_EMAIL, query = "SELECT p from Person p where p.email = :email")
-@NamedQuery(name = FIND_ALL_PERSONS, query = "SELECT p from Person p")
+@NamedQuery(name = Person.FIND_PERSON_BY_EMAIL, query = "SELECT p from Person p where p.email = :email")
+@NamedQuery(name = Person.FIND_PERSON_BY_UUID, query = "SELECT p from Person p where p.uuid = :uuid")
+
+@NamedQuery(name = Person.FIND_ALL_PERSONS, query = "SELECT p from Person p")
 public class Person {
 
 
     public static final String FIND_ALL_PERSONS = "Person.finAll";
     public static final String FIND_PERSON_BY_EMAIL = "Person.findByEmail";
 
+    public static final String FIND_PERSON_BY_UUID = "Person.findByUuid";
+
     @Id
     @SequenceGenerator(name = "person_seq", sequenceName = "person_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
     private int id;
 
+    private String uuid;
     private String surname;
     private String firstname;
 
@@ -31,9 +37,7 @@ public class Person {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     public String getSurname() {
         return surname;
@@ -67,9 +71,15 @@ public class Person {
         this.grade = grade;
     }
 
-    public Person(String surname, String firstname) {
+    public Person(String uuid, String surname, String firstname) {
+        this(uuid, surname, firstname, "");
+    }
+
+    public Person(String uuid, String surname, String firstname, String email) {
+        this.uuid = uuid;
         this.surname = surname;
         this.firstname = firstname;
+        this.email = email;
     }
 
     public Person() {

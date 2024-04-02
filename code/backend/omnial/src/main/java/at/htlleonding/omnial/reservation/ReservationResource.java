@@ -11,6 +11,7 @@ import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.List;
+import java.util.UUID;
 
 @Path("/api/reservations")
 @RequestScoped
@@ -33,9 +34,12 @@ public class ReservationResource {
     @Path("/list")
     @PermitAll
     public List<ReservationDTO> reservationList() {
-        personRepository.addPerson(jwt.getClaim(Claims.given_name).toString(),jwt.getClaim(Claims.family_name).toString());
+        personRepository.addPerson(jwt.getSubject(),jwt.getClaim(Claims.given_name).toString(),jwt.getClaim(Claims.family_name).toString(),jwt.getClaim(Claims.email).toString());
         return this.reservationRepository.getAllReservations().stream().map(reservationMapper::toDTO).toList();
     }
+
+
+
 
 
     @GET
