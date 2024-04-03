@@ -1,24 +1,24 @@
 -- Insert Person
--- id, email, first name, grade, lastname
-insert into Person
+-- id, email, firstname, grade, surname, person_uuid
+insert into Person (id, email, firstname, grade, surname)
 values (nextval('person_seq'),'teacher.teacher@gmail.com', 'Teacher', 'admin', 'Teacher');
 
-insert into Person
+insert into Person (id, email, firstname, grade, surname)
 values (nextval('person_seq'),'admin.admin@gmail.com', 'Admin', 'admin', 'Admin');
 
-insert into Person
+insert into Person (id, email, firstname, grade, surname)
 values (nextval('person_seq'),'max.mustermann@gmail.com', 'Max', '1AHITM', 'Mustermann');
 
-insert into Person
+insert into Person (id, email, firstname, grade, surname)
 values (nextval('person_seq'),'mia.muster@gmail.com', 'Mia', '5BHITM', 'Muster');
 
-insert into Person
+insert into Person (id, email, firstname, grade, surname)
 values (nextval('person_seq'),'theo.temp@gmail.com', 'Theo', '2CHITM', 'Temp');
 
-insert into Person
+insert into Person (id, email, firstname, grade, surname)
 values (nextval('person_seq'),'sarah.super@gmail.com', 'Sarah', '3BHITM', 'Super');
 
-insert into Person
+insert into Person (id, email, firstname, grade, surname)
 values (nextval('person_seq'),'fabian.film@gmail.com', 'Fabian', '4AHITM', 'Film');
 
 --Insert Rooms

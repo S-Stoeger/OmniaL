@@ -82,13 +82,24 @@ public class PersonRepository {
         return query.getSingleResult();
     }
 
+    public Person getByUuid(String uuid){
+        Person person = null;
+        try {
+            TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_PERSON_BY_UUID, Person.class);
+            query.setParameter("uuid", uuid);
+            person = query.getSingleResult();
+        }catch (Exception ex){
+            System.out.println("Can't find uuid");
+        }
+
+        return person;
+    }
+
     @Transactional
     public void addPerson(String uuid,String firstName, String lastName, String email){
-        TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_PERSON_BY_UUID, Person.class);
-        query.setParameter("uuid", uuid);
-        Person temp = query.getSingleResult();
+        Person temp = getByUuid(uuid);
 
-      if (temp==null){
+        if (temp==null){
           Person newPerson = new Person(uuid,firstName,lastName, email);
           System.out.println(newPerson);
           entityManager.persist(newPerson);

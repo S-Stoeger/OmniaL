@@ -1,5 +1,6 @@
 package at.htlleonding.omnial.reservation;
 
+import at.htlleonding.omnial.person.Person;
 import at.htlleonding.omnial.person.PersonRepository;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
@@ -34,7 +35,7 @@ public class ReservationResource {
     @Path("/list")
     @PermitAll
     public List<ReservationDTO> reservationList() {
-        personRepository.addPerson(jwt.getSubject(),jwt.getClaim(Claims.given_name).toString(),jwt.getClaim(Claims.family_name).toString(),jwt.getClaim(Claims.email).toString());
+        personRepository.addPerson(jwt.getSubject(),jwt.getClaim(Claims.family_name).toString(),jwt.getClaim(Claims.given_name).toString(),jwt.getClaim(Claims.email).toString());
         return this.reservationRepository.getAllReservations().stream().map(reservationMapper::toDTO).toList();
     }
 
