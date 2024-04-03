@@ -8,8 +8,7 @@ import java.util.Objects;
 
 @Entity
 @NamedQuery(name = Person.FIND_PERSON_BY_EMAIL, query = "SELECT p from Person p where p.email = :email")
-@NamedQuery(name = Person.FIND_PERSON_BY_UUID, query = "SELECT p from Person p where p.uuid = :uuid")
-
+@NamedQuery(name = Person.FIND_PERSON_BY_UUID, query = "SELECT p from Person p where p.person_uuid = :uuid")
 @NamedQuery(name = Person.FIND_ALL_PERSONS, query = "SELECT p from Person p")
 public class Person {
 
@@ -24,7 +23,7 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
     private int id;
 
-    private String uuid;
+    private String person_uuid;
     private String surname;
     private String firstname;
 
@@ -76,7 +75,7 @@ public class Person {
     }
 
     public Person(String uuid, String surname, String firstname, String email) {
-        this.uuid = uuid;
+        this.person_uuid = uuid;
         this.surname = surname;
         this.firstname = firstname;
         this.email = email;
