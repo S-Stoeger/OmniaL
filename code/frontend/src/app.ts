@@ -29,10 +29,14 @@ interface Room {
     description: string;
 }
 
+const token = localStorage.getItem('token').toString();
+console.log(token);
+
 // constatnts
 let reservations: Reservation[] = [];
 let persons: Person[] = [];
 let rooms: Room[] = [];
+let admin: Person = {id: 1, surname: "admin", firstname: "admin", email: "admin@admin.admin", grade: "admin"};
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
@@ -63,6 +67,7 @@ document.getElementById("openCalendar").addEventListener("click", openCalendar)
 
 // MODAL
 document.addEventListener("DOMContentLoaded", () => {
+    promise = loadPersonsFromDatabase();
     const openPopupButton = document.getElementById("openPopupButton") as HTMLButtonElement;
     const modal = document.getElementById("myModal") as HTMLDivElement;
     const closeIcon = document.querySelector(".close") as HTMLElement;
@@ -89,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     donnerstag.innerHTML += `<br>${dayAsDateArray[3]}`;
     freitag.innerHTML += `<br>${dayAsDateArray[4]}`;
 
-    promise = loadPersonsFromDatabase();
+    
 
     openPopupButton.addEventListener("click", () => {
         modal.style.display = "block";
@@ -173,6 +178,9 @@ function openModalWithOnclick(cellId: string) {
             email = getPersonFromId(reservation.personId).email;
         } else {
             email = persons[0].email;
+            
+            console.log(persons);
+            console.log("Email: "+ email);
         }
         
         const modal = document.getElementById("myModal") as HTMLDivElement;
@@ -281,7 +289,9 @@ function parseToLocalDateTimeFormat(date: string, time: string) {
 
 // adding color to box
 function paintColumnsReservated(array: string[], isMulti: boolean, personId: number) {
-    const person = getPersonFromId(personId);
+    const person: Person = getPersonFromId(personId);
+    person.grade = 'admin';
+    
     for (let i: number = 0; i < array.length; i++) {
         let td = document.getElementById(array[i]);
         if (td) {
@@ -467,20 +477,25 @@ function displayRooms() {
 }
 
 async function fetchDataFromUrl<T>(url: string): Promise<T | null> {
-    const token = localStorage.getItem('token').toString()
     try {
 
         const headers = {'Authorization': 'Bearer ' + token}
-        console.log('token: '+ token)
+        //console.log('token: '+ token)
 
-        console.log('header: '+headers.Authorization)
+        //console.log('header: '+headers.Authorization)
         const response = await fetch(url, {headers});
-
+        
         // Check if the request was successful (status code 200)
         if (response.ok) {
+            const json = await response.json();
+            console.log(json);
+            
             // Parse the response JSON and return
-            return await response.json();
+            return json;
         } else {
+            const json = await response.json();
+            console.log(json);
+            
             // Print an error message if the request was not successful
             showErrorMessage(`Error: Unable to fetch data. Status code: ${response.status}`);
             return null;
@@ -846,23 +861,31 @@ async function loadPersonsFromDatabase() {
     const getUrl = "http://localhost:8080/api/persons/list"
     persons = await fetchDataFromUrl(getUrl)
 
-    persons.forEach(singePerson => {
-        const person: Person = {
-            id: singePerson.id,
-            surname: singePerson.surname,
-            firstname: singePerson.firstname,
-            email: singePerson.email,
-            grade: singePerson.grade
-        }
-        
+    console.log("=================== Persons");
+    console.log(persons);
+    
+    try {
+        persons.forEach(singePerson => {
+            const person: Person = {
+                id: singePerson.id,
+                surname: singePerson.surname,
+                firstname: singePerson.firstname,
+                email: singePerson.email,
+                grade: singePerson.grade
+            }         
+            persons.push(person);
+        });
+    
+        await getPersonFromFromToken();
+    
+    
         const option = document.createElement("option");
-        option.value = person.email +"";
-        option.text = person.email +"";
-
-        persons.push(person);
-
+        option.value = admin.email +"";
+        option.text = admin.email +"";
         emailSelect.add(option);
-    });
+    } catch(error) {
+        console.log(error);
+    }
 }
 
 //##################### Wochen Wechsel ########################
@@ -870,20 +893,17 @@ function calcNextWeek() {
     const monday = new Date(localStorage.getItem("date"));
     const nextMonday = getNextMonday(monday);
     localStorage.setItem("date", nextMonday +"");
-    location.reload();
 }
 
 function calcNowWeek() {
     const nowMonday = getCurrentMonday(new Date)
     localStorage.setItem("date", nowMonday +"");
-    location.reload();
 }
 
 function calcPrevWeek() {
     const monday = new Date(localStorage.getItem("date"));
     const prevMonday = getPreviousMonday(monday);
     localStorage.setItem("date", prevMonday +"");
-    location.reload();
 }
 
 function getNextMonday(inputDate: Date): Date {
@@ -1127,6 +1147,17 @@ async function getRoomsFromDatabase() {
     } catch (error) {
         showErrorMessage(error.message);
     }
+}
+
+async function getPersonFromFromToken() {
+    const getUrl = "http://localhost:8080/api/persons/token";
+    const res: Person = await fetchDataFromUrl(getUrl);
+
+    console.log(")================ Get user");
+    console.log(res);
+
+    admin = res;
+    admin.grade = 'admin';
 }
 
 
