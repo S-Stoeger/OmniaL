@@ -45,22 +45,31 @@ values (nextval('person_seq'),'fabian.film@gmail.com', 'Fabian', '4AHITM', 'Film
  */
 
 --Insert Rooms
-insert into Room
+insert into Room (id, description, name)
 values (nextval('room_seq'),'Das Fotostudio steht für Schüler der Medientechnik zur verfügung um an Foto- und Videoprojekten zu arbeiten','Fotostudio');
 
-insert into Room
-values (nextval('room_seq'),'Sehr cool','Streamingraum');
+insert into Room (id, description, name)
+values (nextval('room_seq'),'Wenn in der Schule ein Event stattfindet, das für die Schule oder sogar ausenstehende gestreamt werden soll, ' ||
+'verwendet man das Equipment des Streamingraums. Der Raum steht für bestimmte Schüler, die die Erlaubnis von Professor Baar erhalten haben, zur Verfügung',
+'Streamingraum');
 
-insert into Room
-values (nextval('room_seq'),'Sehr cool','Audiostudio');
+insert into Room (id, description, name)
+values (nextval('room_seq'),'Das Audiostudio steht hauptsächlich für Schüler der Medientechnik zur Verfügung aber auch für alle anderen, ' ||
+'wenn sie eine Einführung in das Equipment und/oder Aufnahmeprogramm von Professor Baar bekommen hat. ' ||
+'Im Audiostudio enstehen viele Dinge wie: der "Schwammerltalk", Übungen wie z.B. Hörspiele oder Film-nachsynronisierungen oder einfach lustige Aufnahmen unter Freunden','Audiostudio');
 
-insert into Room
-values (nextval('room_seq'),'Sehr cool','Videoschnittraum');
+insert into Room (id, description, name)
+values (nextval('room_seq'),'Der Videoschnittraum steht meist Schüler der Medientechnik zur Verfügung damit sie ' ||
+'diesen Nutzen können um Ihre Videoprojekte besser editieren können','Videoschnittraum');
 
-insert into Room
-values (nextval('room_seq'),'Sehr cool','Musikraum');
+insert into Room (id, description, name)
+values (nextval('room_seq'),'Der Musikraum steht den Schülern der HTL Leonding zur Verfügung ' ||
+'um Ihrer kreativität in Form von Musik freien lauf zu lassen','Musikraum');
 
-insert into Room
+
+-- No EDV rooms can be reserved (at least for now)
+/*
+insert into Room (id, description, name)
 values (nextval('room_seq'),'Sehr cool','EDV-1');
 
 insert into Room
@@ -89,6 +98,8 @@ values (nextval('room_seq'),'Sehr cool','EDV-9');
 
 insert into Room
 values (nextval('room_seq'),'Sehr cool','EDV-10');
+
+ */
 
 -- Insert Reservation
 insert into reservation
