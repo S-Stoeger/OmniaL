@@ -11,6 +11,10 @@ import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -93,5 +97,37 @@ public class ReservationResource {
     public void updateReservation(@PathParam("id") int id, ReservationDTO reservationDTO){
         this.reservationRepository.updateReservation(id,reservationMapper.toEntity(reservationDTO));
     }
+
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/week/{weekDay}")
+    public List<ReservationDTO> getWeekReservation(@PathParam("weekDay") String weekDay){
+        return this.reservationRepository.getWeeklyReservations(weekDay).stream().map(reservationMapper::toDTO).toList();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/weekDay/{weekDay}")
+    public List<String> getWeek(@PathParam("weekDay") String weekDay) {
+        List<String> dates = new LinkedList<>();
+
+        for (int i = 0; i < 5; i++) {
+            String dt = weekDay;  // Start date
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            try {
+                c.setTime(sdf.parse(dt));
+            } catch (
+                    ParseException e) {
+                throw new RuntimeException(e);
+            }
+            c.add(Calendar.DATE, i);  // number of days to add
+            dt = sdf.format(c.getTime());
+            dates.add(dt);
+        }
+        return dates;
+    }
+
 }
 
