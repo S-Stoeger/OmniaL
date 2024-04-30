@@ -64,6 +64,7 @@ let promise: Promise<void>;
 // HIER EVENT LISTENER BLYAD
 document.getElementById("changeRoom").addEventListener("click", showRooms)
 document.getElementById("openCalendar").addEventListener("click", openCalendar)
+document.getElementById("showButtons").addEventListener("click", showMoreButtons)
 
 // MODAL
 document.addEventListener("DOMContentLoaded", () => {
@@ -179,8 +180,8 @@ function openModalWithOnclick(cellId: string) {
         } else {
             email = persons[0].email;
             
-            console.log(persons);
-            console.log("Email: "+ email);
+            //console.log(persons);
+            //console.log("Email: "+ email);
         }
         
         const modal = document.getElementById("myModal") as HTMLDivElement;
@@ -190,7 +191,7 @@ function openModalWithOnclick(cellId: string) {
         const dropdownDay = document.getElementById("day") as HTMLSelectElement;
         const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
         const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
-        const dropdrownEmail = document.getElementById("email") as HTMLSelectElement;
+
         // split id into row and column
         let array:string[] = cellId.split("_");
         
@@ -203,7 +204,6 @@ function openModalWithOnclick(cellId: string) {
         dropdownDay.value = day;
         dropdownStartTime.value = startTime;
         dropdownEndTime.value = endTime;
-        dropdrownEmail.value = email +"";
     }
     else {
         showReservationInfo(getReservation(cellId));
@@ -415,6 +415,8 @@ function showRooms() {
     var changeRoom = document.getElementById("changeRoom");
     var openPopupButton = document.getElementById("openPopupButton");
     var oppenCalendarId = document.getElementById("openCalendar");
+    var userButton = document.getElementById('user');
+    var menuButton = document.getElementById('showButtons');
 
     // Check if the rooms are currently shown
     if (isRoomShown) {
@@ -423,6 +425,8 @@ function showRooms() {
         changeRoom.style.transform = "translate(0%, 0%)";
         openPopupButton.style.transform = "translate(0%, 0%)";
         oppenCalendarId.style.transform = "translate(0%, 0%)";
+        userButton.style.transform = "translate(0%, 0%)";
+        menuButton.style.transform = "translate(0%, 0%)";
 
         // Delay hiding the box until the animation is complete
         setTimeout(function () {
@@ -439,9 +443,11 @@ function showRooms() {
         }, 0);
 
         // Move other elements off-screen when showing the rooms
-        changeRoom.style.transform = "translate(-340%, 0%)";
-        openPopupButton.style.transform = "translate(-340%, 0%)";
-        oppenCalendarId.style.transform = "translate(-340%, 0%)";
+        changeRoom.style.transform = "translate(-410%, 0%)";
+        openPopupButton.style.transform = "translate(-410%, 0%)";
+        oppenCalendarId.style.transform = "translate(-410%, 0%)";
+        userButton.style.transform = "translate(-410%, 0%)";
+        menuButton.style.transform = "translate(-340%, 0%)";
 
         isRoomShown = true;
     }
@@ -859,7 +865,6 @@ function isInRange(update: ReservationDTO, id: number): boolean {
     return false;
 }
 async function loadPersonsFromDatabase() {
-    const emailSelect = document.getElementById("email") as HTMLSelectElement;
     const getUrl = "http://localhost:8080/api/persons/list"
     persons = await fetchDataFromUrl(getUrl)
 
@@ -884,7 +889,6 @@ async function loadPersonsFromDatabase() {
         const option = document.createElement("option");
         option.value = admin.email +"";
         option.text = admin.email +"";
-        emailSelect.add(option);
     } catch(error) {
         console.log(error);
     }
@@ -1171,4 +1175,24 @@ function getRoomFromName(roomName: string): Room {
         }
     })
     return result;
+}
+
+function showMoreButtons() {
+    let openCalendar = document.getElementById('openCalendar')
+    let createRes = document.getElementById('openPopupButton')
+    let changeRoom = document.getElementById('changeRoom')
+    let userButton = document.getElementById('user')
+    
+
+    if (openCalendar.style.display == "none") {
+        openCalendar.style.display = "block";
+        createRes.style.display = "block";
+        changeRoom.style.display = "block";
+        userButton.style.display = "block";
+    } else {
+        openCalendar.style.display = "none";
+        createRes.style.display = "none";
+        changeRoom.style.display = "none";
+        userButton.style.display = "none";
+    }
 }

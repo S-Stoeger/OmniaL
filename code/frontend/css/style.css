@@ -70,7 +70,23 @@ td:hover {
 .hour {
   font-weight: bold;
 }
+
+
 .add-button {
+  background-color: var(--light_orange);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 5rem;
+  height: 5rem;
+  font-size: 1.8rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform .5s ease;
+  
+}
+
+#showButtons {
   background-color: var(--light_orange);
   color: #fff;
   border: none;
@@ -81,25 +97,40 @@ td:hover {
   cursor: pointer;
   font-weight: bold;
   transition: transform .5s ease;
-}
-
-#openPopupButton {
   position: fixed;
   bottom: 1.25rem;
   right: 1.25rem;
 }
 
+#openPopupButton {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 11.25rem;
+  display: none;
+}
+
 #changeRoom {
   position: fixed;
-  bottom: 8.75rem;
-  right: 1.25rem;
+  bottom: 6.5rem;
+  right: 10.25rem;
+  display: none;
 }
 
 #openCalendar {
   position: fixed;
-  bottom: 16.25rem;
-  right: 1.25rem;
+  bottom: 10.25rem;
+  right: 6.5rem;
+  display: none;
 }
+
+#user {
+  position: fixed;
+  bottom: 11.25rem;
+  right: 1.25rem;
+  display: none;
+}
+
+
 .modal {
   display: none;
   position: fixed;
