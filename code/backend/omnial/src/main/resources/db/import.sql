@@ -50,14 +50,11 @@ values (nextval('room_seq'),'Das Fotostudio steht für Schüler der Medientechni
 
 insert into Room (id, description, name)
 values (nextval('room_seq'),'Wenn in der Schule ein Event stattfindet, das für die Schule oder sogar ausenstehende gestreamt werden soll, ' ||
-'verwendet man das Equipment des Streamingraums. Der Raum steht für bestimmte Schüler, die die Erlaubnis von Professor Baar erhalten haben, zur Verfügung',
-'Streamingraum');
+'verwendet man das Equipment des Streamingraums.', 'Streamingraum');
 
 insert into Room (id, description, name)
 values (nextval('room_seq'),'Das Audiostudio steht hauptsächlich für Schüler der Medientechnik zur Verfügung aber auch für alle anderen, ' ||
-'wenn sie eine Einführung in das Equipment und/oder Aufnahmeprogramm von Professor Baar bekommen hat. ' ||
-'Im Audiostudio enstehen viele Dinge wie: der "Schwammerltalk", Übungen wie z.B. Hörspiele oder Film-nachsynronisierungen oder einfach lustige Aufnahmen unter Freunden','Audiostudio');
-
+'wenn sie eine Einführung in das Equipment und/oder Aufnahmeprogramm von Professor Baar bekommen hat.', 'Audiostudio');
 insert into Room (id, description, name)
 values (nextval('room_seq'),'Der Videoschnittraum steht meist Schüler der Medientechnik zur Verfügung damit sie ' ||
 'diesen Nutzen können um Ihre Videoprojekte besser editieren können','Videoschnittraum');
