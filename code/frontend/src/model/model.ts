@@ -32,3 +32,14 @@ export const model: Model = {
     reservations: [],
     persons: []
 }
+export interface SelectedDate {
+    year: number;
+    month: number;
+    day: number;
+}
+
+export interface Room {
+    id: number;
+    name: string;
+    description: string;
+}
