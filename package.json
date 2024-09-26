@@ -1,6 +1,7 @@
 {
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "webpack-cli": "^5.1.4"
   },
   "name": "omnial",
   "description": "= Projekt ITP 1.0.0, {docdate}: ITP //:toc-placement!:  // prevents the generation of the doc at this position, so it can be printed afterwards :sourcedir: ../src/main/java :icons: font :sectnums:    // Nummerierung der Überschriften / section numbering :toc: left :experimental:",
@@ -13,6 +14,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
+    "keycloak-js": "^23.0.6"
+  }
+}
+=======
     "keycloak-js": "^23.0.7"
   }
 }
+>>>>>>> dev

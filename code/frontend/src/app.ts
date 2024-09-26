@@ -1,27 +1,8 @@
-interface Reservation {
-    id: number;
-    roomId: number;
-    personId: number;
-    startTime: string;
-    endTime: string;
-    reservationDate: string;
-}
+import { Person, Reservation, ReservationDTO, Room } from "Model/model";
+import { closeCalendar } from "./components/calendar-component";
 
-interface ReservationDTO {
-    roomId: number;
-    personId: number;
-    startTime: string;
-    endTime: string;
-    reservationDate: string;
-}
-
-interface Person {
-    id: number;
-    surname: String;
-    firstname: String;
-    email: String;
-    grade: String;
-}
+const token = localStorage.getItem('token').toString();
+console.log("token: "+token);
 
 interface Room {
     id: number;
@@ -31,7 +12,12 @@ interface Room {
 // constatnts
 let reservations: Reservation[] = [];
 let persons: Person[] = [];
+<<<<<<< HEAD:code/frontend/src/app.ts
+let rooms: Room[] = [];
+let admin: Person = {id: 1, surname: "admin", firstname: "admin", email: "admin@admin.admin", grade: "admin"};
+=======
 let rooms: Room[] = []
+>>>>>>> dev:code/frontend/js/app.ts
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
@@ -39,7 +25,6 @@ const dayAsDateArray: string[] = getCurrentWeek(new Date(localStorage.getItem("d
 const dayDefaultValue: string = "Montag";
 const startTimeDefaultValue: string = "-- Startzeit --";
 const endTimeDefaultValue: string = "-- Endzeit --";
-
 const urlParams = new URLSearchParams(window.location.search);
 const roomValue = urlParams.get('roomValue');
 const newUri: string = "index.html?roomValue=Fotostudio";
@@ -55,10 +40,15 @@ if (roomValue == null) {
     window.location.href = newUri;
 }
 
-let promise;
+let promise: Promise<void>;
+
+// HIER EVENT LISTENER BLYAD
+document.getElementById("changeRoom").addEventListener("click", showRooms)
+document.getElementById("showButtons").addEventListener("click", showMoreButtons)
 
 // MODAL
 document.addEventListener("DOMContentLoaded", () => {
+    promise = loadPersonsFromDatabase();
     const openPopupButton = document.getElementById("openPopupButton") as HTMLButtonElement;
     const modal = document.getElementById("myModal") as HTMLDivElement;
     const closeIcon = document.querySelector(".close") as HTMLElement;
@@ -71,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitButton = document.getElementById("submitButton");
 
     // get dropdowns
+    getRoomsFromDatabase();
     const dropdownDay = document.getElementById("day") as HTMLSelectElement;
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
@@ -79,13 +70,17 @@ document.addEventListener("DOMContentLoaded", () => {
     
     //timeTableHeader.innerHTML = `${dayAsDateArray[0]} / ${dayAsDateArray[4]}`;
     roomTableHeader.innerHTML = `<h3>${roomValue}</h3>`;
+<<<<<<< HEAD:code/frontend/src/app.ts
+
+=======
+>>>>>>> dev:code/frontend/js/app.ts
     montag.innerHTML += `<br>${dayAsDateArray[0]}`;
     dienstag.innerHTML += `<br>${dayAsDateArray[1]}`;
     mittwoch.innerHTML += `<br>${dayAsDateArray[2]}`;
     donnerstag.innerHTML += `<br>${dayAsDateArray[3]}`;
     freitag.innerHTML += `<br>${dayAsDateArray[4]}`;
 
-    promise = loadPersonsFromDatabase();
+    
 
     openPopupButton.addEventListener("click", () => {
         modal.style.display = "block";
@@ -111,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     // Function to assign unique IDs to the columns
     const table = document.querySelector("table") as HTMLTableElement;
     const headers = table.querySelectorAll("th");
@@ -121,31 +116,33 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let i = 1; i < headers.length; i++) {
         if (!headers[i].classList.contains("hour")) {
             for (let j = 1; j < rows.length; j++) {
-                const cell = (rows[j].children[i] as HTMLTableCellElement);
+                const cell = rows[j].children[i] as HTMLTableCellElement;
 
                 // Generate a unique ID based on the column index and row index
                 cell.id = `cell_${j}_${i}`;
-
-                //set attribute to drag and drop
-                cell.setAttribute(`ondrop`, `drop(event, ${cell.id})`);
-                cell.setAttribute(`ondragover`, `allowDrop(event)`);
-
+                
+                // Add event listeners programmatically
+                cell.addEventListener('drop', (event) => drop(event, cell));
+                cell.addEventListener('dragover', allowDrop);
 
                 cell.addEventListener('click', function() {
                     openModalWithOnclick(cell.id);
                 });
+                
             }
         }
     }
 
-    promise.then(() => {
-        displayRooms();
-        getReservationsFromDatabase();
+    await promise.then(async () => {
+        displayRooms();     
+        await getReservationsFromDatabase();    
     });
 });
 
+
 // Reserving room per onlick
 function openModalWithOnclick(cellId: string) {
+    closeCalendar();
     // get modal
     
     closeCalendar()
@@ -169,18 +166,18 @@ function openModalWithOnclick(cellId: string) {
             email = getPersonFromId(reservation.personId).email;
         } else {
             email = persons[0].email;
+            
+            //console.log(persons);
+            //console.log("Email: "+ email);
         }
         
         const modal = document.getElementById("myModal") as HTMLDivElement;
-
         // show modall
         modal.style.display = "block";
-
         // get dropdown elements
         const dropdownDay = document.getElementById("day") as HTMLSelectElement;
         const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
         const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
-        const dropdrownEmail = document.getElementById("email") as HTMLSelectElement;
 
         // split id into row and column
         let array:string[] = cellId.split("_");
@@ -194,7 +191,6 @@ function openModalWithOnclick(cellId: string) {
         dropdownDay.value = day;
         dropdownStartTime.value = startTime;
         dropdownEndTime.value = endTime;
-        dropdrownEmail.value = email +"";
     }
     else {
         showReservationInfo(getReservation(cellId));
@@ -229,8 +225,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     dayId = i;
                 }
             }
+<<<<<<< HEAD:code/frontend/src/app.ts
+=======
 
             
+>>>>>>> dev:code/frontend/js/app.ts
             const reservation: ReservationDTO = {roomId: getRoomFromName(roomValue).id, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
             
             if (submitButton.innerHTML === "Speichern") {
@@ -275,31 +274,46 @@ function getPersonFromId(id: number) {
     return result;
 }
 
-function parseToLocalDateTimeFormat(date, time) {
+function parseToLocalDateTimeFormat(date: string, time: string) {
     const localDateTime = date +"T"+ time +":00";
     return localDateTime;
 }
 
 // adding color to box
 function paintColumnsReservated(array: string[], isMulti: boolean, personId: number) {
-    const person = getPersonFromId(personId);
+    const person: Person = getPersonFromId(personId);
+    person.grade = 'admin';
+    
     for (let i: number = 0; i < array.length; i++) {
         let td = document.getElementById(array[i]);
         if (td) {
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
             if (person.grade.charAt(0) === "a") {
+<<<<<<< HEAD:code/frontend/src/app.ts
+                td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
+                                <img id="${imgId}" src="img/farbe0.png" draggable="true" style="z-index:1.5; opacity: 0.5;">`;
+            } else {
+                td.innerHTML = `<p style="position: absolute; padding-left: 6%;  padding-top: 0.7%;">${person.firstname} ${person.surname}</p>
+                                <img id="${imgId}" src="img/farbe${person.grade.charAt(0)}.png" draggable="true" style="z-index:1.5; opacity: 0.5;">`;
+=======
                 td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5.3%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
             } else {
                 td.innerHTML = `<p style="position: absolute; padding-left: 6%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
+>>>>>>> dev:code/frontend/js/app.ts
             }
             
             if (!isMulti) {
                 let img = document.getElementById(`${imgId}`);
                 img.style.height = "3.3rem";
             }
+            
+            // Add event listener for ondragstart
+            document.getElementById(imgId).addEventListener("dragstart", (event) => {
+                drag(event, array[i]);
+            });
         }
     }
 }
@@ -347,10 +361,18 @@ function getColumnId(reservation: Reservation) {
     return columnIds;
 }
 
-function getReservationsFromDatabase() { 
-    reservations = [];
-
+async function getReservationsFromDatabase() { 
     const getUrl = url + '/list';
+<<<<<<< HEAD:code/frontend/src/app.ts
+    // get Reservation from database
+    reservations = await fetchDataFromUrl(getUrl)
+    if (reservations) {
+        reservations.forEach(reservation => {
+            // check if correct day and room of reservation
+            if (dayAsDateArray.indexOf(reservation.reservationDate) !== -1 && reservation.roomId === getRoomFromName(roomValue).id) {
+                // print reservation
+                loadReservation(reservation);
+=======
     fetchDataFromUrl(getUrl)
         .then(data => {
             if (data) {
@@ -371,9 +393,10 @@ function getReservationsFromDatabase() {
                         }
                     }
                 });
+>>>>>>> dev:code/frontend/js/app.ts
             }
         })
-        .catch(error => showErrorMessage(error.message));
+    }
 }
 
 
@@ -391,7 +414,7 @@ function loadReservation(reservation: Reservation) {
 }
 
 // parse day received from beckand
-function parseDay(dateString) {
+function parseDay(dateString: string) {
     let array = dateString.split("T");
     const dateObject = new Date(array[0]);
     let dayIndex = dateObject.getDay();
@@ -414,7 +437,13 @@ function showRooms() {
     var box = document.getElementById("rooms");
     var changeRoom = document.getElementById("changeRoom");
     var openPopupButton = document.getElementById("openPopupButton");
+<<<<<<< HEAD:code/frontend/src/app.ts
+    var oppenCalendarId = document.getElementById("openCalendar");
+    var userButton = document.getElementById('user');
+    var menuButton = document.getElementById('showButtons');
+=======
     var openCalendarId = document.getElementById("openCalendar");
+>>>>>>> dev:code/frontend/js/app.ts
 
     // Check if the rooms are currently shown
     if (isRoomShown) {
@@ -422,7 +451,13 @@ function showRooms() {
         box.style.transform = "translate(100%, -50%)";
         changeRoom.style.transform = "translate(0%, 0%)";
         openPopupButton.style.transform = "translate(0%, 0%)";
+<<<<<<< HEAD:code/frontend/src/app.ts
+        oppenCalendarId.style.transform = "translate(0%, 0%)";
+        userButton.style.transform = "translate(0%, 0%)";
+        menuButton.style.transform = "translate(0%, 0%)";
+=======
         openCalendarId.style.transform = "translate(0%, 0%)";
+>>>>>>> dev:code/frontend/js/app.ts
 
         // Delay hiding the box until the animation is complete
         setTimeout(function () {
@@ -439,9 +474,17 @@ function showRooms() {
         }, 0);
 
         // Move other elements off-screen when showing the rooms
+<<<<<<< HEAD:code/frontend/src/app.ts
+        changeRoom.style.transform = "translate(-410%, 0%)";
+        openPopupButton.style.transform = "translate(-410%, 0%)";
+        oppenCalendarId.style.transform = "translate(-410%, 0%)";
+        userButton.style.transform = "translate(-410%, 0%)";
+        menuButton.style.transform = "translate(-340%, 0%)";
+=======
         changeRoom.style.transform = "translate(-340%, 0%)";
         openPopupButton.style.transform = "translate(-340%, 0%)";
         openCalendarId.style.transform = "translate(-340%, 0%)";
+>>>>>>> dev:code/frontend/js/app.ts
 
         isRoomShown = true;
     }
@@ -458,7 +501,11 @@ function displayRooms() {
         // Use textContent instead of innerHTML
         var anchor = document.createElement("a");
         anchor.textContent = rooms[i].name;
+<<<<<<< HEAD:code/frontend/src/app.ts
+        anchor.id = rooms[i].id + "";
+=======
         anchor.id = rooms[i].id+"";
+>>>>>>> dev:code/frontend/js/app.ts
 
         let currentRoomId: string = anchor.id;
 
@@ -476,15 +523,32 @@ function displayRooms() {
     }
 }
 
-async function fetchDataFromUrl(url: string): Promise<any | null> {
-    try {
-        const response = await fetch(url);
+<<<<<<< HEAD:code/frontend/src/app.ts
 
+
+async function fetchDataFromUrl<T>(url: string): Promise<T | null> {
+=======
+async function fetchDataFromUrl(url: string): Promise<any | null> {
+>>>>>>> dev:code/frontend/js/app.ts
+    try {
+
+        const headers = {'Authorization': 'Bearer ' + token}
+        //console.log('token: '+ token)
+
+        //console.log('header: '+headers.Authorization)
+        const response = await fetch(url, {headers});
+        
         // Check if the request was successful (status code 200)
         if (response.ok) {
+            const json = await response.json();
+            console.log(json);
+            
             // Parse the response JSON and return
-            return await response.json();
+            return json;
         } else {
+            const json = await response.json();
+            console.log(json);
+            
             // Print an error message if the request was not successful
             showErrorMessage(`Error: Unable to fetch data. Status code: ${response.status}`);
             return null;
@@ -563,8 +627,9 @@ function allowDrop(ev: DragEvent) {
     ev.preventDefault();
 }
 let oldReservation: Reservation;
-function drag(ev: DragEvent, cell: HTMLTableCellElement) {
-    oldReservation = getReservation(cell.id)
+
+function drag(ev: DragEvent, cellID: string) {
+    oldReservation = getReservation(cellID)
     
     ev.dataTransfer.setData("text", (ev.target as HTMLElement).id);
 }
@@ -701,9 +766,15 @@ function showReservationInfo(reservation: Reservation) {
     const infoBox = document.getElementById("InfoBox");
     const infoMessage = document.getElementById("info_content");
     const columnId = getColumnId(reservation);
+<<<<<<< HEAD:code/frontend/src/app.ts
+
+    addBorderToReservation(columnId);
+
+=======
     
     addBorderToReservation(columnId);
     
+>>>>>>> dev:code/frontend/js/app.ts
     infoMessage.style.color = "#fff";
 
     document.getElementById("remove").remove();
@@ -729,14 +800,21 @@ function showReservationInfo(reservation: Reservation) {
     removeButton.addEventListener("click", async () => {
         const affectedColumns: string[] = getColumnId(reservation);
 
+        removeBorderFromReservation(columnId);
+
         affectedColumns.forEach(affectedColumn => {
             const column = document.getElementById(`${affectedColumn}`) as HTMLTableCellElement;
             column.innerHTML = "";
         })
         infoBox.style.display = "none";
+<<<<<<< HEAD:code/frontend/src/app.ts
+        
+=======
         removeBorderFromReservation(columnId);
+>>>>>>> dev:code/frontend/js/app.ts
 
         await removeReservation(reservation.id);
+        
         getReservationsFromDatabase();
     });
 
@@ -746,7 +824,11 @@ function showReservationInfo(reservation: Reservation) {
 
         infoBox.style.display = "none";
         removeBorderFromReservation(columnId);
+<<<<<<< HEAD:code/frontend/src/app.ts
+
+=======
         
+>>>>>>> dev:code/frontend/js/app.ts
         olderReservation = reservation;
         openModalWithOnclick(columnId[0]);
     })
@@ -764,17 +846,28 @@ function addBorderToReservation(columnIds: string[]) {
     if(columnIds.length === 1) {
         let resColumn = document.getElementById(columnIds[0]);
         resColumn.style.border = "3px solid #1e444d";
+<<<<<<< HEAD:code/frontend/src/app.ts
+=======
         resColumn.style.transition = ".5s border";
+>>>>>>> dev:code/frontend/js/app.ts
 
         let imgId = columnIds[0]+ "Img";
         let img = document.getElementById(imgId);
         img.style.height = "3.7rem";
+<<<<<<< HEAD:code/frontend/src/app.ts
+
+=======
         
+>>>>>>> dev:code/frontend/js/app.ts
     } else {
         for (let i = 0; i < columnIds.length; i++) {
             let resColumn = document.getElementById(columnIds[i]);
             resColumn.style.border = "3px solid #1e444d";
+<<<<<<< HEAD:code/frontend/src/app.ts
+
+=======
             resColumn.style.transition = ".5s border";
+>>>>>>> dev:code/frontend/js/app.ts
             if (i === 0) {
                 resColumn.style.borderBottom = "none";
             } else if (i < columnIds.length-1) {
@@ -790,6 +883,20 @@ function addBorderToReservation(columnIds: string[]) {
 function removeBorderFromReservation(columnIds: string[]) {
     if (columnIds.length === 1) {
         let imgId = columnIds[0]+ "Img";
+<<<<<<< HEAD:code/frontend/src/app.ts
+        let img = document.getElementById(imgId);
+        if (img != null) {
+            img.style.height = "3.3rem";
+        }
+        
+    }
+
+    for (let i = 0; i < columnIds.length; i++) {
+        let resColumn = document.getElementById(columnIds[i]);
+        resColumn.style.border = "0.063rem solid #ccc";
+    }
+}
+=======
         let img = document.getElementById(imgId);    
         img.style.height = "3.3rem";
     }
@@ -799,10 +906,24 @@ function removeBorderFromReservation(columnIds: string[]) {
         resColumn.style.border = "none";
     }
 }    
+>>>>>>> dev:code/frontend/js/app.ts
 
 function reservationToString(reservation: Reservation): string {
     const person: Person = getPersonFromId(reservation.personId);
     let result: string = `
+<<<<<<< HEAD:code/frontend/src/app.ts
+        <div id="flex">
+            <div class="displayInfo">
+                <h3>${person.surname} ${person.firstname}</h3>
+                <h4 style="margin-top: 0.5rem">Klasse: ${person.grade}</h4>
+            </div>
+            <div class="displayInfo">
+                <h4>Datum: ${reservation.reservationDate}</h4>
+                <h4 style="margin-top: 0.5rem" >Zeit: ${parseTime(reservation.startTime)}-${parseTime(reservation.endTime)}</h4>
+            </div>
+        </div>
+        <h3 style="text-decoration: underline; margin-top: 1rem">E-Mail: ${person.email}</h3>`;
+=======
     <div id="flex">
         <div class="displayInfo">
             <h3>${person.surname} ${person.firstname}</h3>
@@ -814,6 +935,7 @@ function reservationToString(reservation: Reservation): string {
         </div>
     </div>
     <h3 style="text-decoration: underline; margin-top: 1rem">E-Mail: ${person.email}</h3>`;
+>>>>>>> dev:code/frontend/js/app.ts
     return result;
 }
 
@@ -840,31 +962,33 @@ function isInRange(update: ReservationDTO, id: number): boolean {
     return false;
 }
 async function loadPersonsFromDatabase() {
-    const emailSelect = document.getElementById("email") as HTMLSelectElement;
     const getUrl = "http://localhost:8080/api/persons/list"
-    await fetchDataFromUrl(getUrl)
-        .then(data => {
-            if (data) {
-                data.forEach(singePerson => {
-                    const person: Person = {
-                        id: singePerson.id,
-                        surname: singePerson.surname,
-                        firstname: singePerson.firstname,
-                        email: singePerson.email,
-                        grade: singePerson.grade
-                    }
-                    
-                    const option = document.createElement("option");
-                    option.value = person.email +"";
-                    option.text = person.email +"";
+    persons = await fetchDataFromUrl(getUrl)
 
-                    persons.push(person);
-
-                    emailSelect.add(option);
-                });
-            }
-        })
-        .catch(error => showErrorMessage(error.message));   
+    console.log("=================== Persons");
+    console.log(persons);
+    
+    try {
+        persons.forEach(singePerson => {
+            const person: Person = {
+                id: singePerson.id,
+                surname: singePerson.surname,
+                firstname: singePerson.firstname,
+                email: singePerson.email,
+                grade: singePerson.grade
+            }         
+            persons.push(person);
+        });
+    
+        await getPersonFromFromToken();
+    
+    
+        const option = document.createElement("option");
+        option.value = admin.email +"";
+        option.text = admin.email +"";
+    } catch(error) {
+        console.log(error);
+    }
 }
 
 //##################### Wochen Wechsel ########################
@@ -872,20 +996,17 @@ function calcNextWeek() {
     const monday = new Date(localStorage.getItem("date"));
     const nextMonday = getNextMonday(monday);
     localStorage.setItem("date", nextMonday +"");
-    location.reload();
 }
 
 function calcNowWeek() {
     const nowMonday = getCurrentMonday(new Date)
     localStorage.setItem("date", nowMonday +"");
-    location.reload();
 }
 
 function calcPrevWeek() {
     const monday = new Date(localStorage.getItem("date"));
     const prevMonday = getPreviousMonday(monday);
     localStorage.setItem("date", prevMonday +"");
-    location.reload();
 }
 
 function getNextMonday(inputDate: Date): Date {
@@ -897,7 +1018,7 @@ function getNextMonday(inputDate: Date): Date {
     return nextMonday;
 }
 
-function getCurrentMonday(d) {
+function getCurrentMonday(d: Date) {
     d = new Date(d);
     var day = d.getDay(),
     diff = d.getDate() - day + (day == 0 ? -6 : 1); 
@@ -961,6 +1082,25 @@ window.onload = function () {
   }
 
 
+<<<<<<< HEAD:code/frontend/src/app.ts
+async function getRoomsFromDatabase() {
+    const getUrl = "http://localhost:8080/api/rooms/list";
+
+    try {
+        const response = await fetch(getUrl);
+        if (!response.ok) {
+            throw new Error("Failed to fetch room data");
+        }
+
+        const data = await response.json();
+        
+        if (data) {
+            data.forEach(singleRoom => {
+                const room = {
+                    id: singleRoom.id,
+                    name: singleRoom.name,
+                    description: singleRoom.description
+=======
 
   interface SelectedDate {
     year: number;
@@ -1102,6 +1242,7 @@ async function getRoomsFromDatabase() {
                     id: singeRoom.id,
                     name: singeRoom.name,
                     description: singeRoom.description
+>>>>>>> dev:code/frontend/js/app.ts
                 };
 
                 rooms.push(room);
@@ -1113,6 +1254,21 @@ async function getRoomsFromDatabase() {
     }
 }
 
+<<<<<<< HEAD:code/frontend/src/app.ts
+async function getPersonFromFromToken() {
+    const getUrl = "http://localhost:8080/api/persons/token";
+    const res: Person = await fetchDataFromUrl(getUrl);
+
+    console.log(")================ Get user");
+    console.log(res);
+
+    admin = res;
+    admin.grade = 'admin';
+}
+
+
+=======
+>>>>>>> dev:code/frontend/js/app.ts
 function getRoomFromName(roomName: string): Room {
     let result: Room;
     rooms.forEach(room => {
@@ -1121,4 +1277,28 @@ function getRoomFromName(roomName: string): Room {
         }
     })
     return result;
+<<<<<<< HEAD:code/frontend/src/app.ts
 }
+
+function showMoreButtons() {
+    let openCalendar = document.getElementById('openCalendar')
+    let createRes = document.getElementById('openPopupButton')
+    let changeRoom = document.getElementById('changeRoom')
+    let userButton = document.getElementById('user')
+    
+
+    if (openCalendar.style.display == "none") {
+        openCalendar.style.display = "block";
+        createRes.style.display = "block";
+        changeRoom.style.display = "block";
+        userButton.style.display = "block";
+    } else {
+        openCalendar.style.display = "none";
+        createRes.style.display = "none";
+        changeRoom.style.display = "none";
+        userButton.style.display = "none";
+    }
+}
+=======
+}
+>>>>>>> dev:code/frontend/js/app.ts

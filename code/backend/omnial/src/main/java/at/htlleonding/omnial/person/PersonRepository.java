@@ -13,7 +13,9 @@ import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
+import jakarta.inject.Qualifier;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
@@ -29,6 +31,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import java.util.List;
+<<<<<<< HEAD
+import java.util.UUID;
+
+=======
+>>>>>>> dev
 @ApplicationScoped
 public class PersonRepository {
     @Inject
@@ -88,6 +95,30 @@ public class PersonRepository {
         TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_PERSON_BY_EMAIL, Person.class);
         query.setParameter("email", email);
         return query.getSingleResult();
+    }
+
+    public Person getByUuid(String uuid){
+        Person person = null;
+        try {
+            TypedQuery<Person> query = entityManager.createNamedQuery(Person.FIND_PERSON_BY_UUID, Person.class);
+            query.setParameter("uuid", uuid);
+            person = query.getSingleResult();
+        }catch (Exception ex){
+            System.out.println("Can't find uuid");
+        }
+
+        return person;
+    }
+
+    @Transactional
+    public void addPerson(String uuid,String firstName, String lastName, String email){
+        Person temp = getByUuid(uuid);
+
+        if (temp==null){
+          Person newPerson = new Person(uuid,firstName,lastName, email);
+          System.out.println(newPerson);
+          entityManager.persist(newPerson);
+      }
     }
 
 }
