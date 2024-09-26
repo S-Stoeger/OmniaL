@@ -1,14 +1,20 @@
 package at.htlleonding.omnial.reservation;
 
+<<<<<<< HEAD
 import at.htlleonding.omnial.person.Person;
 import at.htlleonding.omnial.person.PersonRepository;
+=======
+>>>>>>> dev
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+<<<<<<< HEAD
 import org.eclipse.microprofile.jwt.Claims;
+=======
+>>>>>>> dev
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.text.ParseException;
@@ -32,8 +38,11 @@ public class ReservationResource {
     @Inject
     JsonWebToken jwt;
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> dev
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list")
@@ -50,7 +59,11 @@ public class ReservationResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
+<<<<<<< HEAD
     @PermitAll
+=======
+    @RolesAllowed({"admin"})
+>>>>>>> dev
     public ReservationDTO reservationById(@PathParam("id") int id){
         return reservationMapper.toDTO(this.reservationRepository.findByIdReservation(id));
     }
@@ -72,7 +85,11 @@ public class ReservationResource {
     }
 
     @POST
+<<<<<<< HEAD
     @PermitAll
+=======
+    @RolesAllowed({"Admin"})
+>>>>>>> dev
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void addReservation(ReservationDTO reservationDTO){

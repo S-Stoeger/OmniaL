@@ -4,11 +4,20 @@ import { closeCalendar } from "./components/calendar-component";
 const token = localStorage.getItem('token').toString();
 console.log("token: "+token);
 
+interface Room {
+    id: number;
+    name: string;
+    description: string;
+}
 // constatnts
 let reservations: Reservation[] = [];
 let persons: Person[] = [];
+<<<<<<< HEAD:code/frontend/src/app.ts
 let rooms: Room[] = [];
 let admin: Person = {id: 1, surname: "admin", firstname: "admin", email: "admin@admin.admin", grade: "admin"};
+=======
+let rooms: Room[] = []
+>>>>>>> dev:code/frontend/js/app.ts
 const startTimeArray: string[] = ["07:00", "08:00", "08:55", "10:00", "10:55", "11:50", "12:45", "13:40", "14:35", "15:30", "16:25", "17:20", "18:15", "19:10", "20:05", "21:00", "21:55"];
 const endTimeArray: string[] = ["07:50", "08:50", "09:45", "10:50", "11:45", "12:40", "13:35", "14:30", "15:25", "16:20", "17:15", "18:10", "19:05", "20:00", "20:50", "21:45", "22:40"];
 const dayArray: string[] = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"];
@@ -24,6 +33,7 @@ const url: string = 'http://localhost:8080/api/reservations';
 var olderReservation: Reservation = null;
 
 var isRoomShown = false;
+var isCalendarShown = false;
 
 // no more room null
 if (roomValue == null) {
@@ -56,9 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownStartTime = document.getElementById("time") as HTMLSelectElement;
     const dropdownEndTime = document.getElementById("timeE") as HTMLSelectElement;
 
+    getRoomsFromDatabase();
+    
     //timeTableHeader.innerHTML = `${dayAsDateArray[0]} / ${dayAsDateArray[4]}`;
     roomTableHeader.innerHTML = `<h3>${roomValue}</h3>`;
+<<<<<<< HEAD:code/frontend/src/app.ts
 
+=======
+>>>>>>> dev:code/frontend/js/app.ts
     montag.innerHTML += `<br>${dayAsDateArray[0]}`;
     dienstag.innerHTML += `<br>${dayAsDateArray[1]}`;
     mittwoch.innerHTML += `<br>${dayAsDateArray[2]}`;
@@ -129,6 +144,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 function openModalWithOnclick(cellId: string) {
     closeCalendar();
     // get modal
+    
+    closeCalendar()
     const isReservated = reservations.some(function (reservation) {
         let columnAsString = getColumnId(reservation);
         for (let i = 0; i < columnAsString.length; i++) {
@@ -208,6 +225,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     dayId = i;
                 }
             }
+<<<<<<< HEAD:code/frontend/src/app.ts
+=======
+
+            
+>>>>>>> dev:code/frontend/js/app.ts
             const reservation: ReservationDTO = {roomId: getRoomFromName(roomValue).id, personId: personId, startTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], startTime), endTime: parseToLocalDateTimeFormat(dayAsDateArray[dayId], endTime), reservationDate: dayAsDateArray[dayId]};
             
             if (submitButton.innerHTML === "Speichern") {
@@ -268,11 +290,19 @@ function paintColumnsReservated(array: string[], isMulti: boolean, personId: num
             //id.style.backgroundColor = "#cd7f35";
             let imgId: string = array[i] + "Img";
             if (person.grade.charAt(0) === "a") {
+<<<<<<< HEAD:code/frontend/src/app.ts
                 td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="img/farbe0.png" draggable="true" style="z-index:1.5; opacity: 0.5;">`;
             } else {
                 td.innerHTML = `<p style="position: absolute; padding-left: 6%;  padding-top: 0.7%;">${person.firstname} ${person.surname}</p>
                                 <img id="${imgId}" src="img/farbe${person.grade.charAt(0)}.png" draggable="true" style="z-index:1.5; opacity: 0.5;">`;
+=======
+                td.innerHTML = `<p style="position: absolute; color: #000; padding-left: 5.3%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
+                                <img id="${imgId}" src="img/farbe0.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
+            } else {
+                td.innerHTML = `<p style="position: absolute; padding-left: 6%; padding-top: 0.75%;">${person.firstname} ${person.surname}</p>
+                                <img id="${imgId}" src="img/farbe${person.grade.charAt(0)}.png" draggable="true" ondragstart="drag(event, ${array[i]})" style="z-index:1.5; opacity: 0.5;">`
+>>>>>>> dev:code/frontend/js/app.ts
             }
             
             if (!isMulti) {
@@ -333,6 +363,7 @@ function getColumnId(reservation: Reservation) {
 
 async function getReservationsFromDatabase() { 
     const getUrl = url + '/list';
+<<<<<<< HEAD:code/frontend/src/app.ts
     // get Reservation from database
     reservations = await fetchDataFromUrl(getUrl)
     if (reservations) {
@@ -341,6 +372,28 @@ async function getReservationsFromDatabase() {
             if (dayAsDateArray.indexOf(reservation.reservationDate) !== -1 && reservation.roomId === getRoomFromName(roomValue).id) {
                 // print reservation
                 loadReservation(reservation);
+=======
+    fetchDataFromUrl(getUrl)
+        .then(data => {
+            if (data) {
+                data.forEach(singleReservation => {
+                    if (dayAsDateArray.indexOf(singleReservation.reservationDate) !== -1) {
+                        const reservation: Reservation = {
+                            id: singleReservation.id,
+                            roomId: singleReservation.roomId,
+                            personId: singleReservation.personId,
+                            startTime: singleReservation.startTime,
+                            endTime: singleReservation.endTime,
+                            reservationDate: singleReservation.reservationDate
+                        };
+                        
+                        if (reservation.roomId === getRoomFromName(roomValue).id) {    
+                            reservations.push(reservation);
+                            loadReservation(reservation);
+                        }
+                    }
+                });
+>>>>>>> dev:code/frontend/js/app.ts
             }
         })
     }
@@ -384,9 +437,13 @@ function showRooms() {
     var box = document.getElementById("rooms");
     var changeRoom = document.getElementById("changeRoom");
     var openPopupButton = document.getElementById("openPopupButton");
+<<<<<<< HEAD:code/frontend/src/app.ts
     var oppenCalendarId = document.getElementById("openCalendar");
     var userButton = document.getElementById('user');
     var menuButton = document.getElementById('showButtons');
+=======
+    var openCalendarId = document.getElementById("openCalendar");
+>>>>>>> dev:code/frontend/js/app.ts
 
     // Check if the rooms are currently shown
     if (isRoomShown) {
@@ -394,9 +451,13 @@ function showRooms() {
         box.style.transform = "translate(100%, -50%)";
         changeRoom.style.transform = "translate(0%, 0%)";
         openPopupButton.style.transform = "translate(0%, 0%)";
+<<<<<<< HEAD:code/frontend/src/app.ts
         oppenCalendarId.style.transform = "translate(0%, 0%)";
         userButton.style.transform = "translate(0%, 0%)";
         menuButton.style.transform = "translate(0%, 0%)";
+=======
+        openCalendarId.style.transform = "translate(0%, 0%)";
+>>>>>>> dev:code/frontend/js/app.ts
 
         // Delay hiding the box until the animation is complete
         setTimeout(function () {
@@ -413,11 +474,17 @@ function showRooms() {
         }, 0);
 
         // Move other elements off-screen when showing the rooms
+<<<<<<< HEAD:code/frontend/src/app.ts
         changeRoom.style.transform = "translate(-410%, 0%)";
         openPopupButton.style.transform = "translate(-410%, 0%)";
         oppenCalendarId.style.transform = "translate(-410%, 0%)";
         userButton.style.transform = "translate(-410%, 0%)";
         menuButton.style.transform = "translate(-340%, 0%)";
+=======
+        changeRoom.style.transform = "translate(-340%, 0%)";
+        openPopupButton.style.transform = "translate(-340%, 0%)";
+        openCalendarId.style.transform = "translate(-340%, 0%)";
+>>>>>>> dev:code/frontend/js/app.ts
 
         isRoomShown = true;
     }
@@ -434,7 +501,11 @@ function displayRooms() {
         // Use textContent instead of innerHTML
         var anchor = document.createElement("a");
         anchor.textContent = rooms[i].name;
+<<<<<<< HEAD:code/frontend/src/app.ts
         anchor.id = rooms[i].id + "";
+=======
+        anchor.id = rooms[i].id+"";
+>>>>>>> dev:code/frontend/js/app.ts
 
         let currentRoomId: string = anchor.id;
 
@@ -452,9 +523,13 @@ function displayRooms() {
     }
 }
 
+<<<<<<< HEAD:code/frontend/src/app.ts
 
 
 async function fetchDataFromUrl<T>(url: string): Promise<T | null> {
+=======
+async function fetchDataFromUrl(url: string): Promise<any | null> {
+>>>>>>> dev:code/frontend/js/app.ts
     try {
 
         const headers = {'Authorization': 'Bearer ' + token}
@@ -691,9 +766,15 @@ function showReservationInfo(reservation: Reservation) {
     const infoBox = document.getElementById("InfoBox");
     const infoMessage = document.getElementById("info_content");
     const columnId = getColumnId(reservation);
+<<<<<<< HEAD:code/frontend/src/app.ts
 
     addBorderToReservation(columnId);
 
+=======
+    
+    addBorderToReservation(columnId);
+    
+>>>>>>> dev:code/frontend/js/app.ts
     infoMessage.style.color = "#fff";
 
     document.getElementById("remove").remove();
@@ -726,7 +807,11 @@ function showReservationInfo(reservation: Reservation) {
             column.innerHTML = "";
         })
         infoBox.style.display = "none";
+<<<<<<< HEAD:code/frontend/src/app.ts
         
+=======
+        removeBorderFromReservation(columnId);
+>>>>>>> dev:code/frontend/js/app.ts
 
         await removeReservation(reservation.id);
         
@@ -739,7 +824,11 @@ function showReservationInfo(reservation: Reservation) {
 
         infoBox.style.display = "none";
         removeBorderFromReservation(columnId);
+<<<<<<< HEAD:code/frontend/src/app.ts
 
+=======
+        
+>>>>>>> dev:code/frontend/js/app.ts
         olderReservation = reservation;
         openModalWithOnclick(columnId[0]);
     })
@@ -757,16 +846,28 @@ function addBorderToReservation(columnIds: string[]) {
     if(columnIds.length === 1) {
         let resColumn = document.getElementById(columnIds[0]);
         resColumn.style.border = "3px solid #1e444d";
+<<<<<<< HEAD:code/frontend/src/app.ts
+=======
+        resColumn.style.transition = ".5s border";
+>>>>>>> dev:code/frontend/js/app.ts
 
         let imgId = columnIds[0]+ "Img";
         let img = document.getElementById(imgId);
         img.style.height = "3.7rem";
+<<<<<<< HEAD:code/frontend/src/app.ts
 
+=======
+        
+>>>>>>> dev:code/frontend/js/app.ts
     } else {
         for (let i = 0; i < columnIds.length; i++) {
             let resColumn = document.getElementById(columnIds[i]);
             resColumn.style.border = "3px solid #1e444d";
+<<<<<<< HEAD:code/frontend/src/app.ts
 
+=======
+            resColumn.style.transition = ".5s border";
+>>>>>>> dev:code/frontend/js/app.ts
             if (i === 0) {
                 resColumn.style.borderBottom = "none";
             } else if (i < columnIds.length-1) {
@@ -782,6 +883,7 @@ function addBorderToReservation(columnIds: string[]) {
 function removeBorderFromReservation(columnIds: string[]) {
     if (columnIds.length === 1) {
         let imgId = columnIds[0]+ "Img";
+<<<<<<< HEAD:code/frontend/src/app.ts
         let img = document.getElementById(imgId);
         if (img != null) {
             img.style.height = "3.3rem";
@@ -794,10 +896,22 @@ function removeBorderFromReservation(columnIds: string[]) {
         resColumn.style.border = "0.063rem solid #ccc";
     }
 }
+=======
+        let img = document.getElementById(imgId);    
+        img.style.height = "3.3rem";
+    }
+    
+    for (let i = 0; i < columnIds.length; i++) {
+        let resColumn = document.getElementById(columnIds[i]);
+        resColumn.style.border = "none";
+    }
+}    
+>>>>>>> dev:code/frontend/js/app.ts
 
 function reservationToString(reservation: Reservation): string {
     const person: Person = getPersonFromId(reservation.personId);
     let result: string = `
+<<<<<<< HEAD:code/frontend/src/app.ts
         <div id="flex">
             <div class="displayInfo">
                 <h3>${person.surname} ${person.firstname}</h3>
@@ -809,6 +923,19 @@ function reservationToString(reservation: Reservation): string {
             </div>
         </div>
         <h3 style="text-decoration: underline; margin-top: 1rem">E-Mail: ${person.email}</h3>`;
+=======
+    <div id="flex">
+        <div class="displayInfo">
+            <h3>${person.surname} ${person.firstname}</h3>
+            <h4 style="margin-top: 0.5rem">Klasse: ${person.grade}</h4>
+        </div>
+        <div class="displayInfo">
+            <h4>Datum: ${reservation.reservationDate}</h4>
+            <h4 style="margin-top: 0.5rem" >Zeit: ${parseTime(reservation.startTime)}-${parseTime(reservation.endTime)}</h4>
+        </div>
+    </div>
+    <h3 style="text-decoration: underline; margin-top: 1rem">E-Mail: ${person.email}</h3>`;
+>>>>>>> dev:code/frontend/js/app.ts
     return result;
 }
 
@@ -955,6 +1082,7 @@ window.onload = function () {
   }
 
 
+<<<<<<< HEAD:code/frontend/src/app.ts
 async function getRoomsFromDatabase() {
     const getUrl = "http://localhost:8080/api/rooms/list";
 
@@ -972,6 +1100,149 @@ async function getRoomsFromDatabase() {
                     id: singleRoom.id,
                     name: singleRoom.name,
                     description: singleRoom.description
+=======
+
+  interface SelectedDate {
+    year: number;
+    month: number;
+    day: number;
+  }
+  
+  const header: HTMLElement | null = document.querySelector("#calendar h3");
+  const dates: HTMLElement | null = document.querySelector(".dates");
+  const navs: NodeListOf<Element> = document.querySelectorAll("#prev, #next");
+  
+  const months: string[] = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  
+  let selectedDate: SelectedDate = {
+    year: new Date().getFullYear(),
+    month: new Date().getMonth(),
+    day: new Date().getDate(),
+  };
+  
+  function renderCalendar(): void {
+    const start: number = new Date(selectedDate.year, selectedDate.month, 1).getDay();
+    const endDate: number = new Date(selectedDate.year, selectedDate.month + 1, 0).getDate();
+    const end: number = new Date(selectedDate.year, selectedDate.month, endDate).getDay();
+    const endDatePrev: number = new Date(selectedDate.year, selectedDate.month, 0).getDate();
+  
+    let datesHtml: string = "";
+  
+    for (let i = start; i > 0; i--) {
+      datesHtml += `<li class="inactive" onclick="setSelectedDate(${selectedDate.year}, ${selectedDate.month - 1}, ${endDatePrev - i + 1})">${endDatePrev - i + 1}</li>`;
+    }
+  
+    for (let i = 1; i <= endDate; i++) {
+      let className: string =
+        i === selectedDate.day && selectedDate.month === new Date().getMonth() && selectedDate.year === new Date().getFullYear()
+          ? ' class="today"'
+          : "";
+      datesHtml += `<li${className} onclick="setSelectedDate(${selectedDate.year}, ${selectedDate.month}, ${i})">${i}</li>`;
+    }
+  
+    for (let i = end; i < 6; i++) {
+      datesHtml += `<li class="inactive" onclick="setSelectedDate(${selectedDate.year}, ${selectedDate.month + 1}, ${i - end + 1})">${i - end + 1}</li>`;
+    }
+  
+    if (dates) {
+      dates.innerHTML = datesHtml;
+    }
+    
+    if (header) {
+      header.textContent = `${months[selectedDate.month]} ${selectedDate.year}`;
+    }
+  }
+  
+  function setSelectedDate(year: number, month: number, day: number): void {
+    let newWeek: String = "";
+    const lastDayOfMonth: number = new Date(year, month + 1, 0).getDate();
+    if (day > lastDayOfMonth) {
+      day = lastDayOfMonth;
+    }
+  
+    const selectedDateObject: Date = new Date(year, month, day);
+    const dayOfWeek: number = selectedDateObject.getDay();
+    const mondayOfTheWeek: Date = new Date(selectedDateObject);
+    mondayOfTheWeek.setDate(selectedDateObject.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1));
+  
+    // Update your selectedDate object or perform any other actions as needed
+    selectedDate = {
+      year: mondayOfTheWeek.getFullYear(),
+      month: mondayOfTheWeek.getMonth(),
+      day: mondayOfTheWeek.getDate(),
+    };
+  
+    newWeek = mondayOfTheWeek.toDateString() + " 00:00:00 GMT+0100 (Central European Standard Time)";
+
+    localStorage.setItem("date", newWeek +"");
+    location.reload();
+    
+    closeCalendar();
+  }
+  
+  
+  navs.forEach((nav) => {
+    nav.addEventListener("click", (e) => {
+      const btnId: string = (e.target as HTMLElement).id;
+  
+      if (btnId === "prev" && selectedDate.month === 0) {
+        selectedDate.year--;
+        selectedDate.month = 11;
+      } else if (btnId === "next" && selectedDate.month === 11) {
+        selectedDate.year++;
+        selectedDate.month = 0;
+      } else {
+        selectedDate.month = btnId === "next" ? selectedDate.month + 1 : selectedDate.month - 1;
+      }
+  
+      renderCalendar();
+    });
+  });
+  
+  renderCalendar();
+
+  function openCalendar() {
+    if(isCalendarShown) {
+        closeCalendar()
+    } else {
+        isCalendarShown = true;
+        let calendarElement = document.getElementById('calendar');  
+        calendarElement.style.display = 'block';
+    }  
+}
+
+  function closeCalendar() {
+    isCalendarShown = false;
+    let calendarElement = document.getElementById('calendar');  
+    calendarElement.style.display = 'none';
+  }
+
+async function getRoomsFromDatabase() {
+    const getUrl = "http://localhost:8080/api/rooms/list";
+    
+    try {
+        const data = await fetchDataFromUrl(getUrl);
+        
+        if (data) {
+            data.forEach(singeRoom => {
+                const room: Room = {
+                    id: singeRoom.id,
+                    name: singeRoom.name,
+                    description: singeRoom.description
+>>>>>>> dev:code/frontend/js/app.ts
                 };
 
                 rooms.push(room);
@@ -983,6 +1254,7 @@ async function getRoomsFromDatabase() {
     }
 }
 
+<<<<<<< HEAD:code/frontend/src/app.ts
 async function getPersonFromFromToken() {
     const getUrl = "http://localhost:8080/api/persons/token";
     const res: Person = await fetchDataFromUrl(getUrl);
@@ -995,6 +1267,8 @@ async function getPersonFromFromToken() {
 }
 
 
+=======
+>>>>>>> dev:code/frontend/js/app.ts
 function getRoomFromName(roomName: string): Room {
     let result: Room;
     rooms.forEach(room => {
@@ -1003,6 +1277,7 @@ function getRoomFromName(roomName: string): Room {
         }
     })
     return result;
+<<<<<<< HEAD:code/frontend/src/app.ts
 }
 
 function showMoreButtons() {
@@ -1024,3 +1299,6 @@ function showMoreButtons() {
         userButton.style.display = "none";
     }
 }
+=======
+}
+>>>>>>> dev:code/frontend/js/app.ts
