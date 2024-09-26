@@ -6,7 +6,7 @@
 
   </a>
 
-  <h3 align="center">Omnial</h3>
+  <h3 align="center">OmniaL</h3>
 
   <p align="center">
     Das Programm für Raumreservierung und Equpmentverleih
@@ -51,7 +51,7 @@
 Die Equipmentverwaltung der Schule erfolgt größtenteils per Papier oder über eine Exel datei.
 Dies führt oft zu Verwechslungen und Chaos bei dem Verleih.
 In Sachen Raumreservierung ist es Schülern bis dato nicht möglich, Räume zu reservieren.
-Und hier kommt Omnial ins Spiel:
+Und hier kommt OmniaL ins Spiel:
 
 Warum:
 * Die Verwaltung des Equipments wird online und einheitlich abgehalten, wodurch keine Verwechslungen zustande kommen.
