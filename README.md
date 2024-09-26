@@ -48,13 +48,13 @@
 ## Über das Projekt
 <!-- Screenshot von UI bzw Startseite -->
 <!-- [![Product Name Verwaltung deScreen Shot][product-screenshot]](https://example.com)-->
-Die Equipment verwaltung der Schule erfolgt größtenteils per Papier oder über eine Exel datei.
+Die Equipmentverwaltung der Schule erfolgt größtenteils per Papier oder über eine Exel datei.
 Dies führt oft zu Verwechslungen und Chaos bei dem Verleih.
-In Sachen Raumreservierung ist es Schülern bis dato nicht möglich Räume zu reservieren.
-Und hierbei kommt Omnial ins Spiel:
+In Sachen Raumreservierung ist es Schülern bis dato nicht möglich, Räume zu reservieren.
+Und hier kommt Omnial ins Spiel:
 
 Warum:
-* Die Verwaltung des Equipments wird online und einheitlich abgehalten wodurch keine Verwechslungen zustande kommen.
+* Die Verwaltung des Equipments wird online und einheitlich abgehalten, wodurch keine Verwechslungen zustande kommen.
 * Räume können online von Schülern reserviert werden.
 
 ### Technologgien
