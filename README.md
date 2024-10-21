@@ -54,11 +54,9 @@ In Sachen Raumreservierung ist es Schülern bis dato nicht möglich, Räume zu r
 Und hier kommt OmniaL ins Spiel:
 
 ## Vorteile
-* Benutzerfreundliche Oberfläche: bequem und schnell Equipment reservieren
-* Vereinte Verwaltung von Räumen und Equipment: keine separaten Tools nötig
-* Anzeige der Verfügbarkeit in nahezu Echtzeit: einfache, entsprechende Planung und kurzfristige Änderungen möglich
-
-![image](https://github.com/user-attachments/assets/c6c901da-c71c-4002-b41a-a0b5e86a6603)
+* **Benutzerfreundliche Oberfläche:** bequem und schnell Equipment reservieren
+* **Vereinte Verwaltung von Räumen und Equipment:** keine separaten Tools nötig
+* **Anzeige der Verfügbarkeit in nahezu Echtzeit:** einfache Planung und kurzfristige Änderungen möglich
 
 
 ### Technologien
