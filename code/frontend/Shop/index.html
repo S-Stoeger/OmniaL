@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webshop</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="src/components/product-component.js" defer></script>
 </head>
 <body>
     <header>
@@ -15,6 +16,7 @@
                 </div>
                 <p>Max Mustermann</p>
             </div>
+
             <div id="searchbar">
                 <select>
                     <option>Alle</option>
@@ -25,10 +27,27 @@
                 </select>
                 <p>Search for equipment/room</p>
             </div>
+
             <a href="./">Home</a>
             <a href="./">Auswahl</a>
         </navigation>
     </header>
-    <main></main>
+    
+    <main>
+        <div id="info">
+            <p>
+                Raum & Equipmentverleih der HTL-Leonding
+            </p>
+            <img>
+        </div>
+
+        <navigation>
+            <p>Am Beliebtesten</p>
+            <p>K&uuml;rzlich zurückgegeben</p>
+            <p>...</p>
+        </navigation>
+        
+        <div id="products"></div>
+    </main>
 </body>
 </html>

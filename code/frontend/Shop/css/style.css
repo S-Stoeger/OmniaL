@@ -70,3 +70,52 @@ navigation > a {
     color: var(--grey);
     margin-left: 1vw;
 }
+
+main {
+    
+}
+
+
+
+
+
+#info {
+    background-color: var(--light_blue);
+    height: 65vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#info > p {
+    font-size: 3rem;
+    width: 30vw;
+}
+
+#info > img {
+    width: 40vw;
+}
+
+.product-row {
+    margin-top: 7.5vh;
+    display: flex;
+    justify-content: space-evenly;   
+}
+
+.product {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    background-color: var(--light_blue);
+    width: 15vw;
+    height: 35vh;
+    text-align: center;
+    align-items: center;
+    border-radius: 0.2rem;
+}
+.product > div {
+    background-color: var(--white);
+    width: 12.5vw;
+    height: 27.5vh;
+    margin-bottom: 3vh;
+}
