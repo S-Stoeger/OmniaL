@@ -165,3 +165,16 @@ main {
     height: 92vh;
     background-color: var(--light_blue);
 }
+
+#auswahl-room > p{
+    font-size: x-large;
+    text-align: center;
+}
+
+#room {
+    background-color: var(--white);
+    width: 20vw;
+    margin: auto;
+    border-radius: 0.5rem;
+    padding: 2vw;
+}
