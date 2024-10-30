@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webshop</title>
+    <title>Warenkorb</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="https://kit.fontawesome.com/a68e4ea88e.js" crossorigin="anonymous"></script>
-    <script src="src/components/product-component.js" defer></script>
+    <script src="src/components/selection-component.js" defer></script>
 </head>
 <body>
     <header>
@@ -33,23 +33,18 @@
             <a href="./index.html">Home</a>
             <a href="./auswahl.html">Auswahl<i class="fa-solid fa-basket-shopping"></i></a>
         </navigation>
-    </header>
-    
-    <main>
-        <div id="info">
-            <p>
-                Raum & Equipmentverleih der HTL-Leonding
-            </p>
-            <img src="./img/Equipementhome.png" width="10vw" height="10vh">
-        </div>
 
-        <navigation>
-            <p>Am Beliebtesten</p>
-            <p>K&uuml;rzlich zurückgegeben</p>
-            <p>Aktuell Verf&uuml;gbar</p>
-        </navigation>
-        
-        <div id="products"></div>
-    </main>
+        <main>
+            <div id="auswahl">
+                <div id="auswahl-equipment">
+                    <p>Auswahl</p>
+                    <div id="items"></div>
+                </div>
+                <div id="auswahl-room">
+                    <p>Wollen sie noch einen Raum reservieren?</p>
+                </div>
+            </div>
+        </main>
+    </header>
 </body>
 </html>

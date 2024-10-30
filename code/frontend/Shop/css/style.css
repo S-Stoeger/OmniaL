@@ -94,6 +94,7 @@ main {
 
 #info > img {
     width: 40vw;
+    height: 60vh;
 }
 
 .product-row {
@@ -118,4 +119,49 @@ main {
     width: 12.5vw;
     height: 27.5vh;
     margin-bottom: 3vh;
+}
+
+.fa-magnifying-glass {
+    margin-left: 15vw;
+    color: var(--black);
+}
+.fa-basket-shopping {
+    margin-left: 1vw;
+}
+
+
+
+
+#auswahl {
+    display: flex;
+}
+
+#auswahl-equipment {
+    width: 70vw;
+    text-align: center;
+}
+
+#auswahl-equipment > p {
+    font-size: 3rem;
+}
+
+#auswahl-equipment > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50vw;
+    margin: auto;
+}
+
+#item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#auswahl-room {
+    width: 30vw;
+    height: 92vh;
+    background-color: var(--light_blue);
 }
