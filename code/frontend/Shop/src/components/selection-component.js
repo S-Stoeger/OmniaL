@@ -8,9 +8,9 @@ function printChosenProducts() {
                 <hr>
                 <div id="item">
                     <img src="./img/camera.png" width="70vw">
-                    <p>Name</p>
+                    <h2>Parasonic GH6</h2>
                     <p>xx.xx.xxxx-zz.zz.zzzz</p>
-                    <i class="fa-solid fa-x"></i>
+                    <i class="fa-solid fa-x fa-lg"></i>
                 </div>
                 <hr>
             </div>

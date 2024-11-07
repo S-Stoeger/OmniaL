@@ -19,10 +19,18 @@ navigation {
     color: #fff;
     background-color: var(--dark_blue);
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     height: 8vh;
     display: flex;
+}
+
+navigation > :first-child {
+    margin-left: 2vw;
+}
+
+navigation > :last-child {
+    margin-right: 7vw;
 }
 
 navigation > a {
@@ -43,7 +51,7 @@ navigation > a {
     justify-content: center;
     background-color: var(--grey);
     width: 3vw;
-    height: 6vh;
+    height: 3vw;
     border-radius: 10rem;
     color: var(--black)
 }
@@ -156,7 +164,7 @@ main {
 #item {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -166,7 +174,7 @@ main {
     background-color: var(--light_blue);
 }
 
-#auswahl-room > p{
+#auswahl-room > p {
     font-size: x-large;
     text-align: center;
 }
