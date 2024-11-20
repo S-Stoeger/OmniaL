@@ -25,6 +25,7 @@ entity Rental_Equipment {
 - id
 - equipmentId
 - rentalId
+- amount
 }
 
 
