@@ -15,6 +15,7 @@ body {
 }
 
 
+
 navigation {
     color: #fff;
     background-color: var(--dark_blue);
@@ -114,6 +115,7 @@ navigation, a {
     text-align: center;
     align-items: center;
     border-radius: 0.2rem;
+    color: var(--black);
 }
 .product > div {
     background-color: var(--white);
@@ -253,3 +255,10 @@ navigation, a {
     margin-right: auto;
 }
 
+#detail-back {
+    position: fixed;
+    top: 7.5rem;
+    left: 3rem;
+    font-size: 1.5rem;
+    color: var(--black);
+}

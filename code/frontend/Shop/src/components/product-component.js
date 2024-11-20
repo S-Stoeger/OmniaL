@@ -7,14 +7,14 @@ function printProductRows() {
 
         for (let j = 0; j < 4; j++) {
             resultstring += `
-            <div class="product">
+            <a href="detail.html"><div class="product">
                 <p>Titel</p>
                 <div>
                     <p>Full name</p>
                     <p>Type</p>
                     <img>
                 </div>
-            </div>`;
+            </div></a>`;
         }
 
         resultstring += `</div>`;
