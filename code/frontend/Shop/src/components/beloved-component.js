@@ -2,7 +2,7 @@ function printProductRows() {
     const products = document.getElementById("products");
     let resultstring = "";
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
         resultstring += `<div class="product-row">`;
 
         for (let j = 0; j < 4; j++) {

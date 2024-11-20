@@ -1,4 +1,5 @@
-import { SelectedDate } from "Model/model";
+import { SelectedDate } from "../model/model";
+
 
 document.getElementById("openCalendar").addEventListener("click", openCalendar)
 

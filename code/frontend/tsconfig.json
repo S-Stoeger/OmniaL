@@ -13,12 +13,12 @@
       "rootDir": "./",
       "baseUrl": "./",
       "paths": {
-        "Model/*": ["src/model/*"]
+        
       }
     },
     "exclude": [
       "test/**/*",
       "unused/**/*"],
     "include": [
-      "src/**/*"]
+      "./"]
     }

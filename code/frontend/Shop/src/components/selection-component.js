@@ -17,7 +17,10 @@ function printChosenProducts() {
             `
     }
 
-    products.innerHTML = resultstring;
+    if(products != null) {
+        products.innerHTML = resultstring;
+    }
+    
 }
 
 printChosenProducts();

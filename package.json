@@ -14,12 +14,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-<<<<<<< HEAD
-    "keycloak-js": "^23.0.6"
-  }
-}
-=======
     "keycloak-js": "^23.0.7"
   }
 }
->>>>>>> dev
