@@ -33,19 +33,20 @@ navigation > :last-child {
     margin-right: 7vw;
 }
 
-navigation > a {
+navigation, a {
     color: #fff;
     text-decoration: none;
+    font-size: 1.2rem;
 }
 
-#profile {
+#navigation-profile {
     width: 12vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-#profile > div {
+#navigation-profile > div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,14 +79,6 @@ navigation > a {
     color: var(--grey);
     margin-left: 1vw;
 }
-
-main {
-    
-}
-
-
-
-
 
 #info {
     background-color: var(--light_blue);
@@ -186,3 +179,77 @@ main {
     border-radius: 0.5rem;
     padding: 2vw;
 }
+
+
+#profile {
+    text-align: center;
+    margin-top: 5vh;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.profile-header {
+    font-size: 3vw;
+    margin-bottom: 0;
+    color: var(--dark_blue);
+}
+
+#profile-credetials {
+    width: 30vw;
+    height: 65vh;
+    border-radius: 3rem;
+    border: 6px var(--light_blue) solid;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+}
+
+#profile-credentials-picture {
+    width: 15vw;
+    height: 30vh;
+    background-color: var(--light_blue);
+    border-radius: 10rem;
+}
+
+#profile-credentials-picture > i {
+    margin-top: 25%;
+    font-size: 6vw;
+}
+
+.profile-credentials-div {
+    height: 5vh;
+    width: 28vw;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 1.2rem;
+    text-decoration: underline;
+}
+
+#profile-credentials-button {
+    background-color: var(--dark_blue);
+    color: var(--white);
+    width: 8vw;
+    height: 4vh;
+    border-radius: 2rem;
+    font-size: 1rem;
+}
+
+#profile-equipment {
+    width: 50vw;
+    height: 65vh;
+    border-radius: 3rem;
+    border: 6px var(--light_blue) solid;
+}
+
+#profile-equipment > div:first-child  {
+    margin-top: 5vh;
+}
+
+#profile-equipment > div {
+    margin-top: 2vh;
+    width: 45vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
