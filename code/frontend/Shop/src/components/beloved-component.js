@@ -10,8 +10,8 @@ function printProductRows() {
             <div class="product">
                 <p>Titel</p>
                 <div>
-                    <p>Full name</p>
-                    <p>Type</p>
+                    <p>Name</p>
+                    <p>Typ</p>
                     <img>
                 </div>
             </div>`;
