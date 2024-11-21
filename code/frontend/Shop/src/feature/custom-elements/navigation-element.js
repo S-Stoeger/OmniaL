@@ -1,14 +1,12 @@
 class navigationBar extends HTMLElement {
     constructor() {
         super()
-    
-        const shadow = this.attachShadow({mode: "open"})
 
         const wrapper = document.createElement('nav')
         wrapper.classList.add('navigation-bar')
 
         wrapper.innerHTML = `
-        <div id="navigation">
+        
             <a id="navigation-profile" href="./profile.html">
                 <div>
                     <p>MM</p>
@@ -30,11 +28,11 @@ class navigationBar extends HTMLElement {
 
             <a href="./index.html" class="navigation">Shop</a>
             <a href="./auswahl.html" class="navigation">Auswahl<i class="fa-solid fa-basket-shopping"></i></a>
-        </div>`
+        `
         
         const style = document.createElement('style')
         style.textContent = `
-            #navigation{
+            .navigation-bar {
                 color: #fff;
                 background-color: var(--dark_blue);
                 display: flex;
@@ -44,15 +42,15 @@ class navigationBar extends HTMLElement {
                 display: flex;
             }
 
-            #navigation > :first-child {
+            .navigation-bar > :first-child {
                 margin-left: 2vw;
             }
 
-            #navigation > :last-child {
+            .navigation-bar > :last-child {
                 margin-right: 7vw;
             }
 
-            #navigation, a {
+            .navigation-bar, a {
                 color: #fff;
                 text-decoration: none;
                 font-size: 1.2rem;
@@ -114,9 +112,9 @@ class navigationBar extends HTMLElement {
                 color: var(--grey);
                 margin-left: 1vw;
             }
-            `
-        shadow.appendChild(style);
-        shadow.appendChild(wrapper);
+        `
+        this.appendChild(style);
+        this.appendChild(wrapper);
     }
 }
 
