@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://kit.fontawesome.com/a68e4ea88e.js" crossorigin="anonymous"></script>
+    <script src="./src/components/dashboard-component.js" defer></script>
+</head>
+<body>
+    <header>
+        <navigation>
+            <a id="navigation-profile" href="./profile.html">
+                <div>
+                    <p>MM</p>
+                </div>
+                <p class="navigation">Max Mustermann</p>
+            </a>
+
+            <div id="searchbar">
+                <select>
+                    <option>Alle</option>
+                    <option>Kamera</option>
+                    <option>Mikrofon</option>
+                    <option>Zubeh&ouml;r</option>
+                    <option>Raum</option>
+                </select>
+                <p>Suche nach Equipment bzw. R&auml;ume</p>
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <a href="./index.html" class="navigation">Shop</a>
+            <a href="./auswahl.html" class="navigation">Auswahl<i class="fa-solid fa-basket-shopping"></i></a>
+        </navigation>
+    </header>
+
+    <main>
+        <p id="dashboard-header">Dashboard</p>
+        <div id="dashboard-box">
+            <div id="dashboard-request-box">
+                <p id="dashboard-request-header">Anfrage</p>
+                <div id="dashboard-request"></div>
+            </div>
+            <div id="dashboard-return-box">
+                <p id="dashboard-return-header">R&uuml;ckgabe</p>
+                <div id="dashboard-return"></div>
+            </div>
+        </div> 
+        
+        <div id="myModal" class="modal">
+            <!-- Modal Content -->
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div id="dashboard-equipment"></div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

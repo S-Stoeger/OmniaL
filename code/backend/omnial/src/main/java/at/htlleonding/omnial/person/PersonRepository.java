@@ -1,13 +1,17 @@
 package at.htlleonding.omnial.person;
 
 import at.htlleonding.omnial.reservation.Reservation;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import io.quarkus.runtime.Startup;
+import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.inject.Qualifier;
 import jakarta.persistence.EntityManager;
@@ -16,6 +20,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,8 +31,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import java.util.List;
+<<<<<<< HEAD
 import java.util.UUID;
 
+=======
+>>>>>>> dev
 @ApplicationScoped
 public class PersonRepository {
     @Inject
@@ -35,8 +43,13 @@ public class PersonRepository {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
+    @Startup
+    void init(){
+        readFromJson();
+    }
+
     public PersonRepository() {
-        //readFromJson();
+        readFromJson();
     }
 
     public Person getById(int id){
@@ -49,27 +62,29 @@ public class PersonRepository {
         return person;
     }
 
+    @Transactional
     public void readFromJson(){
 
-        String personsString = "";
         Path filepath = Paths.get("./data/persons.json");
+        System.out.println("get from file");
+        File file = new File("./data/persons.json");
         try {
-            personsString = Files.readString(filepath);
+            System.out.println(file);
+
+
+            List<Person> langList = objectMapper.readValue(
+                    (JsonParser) filepath,
+                    new TypeReference<List<Person>>(){});
+            System.out.println(langList);
+            langList.stream().forEach(a -> entityManager.persist(a));
+
         }
         catch (Exception ex){
             System.out.println("Error happened while reading reservations");
         }
 
-        List<Person> persons = new LinkedList<>();
 
-        try {
-            persons = objectMapper.readValue(personsString, new TypeReference<List<Person>>() {});
-        }
-        catch (IOException ex){
-            System.out.println("cant turn JSON to List");
-        }
 
-        persons.stream().forEach(a -> entityManager.persist(a));
     }
 
     public List<Person> getAll(){

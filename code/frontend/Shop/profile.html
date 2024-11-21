@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://kit.fontawesome.com/a68e4ea88e.js" crossorigin="anonymous"></script>
+    <script src="./src/components/profile-component.js" defer></script>
+</head>
+<body>
+    <header>
+        <navigation>
+            <a id="navigation-profile" href="./profile.html">
+                <div>
+                    <p>MM</p>
+                </div>
+                <p class="navigation">Max Mustermann</p>
+            </a>
+
+            <div id="searchbar">
+                <select>
+                    <option>Alle</option>
+                    <option>Kamera</option>
+                    <option>Mikrofon</option>
+                    <option>Zubeh&ouml;r</option>
+                    <option>Raum</option>
+                </select>
+                <p>Suche nach Equipment bzw. R&auml;ume</p>
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <a href="./index.html" class="navigation">Shop</a>
+            <a href="./auswahl.html" class="navigation">Auswahl<i class="fa-solid fa-basket-shopping"></i></a>
+        </navigation>
+    </header>
+    
+    <main>
+        <div id="profile">
+            <div id="profile-credetials-box">
+                <p class="profile-header">Profil</p>
+
+                <div id="profile-credetials">
+                    <div id="profile-credentials-picture"><i class="fa-regular fa-user"></i></div>
+
+                    <div class="profile-credentials-div"><p>Max Mustermann</p><p>+430123456789</p></div>
+                    <div class="profile-credentials-div"><p>max.musterm@gmail.com</p><p>5XHTIM</p></div>
+                    <button id="profile-credentials-button">&Auml;ndern</button>
+                </div>
+            </div>
+
+            <div id="profile-equipment-box">
+                <p class="profile-header">Equipment</p>
+                <div id="profile-equipment"></div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

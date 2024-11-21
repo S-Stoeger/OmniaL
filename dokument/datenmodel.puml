@@ -1,26 +1,37 @@
 @startuml
 
-abstract Reservable {
+entity Type {
 - id
-- name
-- description
+- title
 }
 
-entity Inventory {
+entity Equipment {
 - id
+- labelNr
 - typeId
 - name
 - itemCount
 - available
 }
 
-entity Equipment {
-- type
-- labelNr
+entity Rental {
+- id
+- personId
+- date
+- isReturned
 }
 
+entity Rental_Equipment {
+- id
+- equipmentId
+- rentalId
+- amount
+}
+
+
 entity Room {
-- roomLocation
+- id
+- name
 }
 
 entity Reservation {
@@ -37,13 +48,16 @@ entity Person {
 - id
 - surname
 - firstname
+- class
+- email
 }
 
 
-Reservable <|-- Equipment
-Reservable <|-- Room
 Room "1"--"*" Reservation
 Person "1"--"*" Reservation
-Inventory "1" -- "*" Equipment
+Type "1" -- "*" Equipment
+Person "1"--"*" Rental
+
+(Rental, Equipment) .. Rental_Equipment
 
 @enduml

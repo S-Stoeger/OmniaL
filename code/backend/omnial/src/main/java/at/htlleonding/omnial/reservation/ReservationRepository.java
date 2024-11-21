@@ -9,6 +9,10 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 @ApplicationScoped
@@ -63,6 +67,32 @@ public class ReservationRepository {
         oldReservation.setRoom(reservation.getRoom());
         oldReservation.setEndTime(reservation.getEndTime());
         oldReservation.setStartTime(reservation.getStartTime());
+    }
+
+    public List<Reservation> getWeeklyReservations(String weekDay){
+
+        List<Reservation> reservations = new LinkedList<>();
+
+        for (int i = 0; i < 5; i++) {
+            String dt = weekDay;  // Start date
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            try {
+                c.setTime(sdf.parse(dt));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            c.add(Calendar.DATE, i);  // number of days to add
+            dt = sdf.format(c.getTime());
+
+            for (Reservation currRes: getAllReservations()) {
+                if (currRes.getReservationDate().toString().equals(dt)){
+                    reservations.add(currRes);
+                }
+            }
+
+        }
+        return reservations;
     }
 
     public boolean checkReservation(Reservation reservation){
