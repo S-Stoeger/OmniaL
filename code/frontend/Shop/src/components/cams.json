@@ -1,0 +1,52 @@
+{
+    "Equipment": [
+        {
+            "title": "GH4",
+            "name": "Panasonic Lumix DCM-GH4",
+            "typ": "Videokamera",
+            "img": ""
+        },
+        {
+            "title": "GH6",
+            "name": "Panasonic Lumix DCM-GH6",
+            "typ": "Videokamera",
+            "img": ""
+        },
+        {
+            "title": "Blackmagic",
+            "name": "Blackmagic Cinema Pocket",
+            "typ": "Videokamera",
+            "img": ""
+        },
+        {
+            "title": "Ronin M",
+            "name": "Dji Ronin M",
+            "typ": "Zubehör",
+            "img": ""
+        },
+        {
+            "title": "Ronin S",
+            "name": "Dji Ronin S",
+            "typ": "Zubehör",
+            "img": ""
+        },
+        {
+            "title": "Kamera",
+            "name": "Kamera",
+            "typ": "Videokamera",
+            "img": ""
+        },
+        {
+            "title": "Ninja Monitor",
+            "name": "Atomos Ninja Inferno",
+            "typ": "Zubehör",
+            "img": ""
+        },
+        {
+            "title": "Objektiv",
+            "name": "Sigma 18-35mm",
+            "typ": "Zubehör",
+            "img": ""
+        }
+    ]
+}
