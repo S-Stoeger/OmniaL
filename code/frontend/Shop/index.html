@@ -7,32 +7,11 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="https://kit.fontawesome.com/a68e4ea88e.js" crossorigin="anonymous"></script>
     <script src="src/components/product-component.js" defer></script>
+    <script src="./src/feature/custom-elements/navigation-element.js" defer></script>
 </head>
 <body>
     <header>
-        <navigation>
-            <a id="navigation-profile" href="./profile.html">
-                <div>
-                    <p>MM</p>
-                </div>
-                <p class="navigation">Max Mustermann</p>
-            </a>
-
-            <div id="searchbar">
-                <select>
-                    <option>Alle</option>
-                    <option>Kamera</option>
-                    <option>Mikrofon</option>
-                    <option>Zubeh&ouml;r</option>
-                    <option>Raum</option>
-                </select>
-                <p>Suche nach Equipment bzw. R&auml;ume</p>
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-
-            <a href="./index.html" class="navigation">Shop</a>
-            <a href="./auswahl.html" class="navigation">Auswahl<i class="fa-solid fa-basket-shopping"></i></a>
-        </navigation>
+        <navigation-bar></navigation-bar>
     </header>
     
     <main>
