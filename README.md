@@ -53,22 +53,19 @@ Dies führt oft zu Verwechslungen und Chaos bei dem Verleih.
 In Sachen Raumreservierung ist es Schülern bis dato nicht möglich, Räume zu reservieren.
 Und hier kommt OmniaL ins Spiel:
 
-Warum:
-* Die Verwaltung des Equipments wird online und einheitlich abgehalten, wodurch keine Verwechslungen zustande kommen.
-* Räume können online von Schülern reserviert werden.
+## Vorteile
+* **Benutzerfreundliche Oberfläche:** bequem und schnell Equipment reservieren
+* **Vereinte Verwaltung von Räumen und Equipment:** keine separaten Tools nötig
+* **Anzeige der Verfügbarkeit in nahezu Echtzeit:** einfache Planung und kurzfristige Änderungen möglich
 
-### Technologgien
+
+### Technologien
 * [![TypeScript][TypeScript.js]][TypeScript-url]
 * [![Java][Java]][Java-url]
 * [![Quarkus][Quarkus]][Quarkus-url]
 * [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
 * [![Keycloak][Keycloak]][Keycloak-url]
 
-## Erste Schritte
-### Voraussetzung
-### Installation
-### Nutzung
-## Mitglieder
 
 <a href="https://github.com/S-Stoeger/OmniaL/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=S-Stoeger/OmniaL&max=4" />
