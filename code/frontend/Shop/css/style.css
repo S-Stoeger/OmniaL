@@ -73,7 +73,15 @@ body {
     margin-left: 1vw;
 }
 
-
+navigation {
+    color: #fff;
+    background-color: var(--dark_blue);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 8vh;
+    display: flex;
+}
 
 
 #auswahl {
