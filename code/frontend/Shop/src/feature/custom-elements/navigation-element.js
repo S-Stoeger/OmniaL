@@ -13,22 +13,24 @@ class navigationBar extends HTMLElement {
                 </div>
                 <p class="navigation">Max Mustermann</p>
             </a>
+            <div id="navigation-links">
+                <div id="searchbar">
+                    <select>
+                        <option>Alle</option>
+                        <option>Kamera</option>
+                        <option>Mikrofon</option>
+                        <option>Zubeh&ouml;r</option>
+                        <option>Raum</option>
+                    </select>
+                    <p>Suche nach Equipment bzw. R&auml;ume</p>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
 
-            <div id="searchbar">
-                <select>
-                    <option>Alle</option>
-                    <option>Kamera</option>
-                    <option>Mikrofon</option>
-                    <option>Zubeh&ouml;r</option>
-                    <option>Raum</option>
-                </select>
-                <p>Suche nach Equipment bzw. R&auml;ume</p>
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <a href="./index.html" class="navigation">Shop</a>
+                <a href="./auswahl.html" class="navigation">Warenkorb <i class="fa-solid fa-cart-shopping"></i></a>
             </div>
-
-            <a href="./index.html" class="navigation">Shop</a>
-            <a href="./auswahl.html" class="navigation">Auswahl<i class="fa-solid fa-basket-shopping"></i></a>
-        `
+            `;
+            
         
         const style = document.createElement('style')
         style.textContent = `
@@ -38,23 +40,14 @@ class navigationBar extends HTMLElement {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                height: 8vh;
+                height: 9vh;
                 display: flex;
-            }
-
-            .navigation-bar > :first-child {
-                margin-left: 2vw;
-            }
-
-            .navigation-bar > :last-child {
-                margin-right: 7vw;
             }
 
             .navigation-bar, a {
                 color: #fff;
                 text-decoration: none;
-                font-size: 1.2rem;
-                text-decoration: none;
+                font-size: 1.4rem;
             }
             .navigation {
                 text-align: center;
@@ -73,10 +66,11 @@ class navigationBar extends HTMLElement {
             }
 
             #navigation-profile {
-                width: 13vw;
+                width: 14vw;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                margin-left: 2vw;
             }
 
             #navigation-profile > div {
@@ -90,27 +84,37 @@ class navigationBar extends HTMLElement {
                 color: var(--black)
             }
 
+            #navigation-links {
+                display: flex;
+                justify-content: space-evenly;
+                width: 80vw;
+                align-items: center;
+            }
+
             #searchbar {
+                font-size: 1.5rem;
                 background-color: var(--white);
-                width:35vw;
-                height: 5vh;
+                width:40vw;
+                height: 6vh;
                 border-radius: 10rem;
                 display: flex;
                 align-items: center;
             }
 
             #searchbar > select {
-                height: 5vh;
+                font-size: 1.1rem;
+                height: 6vh;
                 border-top-left-radius: 10rem;
                 border-bottom-left-radius: 10rem;
                 border: 0;
-                padding-left: 1vw;
+                padding-left: 2vw;
             }
 
             #searchbar > p {
-                font-size: small;
+                font-size: 1.1rem;
                 color: var(--grey);
                 margin-left: 1vw;
+                width: 20vw;
             }
         `
         this.appendChild(style);

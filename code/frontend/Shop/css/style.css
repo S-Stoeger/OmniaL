@@ -1,5 +1,7 @@
 :root {
     --dark_blue: #1E444D;
+    --mid_blue: #3C626E;
+    --mid_blue_transparent: rgba(60, 98, 110, 0.85);
     --light_blue: #7FAAB4;
     --grey: #A7A7A7;
     --red: #FF0000;
@@ -8,41 +10,62 @@
 }
 
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: #fff;
     margin: 0;
     padding: 0;
+    font-family: "Sora", sans-serif;
+}
+
+h1 {
+    font-family: "Russo One", sans-serif;
+    font-style: normal;
+    font-size: 4rem;
+    margin: 0;
+}
+
+.product-title {
+    font-family: "Russo One", sans-serif;
+    font-style: normal;
+    margin: 0.5rem;
+    font-size: 2rem;
+    color: #fff;
+}
+
+.product-name {
+    font-size: 1rem;
+    margin: 0.5rem;
 }
 
 #info {
     background-color: var(--light_blue);
-    height: 65vh;
+    height: 45vh;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
 }
 
-#info > p {
-    font-size: 4rem;
-    width: 30vw;
+#info > div > p {
+    font-size: 2.5rem;
+    width: 40vw;
+    margin: 0;
 }
 
 #info > img {
-    width: 40vw;
-    height: 60vh;
+    width: 27.5vw;
+    height: 37.5vh;
 }
 
 .product-row {
-    margin-top: 7.5vh;
+    margin-top: 3vh;
     display: flex;
-    justify-content: space-evenly;   
+    justify-content: space-evenly;
 }
 
 .product {
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
-    background-color: var(--light_blue);
+    background-color: var(--mid_blue_transparent);
     width: 15vw;
     height: 35vh;
     text-align: center;
@@ -57,16 +80,22 @@ body {
     margin-bottom: 3vh;
 }
 
-.type {
-    color: var(--light_blue);
+.product-info {
+    
 }
 
-.product > div > p {
-    font-size: 0.8rem;
+.product-type {
+    color: var(--light_blue);
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.product-img {
+    width: 80%;
 }
 
 .fa-magnifying-glass {
-    margin-left: 15vw;
+    margin-left: 10vw;
     color: var(--black);
 }
 .fa-basket-shopping {
@@ -75,12 +104,18 @@ body {
 
 navigation {
     color: #fff;
-    background-color: var(--dark_blue);
+    background-color: var(--mid_blue);
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    height: 8vh;
+    height: 6vh;
     display: flex;
+    font-size: 1.2rem;
+}
+
+navigation > p {
+    width: 15vw;
+    text-align: center;
 }
 
 
