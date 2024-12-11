@@ -22,12 +22,12 @@
         <navigation-bar></navigation-bar>
     </header>
 
-    <a href="index.html"><div id="detail-back"><i class="fa-solid fa-arrow-left fa-2xl"></i></div></a>
-
     <div id="detail-content">
-        <div style=" border-right: 1px solid #000; text-align: center;">
+        <a href="index.html"><div id="detail-back"><i class="fa-solid fa-arrow-left fa-2xl"></i></div></a>
+        <br>
+        <div id="detail-info">
             <h1>Panasonic Lumix DCM-GH4</h1>
-            <img src="./img/gh4.jpg" width="50%">
+            <img src="./img/gh4.jpg" width="65%" style="padding-top: 7%;">
         </div>
         
         <div id="calendar">
@@ -39,13 +39,25 @@
             </div>
             <div id="days-container" class="days-container"></div>
 
-            <p>Videokamera ist im ausgewählten Zeitraum: </p><h3 style="color: green;">Verfügbar</h3>
+            <p style="width: 100%; font-size: 1.4rem;">Videokamera ist im ausgewählten Zeitraum: <span style="color: green; font-size: 1.5em;">Verfügbar</span></p>
+
+            <div id="detail-">
+                <input id="countAmount" type="number" min="0" max="100"/>
+                <button id="reserve">Equipment Reservieren</button>
+            </div>
+
             <br>
+            
         </div>
     </div>
     
-    <h1 style="margin-left: 8%;">Wurde oft zusammen entliehen:</h1>
+    <h1 id="detail-h1">Wurde oft zusammen entliehen:</h1>
     <div id="products"></div>
+
+    <br><br><br><br><br>
+
     <footer-element></footer-element>
+
+    
 </body>
 </html>
