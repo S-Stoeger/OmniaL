@@ -249,6 +249,9 @@ class navigationBar extends HTMLElement {
                 #navigation-profile {
                     width: 70vw;
                 }
+                a {
+                    font-size: 1.2rem;
+                }
             }
 
             @media (min-width: 701px) {
