@@ -66,7 +66,7 @@ class navigationBar extends HTMLElement {
             }
 
             #navigation-profile {
-                width: 14vw;
+                width: 15vw;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
