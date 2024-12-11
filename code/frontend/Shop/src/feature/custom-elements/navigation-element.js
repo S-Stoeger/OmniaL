@@ -10,7 +10,7 @@ class navigationBar extends HTMLElement {
                 <div>
                     <p>MM</p>
                 </div>
-                <p>Max Mustermann</p>
+                <p  class="navigation">Max Mustermann</p>
             </a>
             <div id="navigation-links">
                 <div id="searchbar">
@@ -87,8 +87,7 @@ class navigationBar extends HTMLElement {
                 width: 15vw;
                 display: flex;
                 align-items: center;
-                gap: 0.5rem;
-                
+                margin-left: 3vw;
             }
 
             #navigation-profile > div {
@@ -160,14 +159,14 @@ class navigationBar extends HTMLElement {
             }
 
             #searchbar > p {
-                font-size: 0.7rem;
+                font-size: 0.9rem;
                 color: var(--grey);
                 margin-left: 1rem;
                 flex: 1;
             }
 
             #searchbar-handy > p {
-                font-size: 0.7rem;
+                font-size: 0.6rem;
                 color: var(--grey);
                 margin-left: 1rem;
                 flex: 1;
@@ -199,7 +198,7 @@ class navigationBar extends HTMLElement {
                 width: 90vw;
             }
 
-            #dropdown-menu a {
+            #dropdown-menu a { 
                 padding: 0.5rem;
                 text-align: left;
             }

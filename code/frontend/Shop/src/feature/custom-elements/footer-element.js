@@ -63,7 +63,7 @@ class footerElement extends HTMLElement {
                 align-items: left;
             }
 
-            a {
+            #footer-ask a {
                 font-size: 1rem;
                 text-decoration-line: underline
             }
