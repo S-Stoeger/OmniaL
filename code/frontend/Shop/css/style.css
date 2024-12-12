@@ -448,9 +448,15 @@ navigation > p {
         padding: 5%;
     }
 
+    #info > div {
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+    }
+
     #info > div > p {
         font-size: 1.3rem; 
-        width: 80%; 
+        width: 100%; 
     }
 
     #info > img {
