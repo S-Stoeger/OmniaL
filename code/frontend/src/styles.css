@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --dark_blue: #1E444D;
+  --mid_blue: #3C626E;
+  --mid_blue_transparent: rgba(60, 98, 110, 0.85);
+  --light_blue: #7FAAB4;
+  --grey: #A7A7A7;
+  --red: #FF0000;
+  --white: #fff;
+  --black: #000;
+}
+
+body {
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  font-family: "Sora", sans-serif;
+}
