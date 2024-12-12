@@ -1,43 +1,69 @@
 #calendar {
-    width: 300px;
+    width: 27.5%; /* Make the calendar smaller */
     margin: 0 auto;
     text-align: center;
-    
 }
 
 #month-year {
-    font-size: 24px;
-    margin-bottom: 10px;
+    font-size: 18px; /* Smaller font for better proportions */
+    margin-bottom: 5px;
 }
 
 #navigation {
-    margin-bottom: 10px;
+    width: 100%;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1E444D;
+    color: #fff;
+    padding: 5px 0;
+    border-radius: 5px;
 }
 
 button {
-    margin: 0 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1E444D;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#prev-month, #next-month {
+    font-size: 16px;
 }
 
 .days-container {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    gap: 3px;
+    width: 100%;
+    padding: 0.5% 0.7% 0.5% 0.5%;
+    margin-top: 10px;
+    border: 1px solid #1E444D;
+    box-sizing: border-box;
 }
 
 .day {
-    width: 40px;
-    height: 40px;
+    width: 100%;
+    aspect-ratio: 1; /* Keep square shape */
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.25rem; /* Smaller font */
     border: 1px solid #ccc;
     cursor: pointer;
+    background-color: #fff;
+}
+
+.monday {
+    background-color: #A7A7A7;
 }
 
 .day.disabled {
     background-color: #f0f0f0;
+    color: #999;
 }
 
 .day.weekend {
@@ -49,45 +75,126 @@ button {
     color: #fff;
 }
 
-#prev-month {
-    background-color: rgb(255, 255, 255, 1); /* Light gray background */
-    border: 1px solid #fff;   /* Gray border */
-    border-radius: 5px;       /* Rounded corners */
-    width: 40px;              /* Set width */
-    height: 40px;             /* Set height */
-    display: flex;            /* Center the content */
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;          /* Pointer cursor */
-    padding: 0;               /* Remove padding */
-  }
-
-  #next-month {
-    background-color: rgb(255, 255, 255, 1); /* Light gray background */
-    border: 1px solid #fff;   /* Gray border */
-    border-radius: 5px;       /* Rounded corners */
-    width: 40px;              /* Set width */
-    height: 40px;             /* Set height */
-    display: flex;            /* Center the content */
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;          /* Pointer cursor */
-    padding: 0;               /* Remove padding */
-  }
-
-
-
 .day.highlighted {
     background-color: #7FAAB4;
     color: #000;
-    
-    
+}
+
+#products {
+    margin-left: 5%;
 }
 
 #detail-content {
-    display: grid;
-    grid-template-columns: auto auto;
-    border-bottom: 1px solid #000;
-    height: 70vh;
-    align-content: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: 1.25%;
+    width: 100%;
+    border-bottom: 1px solid #000; 
+    padding-top: 1%;
+}
+
+#detail-content > div {
+    padding: 1%;
+    text-align: center;
+}
+
+#detail-back {
+    position: relative;
+    top: 0rem;
+    left: 2rem;
+    font-size: 1.5rem;
+    color: var(--black);
+    width: 10%;
+}
+
+#detail-info {
+    border-right: 1px solid #000; 
+    text-align: center; 
+    height: 47.6rem;
+}
+
+#detail-h1 {
+    margin-left: 8%;
+    font-size: 2rem;
+}
+
+#calendar p {
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+}
+
+#detail- {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+#reserve {
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #1E444D;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+}
+
+#countAmount {
+    width: 50px;
+    font-size: 14px;
+    text-align: center;
+}
+
+
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button:hover, .day:hover {
+    background-color: #5a7d7f;
+}
+
+button:active, .day.selected {
+    background-color: #2d4950;
+}
+
+@media only screen and (max-width: 480px) {
+    #detail-content {
+        flex-wrap: wrap;
+    }    
+
+    #detail-back {
+        top: 0.5rem;
+        left: -4.5rem;
+    }
+
+    #detail-info {
+        border: none;
+        height: auto;
+    }
+
+    #calendar {
+        width: 100%;
+    }
+
+    #detail-content > div {
+        padding: 5%;
+    }
+
+    #products {
+        margin-left: 0;
+    }
+}
+
+@media only screen and (min-width: 500px) {
+    #detail-back {
+        display: none;
+    }
 }

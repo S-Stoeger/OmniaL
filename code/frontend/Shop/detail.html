@@ -9,40 +9,25 @@
     <script src="https://kit.fontawesome.com/a68e4ea88e.js" crossorigin="anonymous"></script>
     <script src="src/components/calendar-component.js" defer></script>
     <script src="src/components/beloved-component.js" defer></script>
+    <link rel="icon" type="image/x-icon" href="./img/Logo-OmniaL-rund.png">
+    <script src="./src/feature/custom-elements/navigation-element.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <script src="./src/feature/custom-elements/footer-element.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Sora:wght@100..800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <navigation>
-            <a id="navigation-profile" href="./profile.html">
-                <div>
-                    <p>MM</p>
-                </div>
-                <p class="navigation">Max Mustermann</p>
-            </a>
-
-            <div id="searchbar">
-                <select>
-                    <option>Alle</option>
-                    <option>Kamera</option>
-                    <option>Mikrofon</option>
-                    <option>Zubeh&ouml;r</option>
-                    <option>Raum</option>
-                </select>
-                <p>Suche nach Equipment bzw. R&auml;ume</p>
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-
-            <a href="./index.html" class="navigation">Shop</a>
-            <a href="./auswahl.html" class="navigation">Auswahl<i class="fa-solid fa-basket-shopping"></i></a>
-        </navigation>
+        <navigation-bar></navigation-bar>
     </header>
 
-    <a href="index.html"><div id="detail-back"><i class="fa-solid fa-arrow-left fa-2xl"></i></div></a>
-
     <div id="detail-content">
-        <div style=" border-right: 1px solid #000; text-align: center;">
+        <a href="index.html"><div id="detail-back"><i class="fa-solid fa-arrow-left fa-2xl"></i></div></a>
+        <br>
+        <div id="detail-info">
             <h1>Panasonic Lumix DCM-GH4</h1>
-            <img src="./img/gh4.jpg" width="50%">
+            <img src="./img/gh4.jpg" width="65%" style="padding-top: 7%;">
         </div>
         
         <div id="calendar">
@@ -53,14 +38,26 @@
                 <button id="next-month"><i class="fa-solid fa-caret-right"></i></button>
             </div>
             <div id="days-container" class="days-container"></div>
+            
+            <p style="width: 100%; font-size: 1.4rem;">Videokamera ist im ausgewählten Zeitraum: <span style="color: green; font-size: 1.5em;">Verfügbar</span></p>
 
-            <p>Videokamera ist im ausgewählten Zeitraum: </p><h3 style="color: green;">Verfügbar</h3>
+            <div id="detail-">
+                <input id="countAmount" type="number" min="0" max="100"/>
+                <button id="reserve">Zum Warenkorb hinzuf&uuml;gen</button>
+            </div>
+
             <br>
+            
         </div>
     </div>
     
-    <h1 style="margin-left: 8%;">Wurde oft zusammen entliehen:</h1>
+    <h1 id="detail-h1">Wurde oft zusammen entliehen:</h1>
     <div id="products"></div>
+
+    <br><br><br><br><br>
+
+    <footer-element></footer-element>
+
     
 </body>
 </html>

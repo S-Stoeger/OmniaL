@@ -7,50 +7,47 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="https://kit.fontawesome.com/a68e4ea88e.js" crossorigin="anonymous"></script>
     <script src="src/components/product-component.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="./img/Logo-OmniaL-rund.png">
+    <script src="./src/feature/custom-elements/navigation-element.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <script src="./src/feature/custom-elements/footer-element.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Sora:wght@100..800&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <navigation>
-            <a id="navigation-profile" href="./profile.html">
-                <div>
-                    <p>MM</p>
-                </div>
-                <p class="navigation">Max Mustermann</p>
-            </a>
-
-            <div id="searchbar">
-                <select>
-                    <option>Alle</option>
-                    <option>Kamera</option>
-                    <option>Mikrofon</option>
-                    <option>Zubeh&ouml;r</option>
-                    <option>Raum</option>
-                </select>
-                <p>Suche nach Equipment bzw. R&auml;ume</p>
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-
-            <a href="./index.html" class="navigation">Shop</a>
-            <a href="./auswahl.html" class="navigation">Auswahl<i class="fa-solid fa-basket-shopping"></i></a>
-        </navigation>
+        <navigation-bar></navigation-bar>
     </header>
-    
+    <navigation>
+        <p>Am Beliebtesten</p>
+        <p>K&uuml;rzlich zurückgegeben</p>
+        <p>Aktuell Verf&uuml;gbar</p>
+        <p>Kurzfristige Entlehnung</p>
+    </navigation>
     <main>
         <div id="info">
-            <p>
-                Raum & Equipmentverleih der HTL-Leonding
-            </p>
+            <div>
+                <h1>Herzlich Willkommen</h1>
+                <p>
+                    beim Raum und Equipmentverleih der HTL-Leonding f&uuml;r Sch&uuml;ler:innen
+                </p>
+            </div>
             <img src="./img/Equipementhome.png" width="10vw" height="10vh">
         </div>
 
-        <navigation>
-            <p>Am Beliebtesten</p>
-            <p>K&uuml;rzlich zurückgegeben</p>
-            <p>Aktuell Verf&uuml;gbar</p>
-            <p>Kurzfristige Entlehnung</p>
-        </navigation>
-        
+
         <div id="products"></div>
+
+        <br>
     </main>
+
+    <br><br><br><br><br>
+
+    <footer-element></footer-element>
+
 </body>
 </html>

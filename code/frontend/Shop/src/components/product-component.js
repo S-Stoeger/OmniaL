@@ -9,7 +9,7 @@ const equipment = [
         title: "GH6",
         name: "Panasonic Lumix DCM-GH6",
         typ: "Videokamera",
-        img: "./img/gh6.jpg"
+        img: "./img/gh6.png"
     },
     {
         title: "Blackmagic",
@@ -21,19 +21,19 @@ const equipment = [
         title: "Ronin M",
         name: "Dji Ronin M",
         typ: "Zubehör",
-        img: "./img/roninM.jpg"
+        img: "./img/roninM.png"
     },
     {
         title: "Ronin S",
         name: "Dji Ronin S",
         typ: "Zubehör",
-        img: "./img/roninS.jpg"
+        img: "./img/roninS.png"
     },
     {
         title: "Kamera",
         name: "Kamera",
         typ: "Videokamera",
-        img: "./img/camera.jpeg"
+        img: "./img/camera.png"
     },
     {
         title: "Ninja Monitor",
@@ -45,7 +45,7 @@ const equipment = [
         title: "Objektiv",
         name: "Sigma 18-35mm",
         typ: "Zubehör",
-        img: "./img/Objektiv.jpeg"
+        img: "./img/objektiv.png"
     }
 ];
 
@@ -60,11 +60,11 @@ function printProductRows() {
         for (let j = 0; j < 4; j++) {
             resultstring += `
             <a href="detail.html"><div class="product">
-                <p>${equipment[counter].title}</p>
-                <div>
-                    <p>${equipment[counter].name}</p>
-                    <p class="type">${equipment[counter].typ}</p>
-                    <img src="${equipment[counter].img}" width="100vw">
+                <h3 class="product-title">${equipment[counter].title}</h3>
+                <div class="product-info">
+                    <h4 class="product-name">${equipment[counter].name}</h4>
+                    <p class="product-type">${equipment[counter].typ}</p>
+                    <img class="product-img" src="${equipment[counter].img}">
                 </div>
             </div></a>`;
             counter++;
