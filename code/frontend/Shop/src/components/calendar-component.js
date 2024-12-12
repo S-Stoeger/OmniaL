@@ -43,6 +43,10 @@ function renderCalendar() {
             day.classList.add("weekend");
         }
 
+        if(dayOfWeek === 1) {
+            day.classList.add("monday");
+        }
+
         // Add click event for selecting a day
         day.addEventListener("click", () => {
             toggleDaySelection(i);

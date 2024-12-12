@@ -57,6 +57,10 @@ button {
     background-color: #fff;
 }
 
+.monday {
+    background-color: #A7A7A7;
+}
+
 .day.disabled {
     background-color: #f0f0f0;
     color: #999;

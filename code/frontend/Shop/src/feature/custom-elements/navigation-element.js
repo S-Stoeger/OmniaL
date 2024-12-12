@@ -25,6 +25,7 @@ class navigationBar extends HTMLElement {
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
                 <a href="./index.html" class="navigation">Shop</a>
+                <a href="./dashboard.html" class="navigation">Dashboard</a>
                 <a href="./auswahl.html" class="navigation">Warenkorb <i class="fa-solid fa-cart-shopping"></i></a>
             </div>
             <div id="mobile-dropdown">
@@ -32,6 +33,7 @@ class navigationBar extends HTMLElement {
                 <div id="dropdown-menu">
                     
                     <a href="./index.html" class="navigation">Shop</a>
+                    <a href="./dashboard.html" class="navigation">Dashboard</a>
                     <a href="./auswahl.html" class="navigation">Warenkorb <i class="fa-solid fa-cart-shopping"></i></a>
                 </div>
             </div>
