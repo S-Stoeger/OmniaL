@@ -15,3 +15,10 @@ body {
   padding: 0;
   font-family: "Sora", sans-serif;
 }
+
+h1 {
+  font-family: "Russo One", sans-serif;
+  font-style: normal;
+  font-size: 4rem;
+  margin: 0;
+}
