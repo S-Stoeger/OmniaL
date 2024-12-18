@@ -1,6 +1,6 @@
 <div id="products">
   <div class="product-row">
-    <a href="" *ngFor="let item of equipment">
+    <a [routerLink]="['/detail', item.id]" *ngFor="let item of equipment">
       <div class="product">
         <h3 class="product-title">{{item.title}}</h3>
         <div class="product-info">
