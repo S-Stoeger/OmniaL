@@ -22,3 +22,7 @@ h1 {
   font-size: 4rem;
   margin: 0;
 }
+
+a {
+  text-decoration: none;
+}

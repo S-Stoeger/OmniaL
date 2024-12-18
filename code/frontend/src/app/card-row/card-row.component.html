@@ -1,0 +1,14 @@
+<div id="products">
+  <div class="product-row">
+    <a href="" *ngFor="let item of equipment">
+      <div class="product">
+        <h3 class="product-title">{{item.title}}</h3>
+        <div class="product-info">
+          <h4 class="product-name">{{item.name}}</h4>
+          <p class="product-type">{{item.type}}</p>
+          <img class="product-img" src="{{item.img}}">
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
