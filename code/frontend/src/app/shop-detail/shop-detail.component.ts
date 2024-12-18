@@ -15,13 +15,13 @@ import {Equipment} from '../equipment';
 })
 export class ShopDetailComponent {
   equipment: Equipment | undefined;
-  eqipmentService = inject(EquipmentService)
+  equipmentService = inject(EquipmentService)
 
   constructor(private route: ActivatedRoute,) {
   }
 
   ngOnInit() {
-    this.equipment = this.eqipmentService.getEquipmentById(this.route.snapshot.params['id'])
+    this.equipment = this.equipmentService.getEquipmentById(this.route.snapshot.params['id'])
     console.log(this.route.snapshot.params['id'])
     console.log(this.equipment)
   }

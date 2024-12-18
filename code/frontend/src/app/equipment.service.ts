@@ -71,6 +71,6 @@ export class EquipmentService {
   }
 
   getEquipmentById(id: number): Equipment | undefined {
-    return this.equipment.at(id);
+    return this.equipment.at(id-1);
   }
 }
