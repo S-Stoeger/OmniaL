@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV == 'production'
 const stylesHandler = 'style-loader'
 
 const config = {
-    entry: './src/index.ts',
+    entry: './room/src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: "app-[hash].js"
@@ -18,15 +18,15 @@ const config = {
     devServer: {
         open: true,
         host: 'localhost',
-    },
+    },g
     plugins: [
         new HtmlWebpackPlugin({
             template: "index.html"
         }),
         new CopyPlugin({
             patterns: [
-              { from: "./css", to: "css" },
-              { from: "./img", to: "img" }
+              { from: "./room/css", to: "css" },
+              { from: "./room/img", to: "img" }
             ]
         }),
         new CleanWebpackPlugin()
@@ -63,4 +63,5 @@ module.exports = () => {
         config.mode = 'development';
     }
     return config;
+
 };

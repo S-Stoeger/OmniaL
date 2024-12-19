@@ -10,8 +10,8 @@
       "importHelpers": true,
       "sourceMap": true,
       "inlineSources": true,
-      "rootDir": "./",
-      "baseUrl": "./",
+      "rootDir": "./room/",
+      "baseUrl": "./room/",
       "paths": {
         
       }

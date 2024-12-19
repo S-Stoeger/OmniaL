@@ -1,11 +1,14 @@
 import Keycloak from 'keycloak-js';
 
 //grant_type=password&client_id=backend&client_secret=XyydRLFh9iHBOf91dejPV0qMOoELytPL&username=omnial&password=omnial
+/*
 const keycloak = new Keycloak({
     url: 'http://localhost:8000',
     realm: 'omnial',
     clientId: 'frontend'
 });
+
+
 
 // @ts-ignore
 async function init()  {
@@ -24,5 +27,5 @@ async function init()  {
 
 export const token = init();
 
-
+*/
 import "./app";
