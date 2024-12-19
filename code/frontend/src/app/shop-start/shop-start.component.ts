@@ -5,7 +5,6 @@ import {CardRowComponent} from '../card-row/card-row.component';
 @Component({
   selector: 'app-shop-start',
   imports: [
-    NgOptimizedImage,
     CardRowComponent
   ],
   templateUrl: './shop-start.component.html',

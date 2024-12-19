@@ -10,6 +10,7 @@
 #dashboard-box {
   display: flex;
   justify-content: space-around;
+  margin-bottom: 1%;
 }
 
 #dashboard-request-box, #dashboard-return-box {
@@ -22,26 +23,6 @@
   text-decoration: underline;
   font-size: 3.5rem;
   font-weight: bold;
-}
-
-.dashboard-exchange {
-  background-color: var(--light_blue);
-  width: 20vw;
-  height: 22vh;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 0.5rem;
-}
-
-.dashboard-exchange-text {
-  font-size: 1.5rem;
-  margin-top: 0;
-}
-
-.dashboard-exchange-status {
-  display: flex;
-  justify-content: space-evenly;
-  font-size: 2rem;
 }
 
 @media only screen and (max-width: 480px) {
@@ -68,25 +49,5 @@
   #dashboard-request-header,
   #dashboard-return-header {
     font-size: 2.5rem;
-  }
-
-  .dashboard-exchange {
-    width: 80%;
-    height: auto;
-    padding: 1rem;
-  }
-
-  .dashboard-exchange-text {
-    font-size: 1.2rem;
-  }
-
-  .fa-circle-info {
-    font-size: 1.5rem;
-    margin-left: 0;
-  }
-
-  .dashboard-exchange-status {
-    font-size: 1.5rem;
-    gap: 0.5rem;
   }
 }

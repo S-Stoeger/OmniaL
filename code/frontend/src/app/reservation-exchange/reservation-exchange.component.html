@@ -1,0 +1,8 @@
+<div class="dashboard-exchange" *ngFor="let reservation of reservations">
+  <a id="openModalBtn"><i class="fa-solid fa-circle-info"></i></a>
+  <p class="dashboard-exchange-text">{{ reservation.name }}<p>
+  <p class="dashboard-exchange-text">{{ reservation.startDate | date: "dd.MM.yyyy" }} - {{ reservation.endDate | date: "dd.MM.yyyy" }}<p>
+  <div class="dashboard-exchange-status">
+    <i class="fa-solid fa-x"></i><i class="fa-solid fa-check"></i>
+  </div>
+</div>

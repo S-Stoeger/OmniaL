@@ -9,7 +9,7 @@ export const routes: Routes = [
   {
     path: '',
     component: ShopStartComponent,
-    title: 'Start'
+    title: 'Shop'
   },
   {
     path: 'dashboard',
@@ -19,7 +19,7 @@ export const routes: Routes = [
   {
     path: 'cart',
     component: ShopCartComponent,
-    title: 'Shopping Cart'
+    title: 'Warenkorb'
   },
   {
     path: 'profile',

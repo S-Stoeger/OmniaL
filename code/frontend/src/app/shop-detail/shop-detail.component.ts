@@ -7,8 +7,7 @@ import {Equipment} from '../equipment';
 @Component({
   selector: 'app-shop-detail',
   imports: [
-    CardRowComponent,
-    RouterLink
+    CardRowComponent
   ],
   templateUrl: './shop-detail.component.html',
   styleUrl: './shop-detail.component.css'
