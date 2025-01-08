@@ -12,16 +12,16 @@ const config = {
     entry: './room/src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: "app-[hash].js"
+        filename: "app-[fullhash].js"
     },
     devtool: 'eval-source-map',
     devServer: {
         open: true,
         host: 'localhost',
-    },g
+    },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "index.html"
+            template: "./room/index.html"
         }),
         new CopyPlugin({
             patterns: [
