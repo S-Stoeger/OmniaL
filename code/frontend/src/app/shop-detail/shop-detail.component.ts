@@ -1,22 +1,31 @@
-import {Component, inject} from '@angular/core';
+import {Component, ElementRef, inject, ViewChild} from '@angular/core';
 import {CardRowComponent} from '../card-row/card-row.component';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {EquipmentService} from '../equipment.service';
 import {Equipment} from '../equipment';
-import {NgForOf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
+import {CurrentRentalService} from '../current-rental.service';
+import {RentalEquipment} from '../rental-equipment';
+import {RentalComponent} from '../rental/rental.component';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-shop-detail',
   imports: [
     CardRowComponent,
-    NgForOf
+    NgForOf,
+    FormsModule,
   ],
   templateUrl: './shop-detail.component.html',
   styleUrl: './shop-detail.component.css'
 })
 export class ShopDetailComponent {
   equipment: Equipment | undefined;
-  equipmentService = inject(EquipmentService)
+  equipmentService: EquipmentService = inject(EquipmentService)
+  currentRentalService: CurrentRentalService = inject(CurrentRentalService)
+  counter = -1
+  @ViewChild('countAmountInput') countAmountInput!: ElementRef;
+
   months = [
     'January',
     'February',
@@ -112,6 +121,36 @@ export class ShopDetailComponent {
   }
 
   addToCart() {
-    console.log(`Reserved ${this.countAmount} items for dates: ${this.selectedDays.join(', ')}`);
+    this.currentRentalService.addEquipment(this.createRentalEquipment(this.equipment!))
+    alert("Dein Equipment wurde in den Warenkorb gelegt!")
   }
+
+  createRentalEquipment(equipment: Equipment): RentalEquipment {
+    // Ensure selectedDays are sorted (start time is the earliest, end time is the latest)
+    const sortedDays = this.selectedDays.sort((a, b) => a - b);
+    console.log(sortedDays);
+
+    // Construct startTime and endTime based on the selected days and the current month/year
+    const year = this.currentDate.getFullYear();
+    const month = this.currentDate.getMonth();
+
+    const startTime = sortedDays.length > 0 ? new Date(year, month, sortedDays[0]) : null;
+    const endTime = sortedDays.length > 1 ? new Date(year, month, sortedDays[1]) : null;
+
+    return {
+      id: (this.counter += 1),
+      equipmentID: equipment.id,
+      count: parseInt(this.countAmountInput.nativeElement.value, 10),
+      startTime: startTime ? startTime.toISOString() : null,
+      endTime: endTime ? endTime.toISOString() : null,
+    };
+  }
+
+  check() {
+    if (this.selectedDays.length == 2 ) {
+      return true;
+    }
+    return false;
+  }
+
 }
