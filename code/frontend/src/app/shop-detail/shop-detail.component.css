@@ -89,7 +89,16 @@ button {
   color: #999;
 }
 
+.disabled {
+  background-color: #fff;
+  color: #999;
+}
+
 .day.weekend {
+  background-color: #add8e6;
+}
+
+.weekend {
   background-color: #add8e6;
 }
 
@@ -98,7 +107,17 @@ button {
   color: #fff;
 }
 
+.selected {
+  background-color: #1E444D;
+  color: #fff;
+}
+
 .day.highlighted {
+  background-color: #7FAAB4;
+  color: #000;
+}
+
+.highlighted {
   background-color: #7FAAB4;
   color: #000;
 }
