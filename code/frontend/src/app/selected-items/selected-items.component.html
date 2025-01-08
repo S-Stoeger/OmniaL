@@ -1,0 +1,10 @@
+<div *ngFor="let equipment of reservation.equipment">
+  <hr>
+  <div id="item">
+    <img src="{{ equipment.img }}" width="70vw">
+    <h2>{{ equipment.name }}</h2>
+    <p>{{reservation.startDate}}-{{reservation.endDate}}</p>
+    <i class="fa-solid fa-x fa-lg"></i>
+  </div>
+  <hr>
+</div>
