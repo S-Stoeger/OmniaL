@@ -1,8 +1,15 @@
 <div class="dashboard-exchange" *ngFor="let reservation of reservations">
-  <a id="openModalBtn"><i class="fa-solid fa-circle-info"></i></a>
+  <a id="openModalBtn" (click)="openModal(reservation)"><i class="fa-solid fa-circle-info"></i></a>
   <p class="dashboard-exchange-text">{{ reservation.name }}<p>
   <p class="dashboard-exchange-text">{{ reservation.startDate | date: "dd.MM.yyyy" }} - {{ reservation.endDate | date: "dd.MM.yyyy" }}<p>
   <div class="dashboard-exchange-status">
     <i class="fa-solid fa-x"></i><i class="fa-solid fa-check"></i>
+  </div>
+</div>
+
+<div *ngIf="isModalOpen && modalReservation != null" id="myModal" class="modal" (click)="onBackgroundClick($event)">
+  <div class="modal-content">
+    <span class="close-btn" (click)="closeModal()">×</span>
+    <p>{{ modalReservation.name }}</p>
   </div>
 </div>
