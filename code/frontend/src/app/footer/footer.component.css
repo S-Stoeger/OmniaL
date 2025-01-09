@@ -1,0 +1,59 @@
+.app-footer {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--dark_blue);
+  padding: 1% 2%;
+  color: var(--white);
+  font-size: 20px;
+  font-weight: normal;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-footer h1 {
+  font-weight: normal;
+  margin: 0;
+}
+
+.app-footer h4 {
+  font-size: 1.5rem;
+}
+
+.app-footer > div {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+#footer-ask {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+#footer-ask a {
+  font-size: 1rem;
+  text-decoration-line: underline;
+  color: var(--white);
+}
+
+@media screen and (max-width: 768px) {
+  .app-footer {
+    flex-direction: column; /* Elemente stapeln sich vertikal */
+    padding: 2% 5%; /* Mehr Polsterung für kleinere Geräte */
+    font-size: 16px; /* Kleinere Schriftgröße */
+    text-align: center; /* Zentrierter Text */
+    width: 90%;
+  }
+
+  .app-footer > div {
+    width: 100%; /* Volle Breite für die Inhalte */
+    margin-bottom: 2%; /* Abstand zwischen den Abschnitten */
+  }
+
+  .app-footer h1 {
+    font-size: 18px; /* Kleinere Schriftgröße für Überschriften */
+  }
+}

@@ -1,0 +1,23 @@
+#container {
+  width: 80%;
+  height: 70vh;
+  margin: auto;
+  overflow: scroll;
+  background-color: #fff;
+}
+
+#item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.removeButton {
+  color: var(--black);
+  transition: 0.2s;
+}
+.removeButton:hover {
+  color: var(--red);
+  transition: 0.2s;
+}

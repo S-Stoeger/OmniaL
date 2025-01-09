@@ -1,0 +1,14 @@
+<div id="container">
+  <div *ngFor="let equipment of this.equipments; let i = index">
+    <hr>
+    <div id="item">
+      <img src="{{ equipment.img }}" width="100vw">
+      <h2>{{ equipment.name }}</h2>
+      <p>{{getTime(i)}}</p>
+      <p>{{getCount(i)}}</p>
+      <i (click)="currentRentalService.deleteFromLocalStorage(i)" class="fa-solid fa-x fa-lg removeButton"></i>
+    </div>
+    <hr>
+  </div>
+</div>
+

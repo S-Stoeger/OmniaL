@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://kit.fontawesome.com/a68e4ea88e.js" crossorigin="anonymous"></script>
+    <script src="./src/components/dashboard-component.js" defer></script>
+    <script src="./src/feature/custom-elements/navigation-element.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <script src="./src/feature/custom-elements/footer-element.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Sora:wght@100..800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="./img/Logo-OmniaL-rund.png">
+</head>
+<body>
+    <header>
+        <navigation-bar></navigation-bar>
+    </header>
+
+    <main style="height: 60vh">
+        <p id="dashboard-header">Dashboard</p>
+        <div id="dashboard-box">
+            <div id="dashboard-request-box">
+                <p id="dashboard-request-header">Anfrage</p>
+                <div id="dashboard-request"></div>
+            </div>
+            <div id="dashboard-return-box">
+                <p id="dashboard-return-header">R&uuml;ckgabe</p>
+                <div id="dashboard-return"></div>
+            </div>
+        </div> 
+        
+        <div id="myModal" class="modal">
+            <!-- Modal Content -->
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <div id="dashboard-equipment"></div>
+            </div>
+        </div>
+    </main>
+
+    <br><br><br><br><br id="mobile-br">
+    <footer-element></footer-element>
+</body>
+</html>

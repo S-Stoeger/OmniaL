@@ -1,0 +1,14 @@
+<div id="products">
+  <div class="product-row">
+    <a [routerLink]="['/detail', item.id]" *ngFor="let item of equipment | slice:0:rowCount*4">
+      <div class="product">
+        <h3 class="product-title">{{item.title}}</h3>
+        <div class="product-info">
+          <h4 class="product-name">{{item.name}}</h4>
+          <p class="product-type">{{item.type}}</p>
+          <img class="product-img" src="{{item.img}}">
+        </div>
+      </div>
+    </a>
+  </div>
+</div>

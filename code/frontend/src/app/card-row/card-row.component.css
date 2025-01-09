@@ -1,0 +1,82 @@
+.product-title {
+  font-family: "Russo One", sans-serif;
+  font-style: normal;
+  margin: 0.5rem;
+  font-size: 2rem;
+  color: #fff;
+}
+
+.product-name {
+  font-size: 1rem;
+  margin: 0.5rem;
+}
+
+#products {
+  margin-left: 5%;
+}
+
+.product-row {
+  margin-top: 3vh;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  width: 100%;
+}
+
+.product {
+  background-color: var(--mid_blue_transparent);
+  width: 15vw;
+  height: 35vh;
+  text-align: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  color: var(--black);
+}
+.product > div {
+  background-color: var(--white);
+  width: 13vw;
+  height: 27vh;
+
+  border-radius: 0.2rem;
+  margin: 0 auto 3vh auto;
+}
+
+.product-type {
+  color: var(--light_blue);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.product-img {
+  width: 80%;
+}
+
+@media only screen and (max-width: 480px) {
+  .product {
+    width: 75%;
+    height: 35vh;
+    margin: 0 auto 2vh auto;
+  }
+
+  .product > div {
+    margin-left: 5%;
+    width: 90%;
+  }
+
+  .product-title  {
+    font-size: 2.5rem;
+  }
+
+  .product-img {
+    width: 40%;
+  }
+
+  .product-row {
+    grid-template-columns: auto;
+
+  }
+
+  #products {
+    margin-left: 0;
+  }
+}
