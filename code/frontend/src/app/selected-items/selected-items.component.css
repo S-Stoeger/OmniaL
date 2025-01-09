@@ -13,3 +13,11 @@
   align-items: center;
 }
 
+.removeButton {
+  color: var(--black);
+  transition: 0.2s;
+}
+.removeButton:hover {
+  color: var(--red);
+  transition: 0.2s;
+}

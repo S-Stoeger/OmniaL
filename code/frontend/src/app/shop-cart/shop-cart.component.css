@@ -40,6 +40,19 @@
   border-radius: 0.5rem;
   padding: 2vw;
 }
+#roomSection {
+  height: 75vh;
+}
+
+#submitRental {
+  margin-left: 60%;
+  background-color: var(--dark_blue);
+  border-radius: 0.5rem;
+  border: none;
+  color: var(--white);
+  padding: 2% 3% 2% 3%;
+  font-size: 1.5rem;
+}
 
 @media only screen and (max-width: 480px) {
   #auswahl {

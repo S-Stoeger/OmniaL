@@ -41,7 +41,7 @@ a {
   align-items: center;
   justify-content: center;
   background-color: var(--grey);
-  width: 3rem;
+  width: 4rem;
   height: 3rem;
   border-radius: 50%;
   color: var(--black);
