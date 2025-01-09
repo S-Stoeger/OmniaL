@@ -1,8 +1,8 @@
-package at.htlleonding.omnial.reservation;
+package at.htlleonding.omnial.repository;
 
+import at.htlleonding.omnial.model.Reservation;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;

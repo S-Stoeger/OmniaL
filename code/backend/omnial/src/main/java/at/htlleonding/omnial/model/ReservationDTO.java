@@ -1,4 +1,4 @@
-package at.htlleonding.omnial.reservation;
+package at.htlleonding.omnial.model;
 
 import jakarta.enterprise.context.ApplicationScoped;
 

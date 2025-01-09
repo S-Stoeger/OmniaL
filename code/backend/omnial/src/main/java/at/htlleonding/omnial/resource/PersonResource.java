@@ -1,19 +1,16 @@
-package at.htlleonding.omnial.person;
+package at.htlleonding.omnial.resource;
 
+import at.htlleonding.omnial.model.Person;
+import at.htlleonding.omnial.repository.PersonRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
 import java.util.List;
 
 @Path("/api/persons")
 public class PersonResource {
     @Inject
     PersonRepository personRepository;
-
-    @Inject
-    JsonWebToken jwt;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -36,12 +33,5 @@ public class PersonResource {
         return personRepository.getAll();
     }
 
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/token")
-    public Person getPersonByToken(){
-        return personRepository.getByUuid(jwt.getSubject());
-    }
 
 }

@@ -1,28 +1,19 @@
-package at.htlleonding.omnial.reservation;
+package at.htlleonding.omnial.resource;
 
-<<<<<<< HEAD
-import at.htlleonding.omnial.person.Person;
-import at.htlleonding.omnial.person.PersonRepository;
-=======
->>>>>>> dev
+import at.htlleonding.omnial.mapper.ReservationMapper;
+import at.htlleonding.omnial.model.ReservationDTO;
+import at.htlleonding.omnial.repository.PersonRepository;
+import at.htlleonding.omnial.repository.ReservationRepository;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-<<<<<<< HEAD
-import org.eclipse.microprofile.jwt.Claims;
-=======
->>>>>>> dev
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 @Path("/api/reservations")
 @RequestScoped
@@ -35,35 +26,19 @@ public class ReservationResource {
     @Inject
     ReservationMapper reservationMapper;
 
-    @Inject
-    JsonWebToken jwt;
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> dev
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list")
-    @PermitAll
+
     public List<ReservationDTO> reservationList() {
-        personRepository.addPerson(jwt.getSubject(),jwt.getClaim(Claims.family_name).toString(),jwt.getClaim(Claims.given_name).toString(),jwt.getClaim(Claims.email).toString());
         return this.reservationRepository.getAllReservations().stream().map(reservationMapper::toDTO).toList();
     }
-
-
-
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-<<<<<<< HEAD
-    @PermitAll
-=======
-    @RolesAllowed({"admin"})
->>>>>>> dev
     public ReservationDTO reservationById(@PathParam("id") int id){
         return reservationMapper.toDTO(this.reservationRepository.findByIdReservation(id));
     }
@@ -85,11 +60,6 @@ public class ReservationResource {
     }
 
     @POST
-<<<<<<< HEAD
-    @PermitAll
-=======
-    @RolesAllowed({"Admin"})
->>>>>>> dev
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void addReservation(ReservationDTO reservationDTO){
@@ -99,8 +69,6 @@ public class ReservationResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    //@RolesAllowed("admin")
-    @PermitAll
     public void deleteReservation(@PathParam("id") int id){
         this.reservationRepository.deleteReservation(id);
     }
@@ -109,8 +77,6 @@ public class ReservationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    //@RolesAllowed({"admin"})
-    @PermitAll
     public void updateReservation(@PathParam("id") int id, ReservationDTO reservationDTO){
         this.reservationRepository.updateReservation(id,reservationMapper.toEntity(reservationDTO));
     }

@@ -44,6 +44,13 @@ values (nextval('person_seq'),'fabian.film@gmail.com', 'Fabian', '4AHITM', 'Film
 
  */
 
+insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Kamera', 2,2);
+
+insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available)
+values (nextval('equipment_seq'), 'KAMERA', 'lrrrrrala', 'Kamera', 5,4);
+
+
 --Insert Rooms
 insert into Room (id, description, name)
 values (nextval('room_seq'),'Das Fotostudio steht für Schüler der Medientechnik zur verfügung um an Foto- und Videoprojekten zu arbeiten','Fotostudio');
@@ -62,6 +69,14 @@ values (nextval('room_seq'),'Der Videoschnittraum steht meist Schüler der Medie
 insert into Room (id, description, name)
 values (nextval('room_seq'),'Der Musikraum steht den Schülern der HTL Leonding zur Verfügung ' ||
 'um Ihrer kreativität in Form von Musik freien lauf zu lassen','Musikraum');
+
+
+insert into Rental(id, person_id, date, isReturned)
+values(nextval('rental_seq'), 1, '2023-11-15T20:00:00',false);
+
+insert into Rental(id, person_id, date, isReturned)
+values(nextval('rental_seq'), 1, '2023-11-15T20:00:00',true);
+
 
 
 -- No EDV rooms can be reserved (at least for now)
@@ -99,5 +114,5 @@ values (nextval('room_seq'),'Sehr cool','EDV-10');
  */
 
 -- Insert Reservation
-insert into reservation
+insert into Reservation
 values (nextval('reservation_seq'), 1, '2023-11-15',1,'2023-11-15T20:00:00','2023-11-15T10:55:00');

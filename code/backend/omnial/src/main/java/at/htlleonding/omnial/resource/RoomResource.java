@@ -1,5 +1,7 @@
-package at.htlleonding.omnial.room;
+package at.htlleonding.omnial.resource;
 
+import at.htlleonding.omnial.model.Room;
+import at.htlleonding.omnial.repository.RoomRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -7,7 +9,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import java.util.List;
-import java.util.Map;
 
 @Path("/api/rooms")
 public class RoomResource {

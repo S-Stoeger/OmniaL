@@ -1,5 +1,6 @@
-package at.htlleonding.omnial.room;
+package at.htlleonding.omnial.repository;
 
+import at.htlleonding.omnial.model.Room;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;

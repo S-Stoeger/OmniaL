@@ -1,9 +1,8 @@
-package at.htlleonding.omnial.room;
+package at.htlleonding.omnial.model;
 
 import jakarta.persistence.*;
 
-import static at.htlleonding.omnial.person.Person.FIND_ALL_PERSONS;
-import static at.htlleonding.omnial.room.Room.FIND_ALL_ROOMS;
+import static at.htlleonding.omnial.model.Room.FIND_ALL_ROOMS;
 
 @Entity
 @NamedQuery(name = FIND_ALL_ROOMS, query = "SELECT r from Room r")

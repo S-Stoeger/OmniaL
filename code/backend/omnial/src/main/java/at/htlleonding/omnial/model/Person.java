@@ -1,4 +1,4 @@
-package at.htlleonding.omnial.person;
+package at.htlleonding.omnial.model;
 
 import jakarta.persistence.*;
 

@@ -1,9 +1,11 @@
-package at.htlleonding.omnial.reservation;
+package at.htlleonding.omnial.mapper;
 
-import at.htlleonding.omnial.person.Person;
-import at.htlleonding.omnial.person.PersonRepository;
-import at.htlleonding.omnial.room.Room;
-import at.htlleonding.omnial.room.RoomRepository;
+import at.htlleonding.omnial.model.Person;
+import at.htlleonding.omnial.model.Reservation;
+import at.htlleonding.omnial.model.ReservationDTO;
+import at.htlleonding.omnial.repository.PersonRepository;
+import at.htlleonding.omnial.model.Room;
+import at.htlleonding.omnial.repository.RoomRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 

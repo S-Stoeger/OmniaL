@@ -1,41 +1,22 @@
-package at.htlleonding.omnial.person;
+package at.htlleonding.omnial.repository;
 
-import at.htlleonding.omnial.reservation.Reservation;
+import at.htlleonding.omnial.model.Person;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import io.quarkus.runtime.Startup;
-import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
-import jakarta.inject.Qualifier;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
 import java.util.List;
 
-import java.util.List;
-<<<<<<< HEAD
-import java.util.UUID;
-
-=======
->>>>>>> dev
 @ApplicationScoped
 public class PersonRepository {
     @Inject

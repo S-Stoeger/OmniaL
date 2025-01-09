@@ -1,32 +1,12 @@
-package at.htlleonding.omnial.reservation;
+package at.htlleonding.omnial.model;
 
-import at.htlleonding.omnial.person.Person;
-import at.htlleonding.omnial.room.Room;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 
-import static at.htlleonding.omnial.reservation.Reservation.*;
+import static at.htlleonding.omnial.model.Reservation.*;
 
 @Entity
 @NamedQuery(name = FIND_ALL_RESERVATIONS, query = "Select r from Reservation r")
