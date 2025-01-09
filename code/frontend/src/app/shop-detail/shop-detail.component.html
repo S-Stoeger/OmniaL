@@ -37,7 +37,7 @@
     </p>
     <div id="detail-">
       <input #countAmountInput id="countAmount" type="number" min="0" max="100"/>
-      <button id="reserve" (click)="addToCart()">Zum Warenkorb hinzufügen</button>
+      <button [style.opacity]="!check() ? '0.5' : '1'" [disabled]="!check()" id="reserve" (click)="addToCart()">Zum Warenkorb hinzufügen</button>
     </div>
   </div>
 

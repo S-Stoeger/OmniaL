@@ -15,6 +15,7 @@ import {FormsModule} from '@angular/forms';
     CardRowComponent,
     NgForOf,
     FormsModule,
+    NgIf,
   ],
   templateUrl: './shop-detail.component.html',
   styleUrl: './shop-detail.component.css'
@@ -147,8 +148,14 @@ export class ShopDetailComponent {
   }
 
   check() {
-    if (this.selectedDays.length == 2 ) {
-      return true;
+    if(this.countAmountInput != undefined) {
+      console.log(`selected days: ${this.selectedDays}`);
+      console.log(`count input: ${ parseInt(this.countAmountInput.nativeElement.value,10)}`);
+
+      if (this.selectedDays.length == 2 && parseInt(this.countAmountInput.nativeElement.value,10) > 0) {
+        return true;
+      }
+      return false;
     }
     return false;
   }
