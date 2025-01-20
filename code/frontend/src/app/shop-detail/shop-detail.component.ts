@@ -15,7 +15,6 @@ import {FormsModule} from '@angular/forms';
     CardRowComponent,
     NgForOf,
     FormsModule,
-    NgIf,
   ],
   templateUrl: './shop-detail.component.html',
   styleUrl: './shop-detail.component.css'

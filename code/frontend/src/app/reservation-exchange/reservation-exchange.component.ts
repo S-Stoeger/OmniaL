@@ -1,13 +1,14 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Reservation} from '../reservation';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {SelectedItemsComponent} from '../selected-items/selected-items.component';
 
 @Component({
   selector: 'app-reservation-exchange',
   imports: [
     NgForOf,
     DatePipe,
-    NgIf
+    NgIf,
   ],
   templateUrl: './reservation-exchange.component.html',
   styleUrl: './reservation-exchange.component.css'
