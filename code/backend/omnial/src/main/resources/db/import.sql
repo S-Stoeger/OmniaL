@@ -44,11 +44,33 @@ values (nextval('person_seq'),'fabian.film@gmail.com', 'Fabian', '4AHITM', 'Film
 
  */
 
-insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available)
-values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Kamera', 2,2);
+insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Blackmagic', 1,1, 'assets/images/blackmagic.png');
 
-insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available)
-values (nextval('equipment_seq'), 'KAMERA', 'lrrrrrala', 'Kamera', 5,4);
+insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Canon', 5,5, 'assets/images/camera.png');
+
+insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'GH4', 1,1, 'assets/images/gh4.png');
+
+insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'GH6', 1,1, 'assets/images/gh6.png');
+
+insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'NinjaMonitor', 1,1, 'assets/images/ninjaMonitor.jpg');
+
+insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Objecktiv', 2,2, 'assets/images/objektiv.png');
+
+insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Ronin M', 1,1, 'assets/images/roninM.png');
+
+insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Ronin S', 1,1, 'assets/images/roninS.png');
+
+
+
+
 
 
 --Insert Rooms

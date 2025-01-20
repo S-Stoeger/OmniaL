@@ -5,16 +5,13 @@ import jakarta.persistence.*;
 
 @NamedQuery(name = Equipment.FIND_ALL_EQUIPMENT , query = "SELECT e from Equipment e")
 @Entity
-public class Equipment {
+public class Equipment extends PanacheEntity {
 
     public static final String FIND_ALL_EQUIPMENT= "Equipment.finAll";
 
-    @Id
-    @GeneratedValue
-    @SequenceGenerator(name = "equipment_seq", sequenceName = "equipment_seq", allocationSize = 1, initialValue = 1)
-    private Long id;
 
-    private String equipmentType;
+    @Enumerated(EnumType.STRING)
+    private EquipmentType equipmentType;
 
     private String labelNumber;
 
@@ -23,6 +20,16 @@ public class Equipment {
     private int itemCount;
 
     private int available;
+
+    private String link;
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     public int getAvailable() {
         return available;
@@ -56,11 +63,11 @@ public class Equipment {
         this.labelNumber = labelNumber;
     }
 
-    public String getEquipmentType() {
+    public EquipmentType getEquipmentType() {
         return equipmentType;
     }
 
-    public void setEquipmentType(String equipmentType) {
+    public void setEquipmentType(EquipmentType equipmentType) {
         this.equipmentType = equipmentType;
     }
 

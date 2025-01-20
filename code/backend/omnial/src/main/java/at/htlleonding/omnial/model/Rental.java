@@ -1,17 +1,15 @@
 package at.htlleonding.omnial.model;
 
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
-public class Rental {
+public class Rental extends PanacheEntity {
 
-    @Id
-    @GeneratedValue
-    @SequenceGenerator(name = "rental_seq", sequenceName = "rental_seq", allocationSize = 1, initialValue = 1)
-    private Long id;
+
 
     @ManyToOne
     private Person person;

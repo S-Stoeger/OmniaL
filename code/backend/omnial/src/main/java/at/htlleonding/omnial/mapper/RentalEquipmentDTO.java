@@ -1,0 +1,22 @@
+package at.htlleonding.omnial.mapper;
+
+import at.htlleonding.omnial.model.Equipment;
+import at.htlleonding.omnial.model.Rental;
+import at.htlleonding.omnial.model.Rental_Equipment;
+import at.htlleonding.omnial.repository.RentalRepository;
+import jakarta.inject.Inject;
+
+public record RentalEquipmentDTO(long rentalId, long equipmentId, int amount, boolean idReturned) {
+
+
+    public static Rental_Equipment toRentalEquipment(RentalEquipmentDTO rentalEquipmentDTO){
+
+        Equipment equipment = Equipment.findById(rentalEquipmentDTO.equipmentId);
+        Rental rental = Rental.findById(rentalEquipmentDTO.rentalId);
+
+
+        return new Rental_Equipment(rental,equipment, rentalEquipmentDTO.amount, rentalEquipmentDTO.idReturned);
+    }
+
+
+}
