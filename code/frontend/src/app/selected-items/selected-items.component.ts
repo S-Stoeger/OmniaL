@@ -5,6 +5,7 @@ import {RentalEquipment} from '../rental-equipment';
 import {EquipmentService} from '../equipment.service';
 import {Equipment} from '../equipment';
 import {CurrentRentalService} from '../current-rental.service';
+import {HttpService} from '../http.service';
 
 @Component({
   selector: 'app-selected-items',
@@ -16,7 +17,7 @@ import {CurrentRentalService} from '../current-rental.service';
 })
 export class SelectedItemsComponent {
   @Input() rentalEquipment!: RentalEquipment[];
-  equipmentService: EquipmentService = inject(EquipmentService);
+  httpService: HttpService = inject(HttpService);
   currentRentalService: CurrentRentalService = inject(CurrentRentalService);
   equipments: Equipment[] = [];
 
@@ -24,7 +25,9 @@ export class SelectedItemsComponent {
   ngOnInit(): void {
     console.log(this.rentalEquipment)
     for (let i = 0; i < this.rentalEquipment.length; i++) {
-      this.equipments.push(<Equipment>this.equipmentService.getEquipmentById(this.rentalEquipment[i].equipmentID));
+      this.httpService.getEquipmentById(this.rentalEquipment[i].equipmentID).subscribe(equipment => {
+        this.equipments.push(equipment);
+      })
     }
   }
 

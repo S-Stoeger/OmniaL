@@ -9,13 +9,14 @@ public class Equipment extends PanacheEntity {
 
     public static final String FIND_ALL_EQUIPMENT= "Equipment.finAll";
 
-
     @Enumerated(EnumType.STRING)
     private EquipmentType equipmentType;
 
     private String labelNumber;
 
     private String name;
+
+    private String title;
 
     private int itemCount;
 
@@ -69,6 +70,14 @@ public class Equipment extends PanacheEntity {
 
     public void setEquipmentType(EquipmentType equipmentType) {
         this.equipmentType = equipmentType;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Long getId() {

@@ -1,7 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
-import {Equipment, Equipment2} from './equipment';
+import {Equipment} from './equipment';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,10 @@ export class HttpService {
 
   fetchAllVotes() {
     return this.http.get<Equipment[]>(this.URL + "equipment/list");
+  }
+
+  getEquipmentById(id: number): Observable<Equipment> {
+    return this.http.get<Equipment>(`${this.URL}equipment/${id}`);
   }
 
   constructor() {

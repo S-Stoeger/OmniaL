@@ -1,5 +1,5 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {Equipment, Equipment2} from '../equipment';
+import {Equipment} from '../equipment';
 import {EquipmentService} from '../equipment.service';
 import {NgForOf, SlicePipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
@@ -18,22 +18,16 @@ import {HttpService} from '../http.service';
 export class CardRowComponent implements OnInit {
   @Input() rowCount!: number;
   httpService: HttpService = inject(HttpService);
-
   equipment: Equipment[] = [];
-  equipmentService = inject(EquipmentService);
-  test: Equipment[] = [];
 
   ngOnInit() {
     this.httpService.fetchAllVotes().subscribe(
       t => {
-        this.test = t;
+        this.equipment = t;
         console.log(t)
       }
     );
 
   }
 
-  constructor() {
-    this.equipment = this.equipmentService.getEquipment();
-  }
 }

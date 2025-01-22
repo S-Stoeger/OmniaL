@@ -1,6 +1,6 @@
-import {Component, ElementRef, inject, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CardRowComponent} from '../card-row/card-row.component';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterLink} from '@angular/router';
 import {EquipmentService} from '../equipment.service';
 import {Equipment} from '../equipment';
 import {NgForOf, NgIf} from '@angular/common';
@@ -8,6 +8,8 @@ import {CurrentRentalService} from '../current-rental.service';
 import {RentalEquipment} from '../rental-equipment';
 import {RentalComponent} from '../rental/rental.component';
 import {FormsModule} from '@angular/forms';
+import {HttpService} from '../http.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-shop-detail',
@@ -21,7 +23,9 @@ import {FormsModule} from '@angular/forms';
 })
 export class ShopDetailComponent {
   equipment: Equipment | undefined;
-  equipmentService: EquipmentService = inject(EquipmentService)
+  httpService: HttpService = inject(HttpService)
+  route = inject(ActivatedRoute)
+  router = inject(Router)
   currentRentalService: CurrentRentalService = inject(CurrentRentalService)
   counter = -1
   @ViewChild('countAmountInput') countAmountInput!: ElementRef;
@@ -41,14 +45,17 @@ export class ShopDetailComponent {
     'December',
   ];
 
-  constructor(private route: ActivatedRoute,) {
+  constructor() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.httpService.getEquipmentById(this.route.snapshot.params['id']).subscribe( t => {
+          this.equipment = t;
+          console.log(this.equipment);
+        })
+        this.renderCalendar();
+      }
+    })
   }
-
-  ngOnInit() {
-    this.equipment = this.equipmentService.getEquipmentById(this.route.snapshot.params['id'])
-    this.renderCalendar();
-  }
-
 
   currentDate = new Date();
   selectedDays: number[] = [];
@@ -128,7 +135,6 @@ export class ShopDetailComponent {
   createRentalEquipment(equipment: Equipment): RentalEquipment {
     // Ensure selectedDays are sorted (start time is the earliest, end time is the latest)
     const sortedDays = this.selectedDays.sort((a, b) => a - b);
-    console.log(sortedDays);
 
     // Construct startTime and endTime based on the selected days and the current month/year
     const year = this.currentDate.getFullYear();
@@ -148,9 +154,6 @@ export class ShopDetailComponent {
 
   check() {
     if(this.countAmountInput != undefined) {
-      console.log(`selected days: ${this.selectedDays}`);
-      console.log(`count input: ${ parseInt(this.countAmountInput.nativeElement.value,10)}`);
-
       if (this.selectedDays.length == 2 && parseInt(this.countAmountInput.nativeElement.value,10) > 0) {
         return true;
       }
