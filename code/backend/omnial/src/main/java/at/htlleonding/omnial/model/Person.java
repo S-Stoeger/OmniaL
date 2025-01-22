@@ -36,8 +36,6 @@ public class Person {
         return id;
     }
 
-
-
     public String getSurname() {
         return surname;
     }
