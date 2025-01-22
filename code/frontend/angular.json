@@ -28,7 +28,11 @@
               }
             ],
             "styles": [
+<<<<<<< Updated upstream
               "@angular/material/prebuilt-themes/rose-red.css",
+=======
+              "src/custom-theme.scss",
+>>>>>>> Stashed changes
               "src/styles.css"
             ],
             "scripts": []

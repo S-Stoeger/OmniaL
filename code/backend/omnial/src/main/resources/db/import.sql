@@ -51,7 +51,7 @@ insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, av
 values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Panasonic Lumix DCM-GH6', 'GH6', 5,5, 'assets/images/gh6.png');
 
 insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
-values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Panasonic Lumix DCM-GH4', 'GH4', 1,1, 'assets/images/gh4.jpg');
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Panasonic Lumix DCM-GH4', 'GH4', 1,0, 'assets/images/gh4.jpg');
 
 insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
 values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Dji Ronin M', 'Ronin M', 1,1, 'assets/images/roninM.png');

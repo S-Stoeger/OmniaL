@@ -24,7 +24,6 @@ export class CardRowComponent implements OnInit {
     this.httpService.fetchAllVotes().subscribe(
       t => {
         this.equipment = t;
-        console.log(t)
       }
     );
 

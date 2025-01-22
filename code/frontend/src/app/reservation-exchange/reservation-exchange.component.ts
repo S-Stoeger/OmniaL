@@ -20,7 +20,6 @@ export class ReservationExchangeComponent {
   modalReservation: Reservation | null = null;
 
   constructor() {
-    console.log(this.reservations)
   }
 
   openModal(reservation: Reservation) {

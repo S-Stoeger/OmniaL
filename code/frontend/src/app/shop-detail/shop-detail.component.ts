@@ -4,7 +4,7 @@ import {ActivatedRoute, NavigationEnd, Router, RouterLink} from '@angular/router
 import {EquipmentService} from '../equipment.service';
 import {Equipment} from '../equipment';
 import {NgForOf, NgIf} from '@angular/common';
-import {CurrentRentalService} from '../current-rental.service';
+import {LocalStorageService} from '../local-storage.service';
 import {RentalEquipment} from '../rental-equipment';
 import {RentalComponent} from '../rental/rental.component';
 import {FormsModule} from '@angular/forms';
@@ -17,6 +17,7 @@ import {Subscription} from 'rxjs';
     CardRowComponent,
     NgForOf,
     FormsModule,
+    NgIf,
   ],
   templateUrl: './shop-detail.component.html',
   styleUrl: './shop-detail.component.css'
@@ -26,7 +27,7 @@ export class ShopDetailComponent {
   httpService: HttpService = inject(HttpService)
   route = inject(ActivatedRoute)
   router = inject(Router)
-  currentRentalService: CurrentRentalService = inject(CurrentRentalService)
+  currentRentalService: LocalStorageService = inject(LocalStorageService)
   counter = -1
   @ViewChild('countAmountInput') countAmountInput!: ElementRef;
 
@@ -50,7 +51,6 @@ export class ShopDetailComponent {
       if (event instanceof NavigationEnd) {
         this.httpService.getEquipmentById(this.route.snapshot.params['id']).subscribe( t => {
           this.equipment = t;
-          console.log(this.equipment);
         })
         this.renderCalendar();
       }

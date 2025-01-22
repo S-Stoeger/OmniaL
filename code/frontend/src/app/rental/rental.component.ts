@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {CurrentRentalService} from '../current-rental.service';
+import {LocalStorageService} from '../local-storage.service';
 import {RentalEquipment} from '../rental-equipment';
 
 
@@ -8,7 +8,7 @@ import {RentalEquipment} from '../rental-equipment';
   templateUrl: './rental.component.html',
 })
 export class RentalComponent implements OnInit {
-  constructor(public rentalService: CurrentRentalService) {}
+  constructor(public rentalService: LocalStorageService) {}
 
   ngOnInit() {
     // Try to load from localStorage first
