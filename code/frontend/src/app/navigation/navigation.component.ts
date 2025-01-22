@@ -2,12 +2,14 @@ import {Component, inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {RouterLink} from '@angular/router';
 import {MatBadge} from '@angular/material/badge';
 import {LocalStorageService} from '../local-storage.service';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-navigation',
   imports: [
     RouterLink,
-    MatBadge
+    MatBadge,
+    NgIf,
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.css',

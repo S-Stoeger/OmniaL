@@ -6,6 +6,7 @@ import {EquipmentService} from '../equipment.service';
 import {Equipment} from '../equipment';
 import {LocalStorageService} from '../local-storage.service';
 import {HttpService} from '../http.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-selected-items',
@@ -20,6 +21,7 @@ export class SelectedItemsComponent implements OnInit {
   httpService: HttpService = inject(HttpService);
   currentRentalService: LocalStorageService = inject(LocalStorageService);
   equipments: Equipment[] = [];
+  private snackBar = inject(MatSnackBar);
 
 
   ngOnInit(): void {
@@ -46,5 +48,9 @@ export class SelectedItemsComponent implements OnInit {
   delete(id: number) {
     this.currentRentalService.deleteFromLocalStorage(id)
     this.equipments = this.equipments.filter(item => item.id !== id);
+    this.snackBar.open('Gelöscht', 'Schließen');
+    setTimeout(() => {
+      this.snackBar.dismiss()
+    } ,2500)
   }
 }

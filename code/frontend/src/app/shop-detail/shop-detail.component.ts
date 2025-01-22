@@ -10,6 +10,7 @@ import {RentalComponent} from '../rental/rental.component';
 import {FormsModule} from '@angular/forms';
 import {HttpService} from '../http.service';
 import {Subscription} from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-shop-detail',
@@ -30,6 +31,7 @@ export class ShopDetailComponent {
   currentRentalService: LocalStorageService = inject(LocalStorageService)
   counter = -1
   @ViewChild('countAmountInput') countAmountInput!: ElementRef;
+  private snackBar = inject(MatSnackBar);
 
   months = [
     'January',
@@ -129,7 +131,10 @@ export class ShopDetailComponent {
 
   addToCart() {
     this.currentRentalService.addEquipment(this.createRentalEquipment(this.equipment!))
-    alert("Dein Equipment wurde in den Warenkorb gelegt!")
+    this.snackBar.open('Hinzugefügt', 'Schließen')
+    setTimeout(() => {
+      this.snackBar.dismiss()
+    } ,2500)
   }
 
   createRentalEquipment(equipment: Equipment): RentalEquipment {
@@ -153,7 +158,7 @@ export class ShopDetailComponent {
   }
 
   check() {
-    if(this.countAmountInput != undefined) {
+    if(this.equipment?.available !== 0) {
       if (this.selectedDays.length == 2 && parseInt(this.countAmountInput.nativeElement.value,10) > 0) {
         return true;
       }
