@@ -20,20 +20,20 @@ public class EquipmentRepository  {
         return entityManager.createNamedQuery(Equipment.FIND_ALL_EQUIPMENT, Equipment.class).getResultList();
     }
 
-    public List<Equipment> getEquipmentByType(String type) {
+    public List<Equipment> getEquipmentByType(EquipmentType type) {
         return entityManager.createQuery("select e from Equipment e where e.equipmentType = :type", Equipment.class)
                 .setParameter("type", type)
                 .getResultList();
     }
 
     public List<Equipment> getEquipmentAvailable() {
-        return entityManager.createQuery("select e from Equipment e , Rental_Equipment re where e.available >= 1", Equipment.class)
+        return entityManager.createQuery("select e from Equipment e where e.available >= 1", Equipment.class)
                 .getResultList();
     }
 
 
     public List<Equipment> getEquipmentMostPopular() {
-        return entityManager.createQuery("select e from Equipment e  , Rental_Equipment re where re.equipment.id = e.id order by count(re)", Equipment.class)
+        return entityManager.createQuery("select e from Equipment e  , Rental_Equipment re where re.equipment.id = e.id group by e.id order by count(re) ", Equipment.class)
                 .getResultList();
     }
 

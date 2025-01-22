@@ -70,3 +70,31 @@ GET http://localhost:8080/api/persons/list
 ### Get Person
 
 GET http://localhost:8080/api/equipment/list
+
+
+###
+
+
+POST http://localhost:8080/api/rental/
+Content-Type: application/json
+
+
+{
+  "person_id": 1,
+  "date": "2023-12-14T08:50:00",
+  "isReturned": false,
+  "rentalEquipmentDTO": [
+    {
+      "rentalId": 1,
+      "equipmentId": 1,
+      "isReturned": false
+    },
+    {
+      "rentalId": 2,
+      "equipmentId": 2,
+      "isReturned": true
+    }
+  ]
+}
+
+

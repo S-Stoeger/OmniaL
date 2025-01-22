@@ -46,9 +46,11 @@ public class RentalResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addRental(Rental rental,RentalEquipmentDTO rentalEquipmentDTO) {
+    public void addRental(Rental rental, RentalEquipmentDTO[] rentalEquipmentDTO) {
         Rental.persist(rental);
-        rentalEquipmentReporitory.persist(RentalEquipmentDTO.toRentalEquipment(rentalEquipmentDTO));
+        for (int i = 0; i < rentalEquipmentDTO.length; i++) {
+            Rental_Equipment.persist(RentalEquipmentDTO.toRentalEquipment(rentalEquipmentDTO[i]));
+        }
     }
 
     @GET
@@ -57,6 +59,15 @@ public class RentalResource {
     public List<Rental> getRentalByUserId(@PathParam("id") long id) {
         return rentalRepository.getReservationByUser(id);
     }
+
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/eq/list")
+    public List<Rental_Equipment> getRentalEquipment() {
+        return rentalEquipmentReporitory.listAll();
+    }
+
 
 
 }

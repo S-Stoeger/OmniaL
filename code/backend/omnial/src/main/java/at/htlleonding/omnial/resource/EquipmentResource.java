@@ -1,6 +1,7 @@
 package at.htlleonding.omnial.resource;
 
 import at.htlleonding.omnial.model.Equipment;
+import at.htlleonding.omnial.model.EquipmentType;
 import at.htlleonding.omnial.model.Rental;
 import at.htlleonding.omnial.repository.EquipmentRepository;
 import jakarta.inject.Inject;
@@ -30,14 +31,14 @@ public class EquipmentResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{type}")
-    public List<Equipment> getEquipmentByType(@PathParam("type") String type) {
+    public List<Equipment> getEquipmentByType(@PathParam("type") EquipmentType type) {
         return this.equipmentRepository.getEquipmentByType(type);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Equipment getEquipmentByType(@PathParam("id") Long id) {
+    public Equipment getEquipmentByType(@PathParam("id") long id) {
         return Equipment.findById(id);
     }
 

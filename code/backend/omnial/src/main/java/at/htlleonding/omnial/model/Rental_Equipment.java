@@ -1,21 +1,17 @@
 package at.htlleonding.omnial.model;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
 @Entity
-public class Rental_Equipment {
+public class Rental_Equipment extends PanacheEntity {
 
-    @Id
-    @GeneratedValue
-    private  long id;
 
     @ManyToOne
     private Rental rental;
 
     @ManyToOne
     private Equipment equipment;
-
-    private int amount;
 
     private boolean idReturned;
 
@@ -43,14 +39,6 @@ public class Rental_Equipment {
         this.equipment = equipment;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     public boolean isIdReturned() {
         return idReturned;
     }
@@ -63,10 +51,9 @@ public class Rental_Equipment {
     }
 
 
-    public Rental_Equipment(Rental rental, Equipment equipment, int amount, boolean idReturned) {
+    public Rental_Equipment(Rental rental, Equipment equipment, boolean idReturned) {
         this.rental = rental;
         this.equipment = equipment;
-        this.amount = amount;
         this.idReturned = idReturned;
     }
 }
