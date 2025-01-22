@@ -1,16 +1,10 @@
 export interface Equipment {
-  id: number;
-  title: string;
-  name: string;
-  type: string;
-  img: string;
-}
-
-export interface Equipment2 {
   id: number
   equipmentType: string,
   labelNumber: string,
   name: string,
+  title: string,
   itemCount: number,
-  available: number
+  available: number,
+  link: number
 }

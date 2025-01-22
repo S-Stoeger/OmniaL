@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: ghcr.io/s-stoeger/omnial:latest
+          image: ghcr.io/s-stoeger/shop-frontend:latest
 
           # remove imagePullPolicy when stable. Currently we do not take care of version numbers
           imagePullPolicy: Always

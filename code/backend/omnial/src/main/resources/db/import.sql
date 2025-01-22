@@ -44,29 +44,32 @@ values (nextval('person_seq'),'fabian.film@gmail.com', 'Fabian', '4AHITM', 'Film
 
  */
 
-insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
-values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Blackmagic', 1,1, 'assets/images/blackmagic.png');
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Blackmagic Cinema Pocket', 'Blackmagic', 1,1, 'assets/images/blackmagic.png');
 
-insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
-values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Canon', 5,5, 'assets/images/camera.png');
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Panasonic Lumix DCM-GH6', 'GH6', 5,5, 'assets/images/gh6.png');
 
-insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
-values (nextval('equipment_seq'), 'KAMERA', 'lala', 'GH4', 1,1, 'assets/images/gh4.png');
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Panasonic Lumix DCM-GH4', 'GH4', 1,1, 'assets/images/gh4.jpg');
 
-insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
-values (nextval('equipment_seq'), 'KAMERA', 'lala', 'GH6', 1,1, 'assets/images/gh6.png');
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Dji Ronin M', 'Ronin M', 1,1, 'assets/images/roninM.png');
 
-insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
-values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'NinjaMonitor', 1,1, 'assets/images/ninjaMonitor.jpg');
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Atomos Ninja Inferno', 'NinjaMonitor', 1,1, 'assets/images/ninjaMonitor.jpg');
 
-insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
-values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Objecktiv', 2,2, 'assets/images/objektiv.png');
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Sigma 18-35mm', 'Objektiv', 2,2, 'assets/images/objektiv.png');
 
-insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
-values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Ronin M', 1,1, 'assets/images/roninM.png');
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Kamera', 'Kamera', 1,1, 'assets/images/camera.png');
 
-insert into Equipment(id, equipmentType, labelNumber, name, itemCount, available, link)
-values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Ronin S', 1,1, 'assets/images/roninS.png');
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Dji Ronin S','Ronin S', 1,1, 'assets/images/roninS.png');
+
+
+
 
 
 
