@@ -16,7 +16,7 @@ import {Rental} from '../rental';
   styleUrl: './reservation-exchange.component.css'
 })
 export class ReservationExchangeComponent {
-  @Input() reservations!: Reservation[];
+  @Input() hasBeenRented!: boolean;
   @Output() close = new EventEmitter<void>();
   isModalOpen: boolean = false;
   modalRental: Rental | null = null;
@@ -26,6 +26,7 @@ export class ReservationExchangeComponent {
   constructor() {
     this.httpService.getAllRentals().subscribe((res: any) => {
       this.rentals = res;
+      this.rentals = this.rentals.filter(r => r.returned === this.hasBeenRented);
     });
   }
 
