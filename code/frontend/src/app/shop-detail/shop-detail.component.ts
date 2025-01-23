@@ -6,7 +6,6 @@ import {Equipment} from '../equipment';
 import {NgForOf, NgIf} from '@angular/common';
 import {LocalStorageService} from '../local-storage.service';
 import {RentalEquipment} from '../rental-equipment';
-import {RentalComponent} from '../rental/rental.component';
 import {FormsModule} from '@angular/forms';
 import {HttpService} from '../http.service';
 import {Subscription} from 'rxjs';

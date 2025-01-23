@@ -44,7 +44,7 @@ export class ShopCartComponent implements OnInit {
       id: 5,
       person_uuid: '92874a0d-a3d6-4729-aee7-2cf92a6162ca',
       surname: 'Wagner',
-      firstName: 'Moritz',
+      firstname: 'Moritz',
       email: 'moritz.wagner06@gmx.at',
       grade: '5AHITM'
     }

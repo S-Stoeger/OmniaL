@@ -1,8 +1,8 @@
 export interface Person {
   id: number,
-  person_uuid: string,
   surname: string,
-  firstName: string,
+  firstname: string,
   email: string,
-  grade: string
+  grade: string,
+  person_uuid: string
 }
