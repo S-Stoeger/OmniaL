@@ -158,7 +158,7 @@ export class ShopDetailComponent {
   }
 
   check() {
-    if(this.equipment?.available !== 0) {
+    if(this.equipment?.available !== 0 && this.equipment != undefined) {
       if (this.selectedDays.length == 2 && parseInt(this.countAmountInput.nativeElement.value,10) > 0) {
         return true;
       }
