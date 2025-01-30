@@ -10,6 +10,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpService} from '../http.service';
 import {Subscription} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {AmountSettingsComponent} from '../amount-settings/amount-settings.component';
 
 @Component({
   selector: 'app-shop-detail',
@@ -18,6 +19,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     NgForOf,
     FormsModule,
     NgIf,
+    AmountSettingsComponent,
   ],
   templateUrl: './shop-detail.component.html',
   styleUrl: './shop-detail.component.css'
@@ -29,7 +31,7 @@ export class ShopDetailComponent {
   router = inject(Router)
   currentRentalService: LocalStorageService = inject(LocalStorageService)
   counter = -1
-  @ViewChild('countAmountInput') countAmountInput!: ElementRef;
+  @ViewChild(AmountSettingsComponent) amountSettingsComponent!: AmountSettingsComponent;
   private snackBar = inject(MatSnackBar);
 
   months = [
@@ -150,7 +152,7 @@ export class ShopDetailComponent {
     return {
       id: (this.counter += 1),
       equipmentID: equipment.id,
-      count: parseInt(this.countAmountInput.nativeElement.value, 10),
+      count: this.amountSettingsComponent.getCurrentAmount(),
       startTime: startTime ? startTime.toISOString() : null,
       endTime: endTime ? endTime.toISOString() : null,
     };
@@ -158,7 +160,7 @@ export class ShopDetailComponent {
 
   check() {
     if(this.equipment?.available !== 0 && this.equipment != undefined) {
-      if (this.selectedDays.length == 2 && parseInt(this.countAmountInput.nativeElement.value,10) > 0) {
+      if (this.selectedDays.length == 2 && this.amountSettingsComponent.getCurrentAmount() > 0) {
         return true;
       }
       return false;

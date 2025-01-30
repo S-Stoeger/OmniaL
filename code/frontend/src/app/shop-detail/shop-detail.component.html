@@ -37,12 +37,10 @@
       <span style="color: red; font-size: 1.3em;" *ngIf="equipment?.available === 0">Nicht Verfügbar</span>
     </p>
     <div id="detail-">
-      <input #countAmountInput id="countAmount" type="number" min="1" max="{{equipment?.available}}" [defaultValue]="1"/>
+      <app-amount-settings [maxAmount]="equipment?.available"></app-amount-settings>
       <button [style.opacity]="!check() ? '0.5' : '1'" [disabled]="!check()" id="reserve" (click)="addToCart()">Zum Warenkorb hinzufügen</button>
     </div>
   </div>
-
-
 </div>
 
 <h1 id="detail-h1">Wurde oft zusammen entliehen:</h1>
