@@ -1,7 +1,7 @@
 <div class="dashboard-exchange" *ngFor="let rental of rentals">
   <a id="openModalBtn" (click)="openModal(rental)"><i class="fa-solid fa-circle-info"></i></a>
   <p class="dashboard-exchange-text">{{ rental.person.surname }} {{ rental.person.firstname }}<p>
-  <p class="dashboard-exchange-text">{{ rental.date | date: "dd.MM.yyyy" }} - {{ rental.date | date: "dd.MM.yyyy" }}<p>
+  <p class="dashboard-exchange-text">{{ rental.leaseDate | date: "dd.MM.yyyy" }} - {{ rental.returnDate | date: "dd.MM.yyyy" }}<p>
   <div class="dashboard-exchange-status">
     <i class="fa-solid fa-x"></i><i class="fa-solid fa-check"></i>
   </div>

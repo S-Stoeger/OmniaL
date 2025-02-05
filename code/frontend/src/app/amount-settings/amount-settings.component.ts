@@ -5,7 +5,6 @@ import {NgIf} from '@angular/common';
 @Component({
   selector: 'app-amount-settings',
   imports: [
-    NgIf
   ],
   templateUrl: './amount-settings.component.html',
   styleUrl: './amount-settings.component.css'
