@@ -51,7 +51,8 @@ export class ShopCartComponent implements OnInit {
 
     const rentalOriginal: Rental = {
       person: person,
-      date: new Date("2023-11-15T19:00:00.000+00:00"),
+      leaseDate: new Date("2023-11-15T19:00:00.000+00:00"),
+      returnDate: new Date("2023-11-15T19:00:00.000+00:00"),
       returned: false
     }
 

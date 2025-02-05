@@ -11,7 +11,8 @@ import {Rental} from './rental';
 })
 export class HttpService {
   private http: HttpClient = inject(HttpClient);
-  private URL: string = 'http://localhost:8080/api/';
+  //local url would be 'localhost:8080/api'
+  private URL: string = 'https://it200281.cloud.htl-leonding.ac.at/api/';
   equipments: Equipment[] = [];
 
   // Get all equipments

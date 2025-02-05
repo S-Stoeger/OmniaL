@@ -1,6 +1,5 @@
 #dashboard-header {
-  color: var(--dark_blue);
-  font-size: 6rem;
+  color: var(--black);
   font-weight: bold;
   text-align: center;
   margin-bottom: 0;
@@ -11,6 +10,7 @@
   display: flex;
   justify-content: space-around;
   margin-bottom: 1%;
+  height: 46vh;
 }
 
 #dashboard-request-box, #dashboard-return-box {
@@ -19,9 +19,10 @@
 }
 
 #dashboard-request-header, #dashboard-return-header {
-  color: var(--dark_blue);
+  color: var(--black);
+  font-family: "Russo One", sans-serif;
   text-decoration: underline;
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: bold;
 }
 
