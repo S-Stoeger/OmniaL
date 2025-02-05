@@ -20,6 +20,10 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          env:
+            - name: QUARKUS_HTTP_CORS_ORIGINS
+              #value: "/[a-z\\d]\\.cloud\\.htl-leonding\\.ac\\.at\\/.*/"
+              value: /.*/
 
 ---
 apiVersion: v1
