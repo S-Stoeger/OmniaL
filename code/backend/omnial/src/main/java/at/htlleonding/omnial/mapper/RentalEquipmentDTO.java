@@ -6,7 +6,7 @@ import at.htlleonding.omnial.model.Rental_Equipment;
 import at.htlleonding.omnial.repository.RentalRepository;
 import jakarta.inject.Inject;
 
-public record RentalEquipmentDTO(long rentalId, long equipmentId, boolean isReturned) {
+public record RentalEquipmentDTO(long rentalId, long equipmentId) {
 
 
     public static Rental_Equipment toRentalEquipment(RentalEquipmentDTO rentalEquipmentDTO){
@@ -16,7 +16,7 @@ public record RentalEquipmentDTO(long rentalId, long equipmentId, boolean isRetu
         Rental rental = Rental.findById(rentalEquipmentDTO.rentalId);
 
 
-        return new Rental_Equipment(rental,equipment,rentalEquipmentDTO.isReturned);
+        return new Rental_Equipment(rental,equipment);
     }
 
 

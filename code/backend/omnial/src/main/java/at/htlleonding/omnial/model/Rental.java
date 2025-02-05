@@ -9,8 +9,6 @@ import java.util.Date;
 @Entity
 public class Rental extends PanacheEntity {
 
-
-
     @ManyToOne
     private Person person;
 
@@ -18,7 +16,13 @@ public class Rental extends PanacheEntity {
 
     private Date returnDate;
 
+    private boolean isRented;
+
     private boolean isReturned;
+
+    private Date actualReturnDate;
+
+
 
 
     public void setId(Long id) {
@@ -59,5 +63,21 @@ public class Rental extends PanacheEntity {
 
     public void setReturned(boolean returned) {
         isReturned = returned;
+    }
+
+    public boolean isRented() {
+        return isRented;
+    }
+
+    public void setRented(boolean rented) {
+        isRented = rented;
+    }
+
+    public Date getActualReturnDate() {
+        return actualReturnDate;
+    }
+
+    public void setActualReturnDate(Date actualReturnDate) {
+        this.actualReturnDate = actualReturnDate;
     }
 }

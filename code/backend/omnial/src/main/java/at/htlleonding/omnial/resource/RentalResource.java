@@ -13,6 +13,8 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @Path("api/rental")
@@ -67,6 +69,33 @@ public class RentalResource {
     public List<Rental_Equipment> getRentalEquipment() {
         return rentalEquipmentReporitory.listAll();
     }
+
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/rent/{id}")
+    public Rental updateRentalRent(Rental rental, @PathParam("id") long id) {
+        Rental rental1 = Rental.findById(id);
+        rental1.setRented(true);
+        return rental1;
+    }
+
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/return/{id}")
+    public Rental updateRentalReturn(Rental rental, @PathParam("id") long id) {
+        Rental rental1 = Rental.findById(id);
+        rental1.setReturned(true);
+
+        if (Date.from(Instant.now()).after(rental1.getReturnDate())){
+            rental1.setActualReturnDate(Date.from(Instant.now()));
+        }
+
+
+        return rental1;
+    }
+
 
 
 

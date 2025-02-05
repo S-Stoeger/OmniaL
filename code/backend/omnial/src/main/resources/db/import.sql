@@ -96,11 +96,14 @@ values (nextval('room_seq'),'Der Musikraum steht den Schülern der HTL Leonding 
 'um Ihrer kreativität in Form von Musik freien lauf zu lassen','Musikraum');
 
 
-insert into Rental(id, person_id, leaseDate, returnDate,  isReturned)
-values(nextval('rental_seq'), 1, '2023-11-15T20:00:00','2023-12-15T20:00:00',false);
+insert into Rental(id, person_id, leaseDate, returnDate, actualReturnDate, isRented,  isReturned)
+values(nextval('rental_seq'), 1, '2023-11-15T20:00:00','2023-12-15T20:00:00', '2023-12-15T20:00:00',false, false);
 
-insert into Rental(id, person_id, leaseDate, returnDate, isReturned)
-values(nextval('rental_seq'), 1, '2023-11-15T20:00:00', '2023-11-17T20:00:00', true);
+insert into Rental(id, person_id, leaseDate, returnDate, actualReturnDate, isRented,  isReturned)
+values(nextval('rental_seq'), 1, '2023-11-15T20:00:00', '2023-11-17T20:00:00', '2023-12-15T20:00:00', true,  true);
+
+
+
 
 
 -- No EDV rooms can be reserved (at least for now)

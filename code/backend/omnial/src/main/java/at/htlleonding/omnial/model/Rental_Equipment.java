@@ -15,9 +15,6 @@ public class Rental_Equipment extends PanacheEntity {
     @ManyToOne
     private Equipment equipment;
 
-    private boolean isReturned;
-
-    private Date actualReturnDate;
 
     public long getId() {
         return id;
@@ -43,21 +40,13 @@ public class Rental_Equipment extends PanacheEntity {
         this.equipment = equipment;
     }
 
-    public boolean isIsReturned() {
-        return isReturned;
-    }
-
-    public void setIsReturned(boolean idReturned) {
-        this.isReturned = idReturned;
-    }
 
     public Rental_Equipment() {
     }
 
 
-    public Rental_Equipment(Rental rental, Equipment equipment, boolean isReturned) {
+    public Rental_Equipment(Rental rental, Equipment equipment ) {
         this.rental = rental;
         this.equipment = equipment;
-        this.isReturned = isReturned;
     }
 }
