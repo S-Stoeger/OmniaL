@@ -28,9 +28,10 @@ public class EquipmentResource {
         return equipmentRepository.getAll();
     }
 
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{type}")
+    @Path("/type/{type}")
     public List<Equipment> getEquipmentByType(@PathParam("type") EquipmentType type) {
         return this.equipmentRepository.getEquipmentByType(type);
     }
@@ -38,7 +39,7 @@ public class EquipmentResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Equipment getEquipmentByType(@PathParam("id") long id) {
+    public Equipment getEquipmentByType(@PathParam("id") Long id) {
         return Equipment.findById(id);
     }
 

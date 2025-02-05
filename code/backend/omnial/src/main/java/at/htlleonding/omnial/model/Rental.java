@@ -14,7 +14,9 @@ public class Rental extends PanacheEntity {
     @ManyToOne
     private Person person;
 
-    private Date date;
+    private Date leaseDate;
+
+    private Date returnDate;
 
     private boolean isReturned;
 
@@ -35,12 +37,20 @@ public class Rental extends PanacheEntity {
         this.person = person;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getLeaseDate() {
+        return leaseDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setLeaseDate(Date leaseDate) {
+        this.leaseDate = leaseDate;
+    }
+
+    public Date getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
     }
 
     public boolean isReturned() {

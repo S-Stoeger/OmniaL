@@ -3,6 +3,8 @@ package at.htlleonding.omnial.model;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 @Entity
 public class Rental_Equipment extends PanacheEntity {
 
@@ -13,7 +15,9 @@ public class Rental_Equipment extends PanacheEntity {
     @ManyToOne
     private Equipment equipment;
 
-    private boolean idReturned;
+    private boolean isReturned;
+
+    private Date actualReturnDate;
 
     public long getId() {
         return id;
@@ -39,21 +43,21 @@ public class Rental_Equipment extends PanacheEntity {
         this.equipment = equipment;
     }
 
-    public boolean isIdReturned() {
-        return idReturned;
+    public boolean isIsReturned() {
+        return isReturned;
     }
 
-    public void setIdReturned(boolean idReturned) {
-        this.idReturned = idReturned;
+    public void setIsReturned(boolean idReturned) {
+        this.isReturned = idReturned;
     }
 
     public Rental_Equipment() {
     }
 
 
-    public Rental_Equipment(Rental rental, Equipment equipment, boolean idReturned) {
+    public Rental_Equipment(Rental rental, Equipment equipment, boolean isReturned) {
         this.rental = rental;
         this.equipment = equipment;
-        this.idReturned = idReturned;
+        this.isReturned = isReturned;
     }
 }
