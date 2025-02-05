@@ -5,7 +5,7 @@
       <img src="{{ equipment.link }}" width="100vw">
       <h2 class="equipmentName">{{ equipment.name }}</h2>
       <p>{{getTime(i)}}</p>
-      <p>{{getCount(i)}}</p>
+      <app-amount-settings [maxAmount]="equipment.itemCount" [chosenAmount]="getCount(i)"></app-amount-settings>
       <i (click)="delete(equipment.id)" class="fa-solid fa-x fa-lg removeButton"></i>
     </div>
     <hr>

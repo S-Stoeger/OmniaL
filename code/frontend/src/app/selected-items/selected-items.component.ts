@@ -7,11 +7,13 @@ import {Equipment} from '../equipment';
 import {LocalStorageService} from '../local-storage.service';
 import {HttpService} from '../http.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {AmountSettingsComponent} from '../amount-settings/amount-settings.component';
 
 @Component({
   selector: 'app-selected-items',
   imports: [
     NgForOf,
+    AmountSettingsComponent,
   ],
   templateUrl: './selected-items.component.html',
   styleUrl: './selected-items.component.css'
@@ -42,7 +44,7 @@ export class SelectedItemsComponent implements OnInit {
   }
 
   getCount(id: number) {
-    return `${this.rentalEquipment.at(id)?.count}`
+    return this.rentalEquipment.at(id)?.count
   }
 
   delete(id: number) {
