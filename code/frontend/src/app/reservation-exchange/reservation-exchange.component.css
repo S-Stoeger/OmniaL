@@ -13,6 +13,12 @@
   margin-top: 0;
 }
 
+.fa-circle-info {
+  margin-left: 90%;
+  margin-top: 2%;
+  font-size: 1.2rem;
+}
+
 .dashboard-exchange-status {
   display: flex;
   justify-content: space-evenly;

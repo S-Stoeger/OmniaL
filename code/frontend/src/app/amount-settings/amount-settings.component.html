@@ -1,0 +1,5 @@
+<div id="detail-set-amount">
+  <button id="minus-button" class="amount-button" (click)="amount = amount - 1" [disabled]="amount === 1">-</button>
+  <p>{{amount}}</p>
+  <button id="plus-button" class="amount-button" (click)="amount = amount + 1" [disabled]="maxAmount != undefined &&    amount >= maxAmount">+</button>
+</div>

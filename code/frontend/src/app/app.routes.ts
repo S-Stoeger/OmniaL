@@ -9,26 +9,26 @@ export const routes: Routes = [
   {
     path: '',
     component: ShopStartComponent,
-    title: 'Shop'
+    title: 'Omnial'
   },
   {
     path: 'dashboard',
     component: ShopDashboardComponent,
-    title: 'Dashboard'
+    title: 'Omnial'
   },
   {
     path: 'cart',
     component: ShopCartComponent,
-    title: 'Warenkorb'
+    title: 'Omnial'
   },
   {
     path: 'profile',
     component: ShopProfileComponent,
-    title: 'Profile'
+    title: 'Omnial'
   },
   {
     path: 'detail/:id',
     component: ShopDetailComponent,
-    title: 'Detail'
+    title: 'Omnial'
   }
 ];

@@ -5,3 +5,5 @@ export interface RentalEquipment {
   startTime: String | null,
   endTime: String | null,
 }
+
+

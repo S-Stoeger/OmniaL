@@ -4,12 +4,13 @@ import {ActivatedRoute, NavigationEnd, Router, RouterLink} from '@angular/router
 import {EquipmentService} from '../equipment.service';
 import {Equipment} from '../equipment';
 import {NgForOf, NgIf} from '@angular/common';
-import {CurrentRentalService} from '../current-rental.service';
+import {LocalStorageService} from '../local-storage.service';
 import {RentalEquipment} from '../rental-equipment';
-import {RentalComponent} from '../rental/rental.component';
 import {FormsModule} from '@angular/forms';
 import {HttpService} from '../http.service';
 import {Subscription} from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {AmountSettingsComponent} from '../amount-settings/amount-settings.component';
 
 @Component({
   selector: 'app-shop-detail',
@@ -17,6 +18,8 @@ import {Subscription} from 'rxjs';
     CardRowComponent,
     NgForOf,
     FormsModule,
+    NgIf,
+    AmountSettingsComponent,
   ],
   templateUrl: './shop-detail.component.html',
   styleUrl: './shop-detail.component.css'
@@ -26,9 +29,10 @@ export class ShopDetailComponent {
   httpService: HttpService = inject(HttpService)
   route = inject(ActivatedRoute)
   router = inject(Router)
-  currentRentalService: CurrentRentalService = inject(CurrentRentalService)
+  currentRentalService: LocalStorageService = inject(LocalStorageService)
   counter = -1
-  @ViewChild('countAmountInput') countAmountInput!: ElementRef;
+  @ViewChild(AmountSettingsComponent) amountSettingsComponent!: AmountSettingsComponent;
+  private snackBar = inject(MatSnackBar);
 
   months = [
     'January',
@@ -50,7 +54,6 @@ export class ShopDetailComponent {
       if (event instanceof NavigationEnd) {
         this.httpService.getEquipmentById(this.route.snapshot.params['id']).subscribe( t => {
           this.equipment = t;
-          console.log(this.equipment);
         })
         this.renderCalendar();
       }
@@ -129,7 +132,10 @@ export class ShopDetailComponent {
 
   addToCart() {
     this.currentRentalService.addEquipment(this.createRentalEquipment(this.equipment!))
-    alert("Dein Equipment wurde in den Warenkorb gelegt!")
+    this.snackBar.open('Hinzugefügt', 'Schließen')
+    setTimeout(() => {
+      this.snackBar.dismiss()
+    } ,2500)
   }
 
   createRentalEquipment(equipment: Equipment): RentalEquipment {
@@ -146,15 +152,15 @@ export class ShopDetailComponent {
     return {
       id: (this.counter += 1),
       equipmentID: equipment.id,
-      count: parseInt(this.countAmountInput.nativeElement.value, 10),
+      count: this.amountSettingsComponent.getCurrentAmount(),
       startTime: startTime ? startTime.toISOString() : null,
       endTime: endTime ? endTime.toISOString() : null,
     };
   }
 
   check() {
-    if(this.countAmountInput != undefined) {
-      if (this.selectedDays.length == 2 && parseInt(this.countAmountInput.nativeElement.value,10) > 0) {
+    if(this.equipment?.available !== 0 && this.equipment != undefined) {
+      if (this.selectedDays.length == 2 && this.amountSettingsComponent.getCurrentAmount() > 0) {
         return true;
       }
       return false;

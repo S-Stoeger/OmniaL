@@ -33,15 +33,14 @@
     </div>
     <p style="width: 100%; font-size: 1.4rem;">
       Videokamera ist im ausgewählten Zeitraum:
-      <span style="color: green; font-size: 1.5em;">Verfügbar</span>
+      <span style="color: green; font-size: 1.3em;" *ngIf="equipment?.available !== 0">Verfügbar</span>
+      <span style="color: red; font-size: 1.3em;" *ngIf="equipment?.available === 0">Nicht Verfügbar</span>
     </p>
     <div id="detail-">
-      <input #countAmountInput id="countAmount" type="number" min="0" max="100"/>
+      <app-amount-settings [maxAmount]="equipment?.available"></app-amount-settings>
       <button [style.opacity]="!check() ? '0.5' : '1'" [disabled]="!check()" id="reserve" (click)="addToCart()">Zum Warenkorb hinzufügen</button>
     </div>
   </div>
-
-
 </div>
 
 <h1 id="detail-h1">Wurde oft zusammen entliehen:</h1>

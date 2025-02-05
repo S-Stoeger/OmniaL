@@ -18,7 +18,7 @@ insert into Person (id, email, firstname, grade, surname, person_uuid)
 values (nextval('person_seq'),'m.slabschi@students.htl-leonding.ac.at', 'Maxi', '4AHITM', 'Slabschi', '340b3a31-95d1-4bfb-a570-6e9d3ae96a82');
 
 insert into Person (id, email, firstname, grade, surname, person_uuid)
-values (nextval('person_seq'),'moritz.wagner06@gmx.at', 'Moritz', '4AHITM', 'Wagner', '92874a0d-a3d6-4729-aee7-2cf92a6162ca');
+values (nextval('person_seq'),'moritz.wagner06@gmx.at', 'Moritz', '5AHITM', 'Wagner', '92874a0d-a3d6-4729-aee7-2cf92a6162ca');
 
 /*
 insert into Person (id, email, firstname, grade, surname)
@@ -51,7 +51,7 @@ insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, av
 values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Panasonic Lumix DCM-GH6', 'GH6', 5,5, 'assets/images/gh6.png');
 
 insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
-values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Panasonic Lumix DCM-GH4', 'GH4', 1,1, 'assets/images/gh4.jpg');
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Panasonic Lumix DCM-GH4', 'GH4', 1,0, 'assets/images/gh4.jpg');
 
 insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
 values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Dji Ronin M', 'Ronin M', 1,1, 'assets/images/roninM.png');

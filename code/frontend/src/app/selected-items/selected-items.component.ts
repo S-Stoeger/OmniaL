@@ -1,29 +1,30 @@
-import {Component, inject, Input} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {Reservation} from '../reservation';
-import {NgForOf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import {RentalEquipment} from '../rental-equipment';
 import {EquipmentService} from '../equipment.service';
 import {Equipment} from '../equipment';
-import {CurrentRentalService} from '../current-rental.service';
+import {LocalStorageService} from '../local-storage.service';
 import {HttpService} from '../http.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-selected-items',
   imports: [
-    NgForOf
+    NgForOf,
   ],
   templateUrl: './selected-items.component.html',
   styleUrl: './selected-items.component.css'
 })
-export class SelectedItemsComponent {
+export class SelectedItemsComponent implements OnInit {
   @Input() rentalEquipment!: RentalEquipment[];
   httpService: HttpService = inject(HttpService);
-  currentRentalService: CurrentRentalService = inject(CurrentRentalService);
+  currentRentalService: LocalStorageService = inject(LocalStorageService);
   equipments: Equipment[] = [];
+  private snackBar = inject(MatSnackBar);
 
 
   ngOnInit(): void {
-    console.log(this.rentalEquipment)
     for (let i = 0; i < this.rentalEquipment.length; i++) {
       this.httpService.getEquipmentById(this.rentalEquipment[i].equipmentID).subscribe(equipment => {
         this.equipments.push(equipment);
@@ -42,5 +43,14 @@ export class SelectedItemsComponent {
 
   getCount(id: number) {
     return `${this.rentalEquipment.at(id)?.count}`
+  }
+
+  delete(id: number) {
+    this.currentRentalService.deleteFromLocalStorage(id)
+    this.equipments = this.equipments.filter(item => item.id !== id);
+    this.snackBar.open('Gelöscht', 'Schließen');
+    setTimeout(() => {
+      this.snackBar.dismiss()
+    } ,2500)
   }
 }

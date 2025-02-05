@@ -9,8 +9,14 @@
 #item {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.equipmentName {
+  width: 35%;
 }
 
 .removeButton {

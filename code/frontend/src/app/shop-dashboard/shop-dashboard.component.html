@@ -3,13 +3,13 @@
   <div id="dashboard-request-box">
     <p id="dashboard-request-header">Anfrage</p>
     <div id="dashboard-request">
-      <app-reservation-exchange [reservations]="requestReservations"></app-reservation-exchange>
+      <app-reservation-exchange [hasBeenRented]="false"></app-reservation-exchange>
     </div>
   </div>
   <div id="dashboard-return-box">
     <p id="dashboard-return-header">R&uuml;ckgabe</p>
     <div id="dashboard-return">
-      <app-reservation-exchange [reservations]="returnReservations"></app-reservation-exchange>
+      <app-reservation-exchange [hasBeenRented]="true"></app-reservation-exchange>
     </div>
   </div>
 </div>

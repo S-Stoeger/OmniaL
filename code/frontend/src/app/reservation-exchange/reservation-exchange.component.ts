@@ -1,7 +1,9 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {Reservation} from '../reservation';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {SelectedItemsComponent} from '../selected-items/selected-items.component';
+import {HttpService} from '../http.service';
+import {Rental} from '../rental';
 
 @Component({
   selector: 'app-reservation-exchange',
@@ -14,18 +16,23 @@ import {SelectedItemsComponent} from '../selected-items/selected-items.component
   styleUrl: './reservation-exchange.component.css'
 })
 export class ReservationExchangeComponent {
-  @Input() reservations!: Reservation[];
+  @Input() hasBeenRented!: boolean;
   @Output() close = new EventEmitter<void>();
   isModalOpen: boolean = false;
-  modalReservation: Reservation | null = null;
+  modalRental: Rental | null = null;
+  httpService: HttpService = inject(HttpService);
+  rentals: Rental[] = [];
 
   constructor() {
-    console.log(this.reservations)
+    this.httpService.getAllRentals().subscribe((res: any) => {
+      this.rentals = res;
+      this.rentals = this.rentals.filter(r => r.returned === this.hasBeenRented);
+    });
   }
 
-  openModal(reservation: Reservation) {
+  openModal(rental: Rental) {
     this.isModalOpen = true;
-    this.modalReservation = reservation;
+    this.modalRental = rental;
   }
 
   closeModal() {
