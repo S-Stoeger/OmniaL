@@ -11,17 +11,21 @@
   font-weight: bold;
   color: white;
   text-align: center;
-  border-radius: 1rem;
+  border-radius: 5px;
   width: 2.75rem;
   height: 2.75rem;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #plus-button {
-  background-color: forestgreen;
+  background-color: var(--green);
 }
 
 #minus-button {
-  background-color: darkred;
+  background-color: var(--red);
 }
 
 .amount-button:disabled {
