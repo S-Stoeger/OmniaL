@@ -1,7 +1,7 @@
 package at.htlleonding.omnial.resource;
 
-import at.htlleonding.omnial.mapper.ReservationMapper;
-import at.htlleonding.omnial.model.ReservationDTO;
+import at.htlleonding.omnial.DTO.ReservationMapper;
+import at.htlleonding.omnial.DTO.ReservationDTO;
 import at.htlleonding.omnial.repository.PersonRepository;
 import at.htlleonding.omnial.repository.ReservationRepository;
 import jakarta.annotation.security.PermitAll;

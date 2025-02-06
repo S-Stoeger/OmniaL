@@ -13,17 +13,17 @@ public class Rental extends PanacheEntity {
     @ManyToOne
     @JsonIgnoreProperties(value = {"rentals"})
 
-    private Person person;
+    public Person person;
 
-    private Date leaseDate;
+    public Date leaseDate;
 
-    private Date returnDate;
+    public Date returnDate;
 
-    private boolean isRented;
+    public boolean isRented;
 
-    private boolean isReturned;
+    public boolean isReturned;
 
-    private Date actualReturnDate;
+    public Date actualReturnDate;
 
 
     public Rental() {

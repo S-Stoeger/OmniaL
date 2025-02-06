@@ -1,6 +1,4 @@
-package at.htlleonding.omnial.model;
-
-import jakarta.enterprise.context.ApplicationScoped;
+package at.htlleonding.omnial.DTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

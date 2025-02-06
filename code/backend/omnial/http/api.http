@@ -86,12 +86,30 @@ Content-Type: application/json
   "actualReturnDate": "2023-12-14T08:50:00",
   "isReturned": false,
   "isRented": true,
-  "rentalEquipmentDTO": []
+  "rentalEquipmentDTO": [
+    {
+      "rental_id": 1,
+      "equipment_id": 1
+    }
+  ]
 }
 
 ###
 GET http://localhost:8080/api/rental/list
 
-
 ###
+
+
+POST http://localhost:8080/api/rental
+Content-Type: application/json
+
+{
+  "personId": 1,
+  "leaseDate": "2025-02-07T00:00:00Z",
+  "returnDate": "2025-02-14T00:00:00Z",
+  "equipmentIds": [1, 51]
+}
+
+####
+
 

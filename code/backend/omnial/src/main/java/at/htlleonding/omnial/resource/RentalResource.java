@@ -1,20 +1,18 @@
 package at.htlleonding.omnial.resource;
 
 
-import at.htlleonding.omnial.mapper.RentalDTO;
-import at.htlleonding.omnial.mapper.RentalEquipmentDTO;
-import at.htlleonding.omnial.mapper.RentalMapper;
+import at.htlleonding.omnial.DTO.RentalRequest;
 import at.htlleonding.omnial.model.Equipment;
-import at.htlleonding.omnial.model.Person;
 import at.htlleonding.omnial.model.Rental;
 import at.htlleonding.omnial.model.Rental_Equipment;
 import at.htlleonding.omnial.repository.EquipmentRepository;
+import at.htlleonding.omnial.repository.PersonRepository;
 import at.htlleonding.omnial.repository.RentalRepository;
-import at.htlleonding.omnial.repository.Rental_equipmentReporitory;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.time.Instant;
 import java.util.Date;
@@ -29,14 +27,11 @@ public class RentalResource {
 
 
     @Inject
-    Rental_equipmentReporitory rentalEquipmentReporitory;
-
-    @Inject
     EquipmentRepository equipmentRepository;
 
-
     @Inject
-    RentalMapper rentalMapper;
+    PersonRepository personRepository;
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -52,19 +47,6 @@ public class RentalResource {
         return Rental.findById(id);
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void addRental(RentalDTO rental, RentalEquipmentDTO[] rentalEquipmentDTO) {
-        Rental.persist(rentalMapper.toRental(rental));
-        /*
-        if (rentalEquipmentDTO != null && rentalEquipmentDTO.length > 0) {
-            for (int i = 0; i < rentalEquipmentDTO.length; i++) {
-                Rental_Equipment.persist(RentalEquipmentDTO.toRentalEquipment(rentalEquipmentDTO[i]));
-            }
-        }*/
-
-    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -78,7 +60,7 @@ public class RentalResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/eq/list")
     public List<Rental_Equipment> getRentalEquipment() {
-        return rentalEquipmentReporitory.listAll();
+        return Rental_Equipment.listAll();
     }
 
 
@@ -107,6 +89,30 @@ public class RentalResource {
         return rental1;
     }
 
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createRental(RentalRequest rentalRequest) {
+        Rental rental = new Rental();
+        rental.person = personRepository.getById(rentalRequest.personId);
+        rental.leaseDate = rentalRequest.leaseDate;
+        rental.returnDate = rentalRequest.returnDate;
+        rental.isRented = false;
+        rental.isReturned = false;
+        Rental.persist(rental);
+
+
+        for (Long equipmentId : rentalRequest.equipmentIds) {
+            Equipment equipment = Equipment.findById(equipmentId);
+            if (equipment != null) {
+               Rental_Equipment rentalEquipment = new Rental_Equipment(rental, equipment);
+               Rental_Equipment.persist(rentalEquipment);
+            }
+        }
+
+        return Response.status(Response.Status.CREATED).build();
+    }
 
 
 

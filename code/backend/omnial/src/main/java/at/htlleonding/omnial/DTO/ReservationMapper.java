@@ -1,8 +1,7 @@
-package at.htlleonding.omnial.mapper;
+package at.htlleonding.omnial.DTO;
 
 import at.htlleonding.omnial.model.Person;
 import at.htlleonding.omnial.model.Reservation;
-import at.htlleonding.omnial.model.ReservationDTO;
 import at.htlleonding.omnial.repository.PersonRepository;
 import at.htlleonding.omnial.model.Room;
 import at.htlleonding.omnial.repository.RoomRepository;
