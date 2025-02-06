@@ -1,7 +1,10 @@
 package at.htlleonding.omnial.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -30,6 +33,10 @@ public class Person {
     private String email;
 
     private String grade;
+
+    @OneToMany(mappedBy = "person")
+    @JsonIgnoreProperties(value = {"person"})
+    List<Rental> rentals;
 
 
     public int getId() {

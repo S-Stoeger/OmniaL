@@ -1,8 +1,11 @@
 package at.htlleonding.omnial.resource;
 
 
+import at.htlleonding.omnial.mapper.RentalDTO;
 import at.htlleonding.omnial.mapper.RentalEquipmentDTO;
+import at.htlleonding.omnial.mapper.RentalMapper;
 import at.htlleonding.omnial.model.Equipment;
+import at.htlleonding.omnial.model.Person;
 import at.htlleonding.omnial.model.Rental;
 import at.htlleonding.omnial.model.Rental_Equipment;
 import at.htlleonding.omnial.repository.EquipmentRepository;
@@ -31,6 +34,10 @@ public class RentalResource {
     @Inject
     EquipmentRepository equipmentRepository;
 
+
+    @Inject
+    RentalMapper rentalMapper;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list")
@@ -48,11 +55,15 @@ public class RentalResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addRental(Rental rental, RentalEquipmentDTO[] rentalEquipmentDTO) {
-        Rental.persist(rental);
-        for (int i = 0; i < rentalEquipmentDTO.length; i++) {
-            Rental_Equipment.persist(RentalEquipmentDTO.toRentalEquipment(rentalEquipmentDTO[i]));
-        }
+    public void addRental(RentalDTO rental, RentalEquipmentDTO[] rentalEquipmentDTO) {
+        Rental.persist(rentalMapper.toRental(rental));
+        /*
+        if (rentalEquipmentDTO != null && rentalEquipmentDTO.length > 0) {
+            for (int i = 0; i < rentalEquipmentDTO.length; i++) {
+                Rental_Equipment.persist(RentalEquipmentDTO.toRentalEquipment(rentalEquipmentDTO[i]));
+            }
+        }*/
+
     }
 
     @GET

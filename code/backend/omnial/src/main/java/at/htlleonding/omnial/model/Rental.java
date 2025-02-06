@@ -1,6 +1,7 @@
 package at.htlleonding.omnial.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
@@ -10,6 +11,8 @@ import java.util.Date;
 public class Rental extends PanacheEntity {
 
     @ManyToOne
+    @JsonIgnoreProperties(value = {"rentals"})
+
     private Person person;
 
     private Date leaseDate;
@@ -23,7 +26,16 @@ public class Rental extends PanacheEntity {
     private Date actualReturnDate;
 
 
+    public Rental() {
+    }
 
+    public Rental(Person person, Date leaseDate, Date returnDate, boolean isRented, boolean isReturned) {
+        this.person = person;
+        this.leaseDate = leaseDate;
+        this.returnDate = returnDate;
+        this.isRented = isRented;
+        this.isReturned = isReturned;
+    }
 
     public void setId(Long id) {
         this.id = id;
