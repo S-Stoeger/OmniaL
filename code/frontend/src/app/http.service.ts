@@ -27,7 +27,8 @@ export class HttpService {
 
   // Get all rentals
   getAllRentals() {
-    return this.http.get<Rental[]>(this.URL + "rental/list");
+    //return this.http.get<Rental[]>(this.URL + "rental/list");
+    return this.http.get<Rental[]>("http://localhost:8080/api/rental/list");
   }
 
   // Post rental
