@@ -5,7 +5,9 @@
   --light_blue: #7FAAB4;
   --grey: #A7A7A7;
   --red: #ba1a1a;
+  --redO: rgba(186, 26, 26, 0.45);
   --green: #008000;
+  --greenO: rgba(0, 128, 0, 0.45);
   --white: #fff;
   --black: #000;
 }

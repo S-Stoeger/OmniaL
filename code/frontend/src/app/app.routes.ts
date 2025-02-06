@@ -4,6 +4,7 @@ import {ShopDashboardComponent} from './shop-dashboard/shop-dashboard.component'
 import {ShopCartComponent} from './shop-cart/shop-cart.component';
 import {ShopProfileComponent} from './shop-profile/shop-profile.component';
 import {ShopDetailComponent} from './shop-detail/shop-detail.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -13,7 +14,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: ShopDashboardComponent,
+    component: DashboardComponent,
     title: 'Omnial'
   },
   {

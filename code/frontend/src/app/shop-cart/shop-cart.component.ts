@@ -53,7 +53,8 @@ export class ShopCartComponent implements OnInit {
       person: person,
       leaseDate: new Date("2023-11-15T19:00:00.000+00:00"),
       returnDate: new Date("2023-11-15T19:00:00.000+00:00"),
-      returned: false
+      returned: false,
+      rented: false
     }
 
     rentalsDTO.forEach((res: RentalDTO) => {
