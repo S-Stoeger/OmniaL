@@ -1,16 +1,27 @@
 .dashboard-exchange {
-  background-color: var(--light_blue);
   width: 20vw;
   height: 22vh;
   margin-left: auto;
   margin-right: auto;
+  box-shadow: 5px 5px 30px grey;
   border-radius: 0.5rem;
-  margin-bottom: 5%;
 }
 
 .dashboard-exchange-text {
   font-size: 1.5rem;
   margin-top: 0;
+  margin-bottom: 0;
+}
+.dashboard-exchange-name {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 0.1rem;
+  background-color: #7FAAB4;
+  padding: 2%;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
 }
 
 .fa-circle-info {
@@ -36,6 +47,8 @@
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
 }
+
+
 
 .modal-content {
   background-color: #fefefe;

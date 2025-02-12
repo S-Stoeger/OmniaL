@@ -1,9 +1,8 @@
 import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
-import {Reservation} from '../reservation';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {SelectedItemsComponent} from '../selected-items/selected-items.component';
 import {HttpService} from '../http.service';
-import {Rental} from '../rental';
+import {Rental} from '../interfaces';
 
 @Component({
   selector: 'app-reservation-exchange',
@@ -26,7 +25,7 @@ export class ReservationExchangeComponent {
   constructor() {
     this.httpService.getAllRentals().subscribe((res: any) => {
       this.rentals = res;
-      this.rentals = this.rentals.filter(r => r.returned === this.hasBeenRented);
+      this.rentals = this.rentals.filter(r => r.isReturned === this.hasBeenRented);
     });
   }
 

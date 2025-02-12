@@ -2,7 +2,6 @@ import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angu
 import {CardRowComponent} from '../card-row/card-row.component';
 import {ActivatedRoute, NavigationEnd, Router, RouterLink} from '@angular/router';
 import {EquipmentService} from '../equipment.service';
-import {Equipment} from '../equipment';
 import {NgForOf, NgIf} from '@angular/common';
 import {LocalStorageService} from '../local-storage.service';
 import {RentalEquipment} from '../rental-equipment';
@@ -11,6 +10,7 @@ import {HttpService} from '../http.service';
 import {Subscription} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AmountSettingsComponent} from '../amount-settings/amount-settings.component';
+import {Equipment} from '../interfaces';
 
 @Component({
   selector: 'app-shop-detail',

@@ -1,19 +1,19 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {Reservation} from '../reservation';
 import {NgForOf, NgIf} from '@angular/common';
 import {RentalEquipment} from '../rental-equipment';
 import {EquipmentService} from '../equipment.service';
-import {Equipment} from '../equipment';
 import {LocalStorageService} from '../local-storage.service';
 import {HttpService} from '../http.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AmountSettingsComponent} from '../amount-settings/amount-settings.component';
+import {Equipment} from '../interfaces';
 
 @Component({
   selector: 'app-selected-items',
   imports: [
     NgForOf,
     AmountSettingsComponent,
+    NgIf,
   ],
   templateUrl: './selected-items.component.html',
   styleUrl: './selected-items.component.css'

@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { RentalEquipment } from './rental-equipment';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {NavigationComponent} from './navigation/navigation.component';
-import {Equipment} from './equipment';
 
 @Injectable({
   providedIn: 'root',
@@ -58,11 +57,12 @@ export class LocalStorageService {
     if (data) {
       this.equipments = JSON.parse(data);
       this.equipmentSource.next(this.equipments);
+    } else {
+      this.equipmentSource.next(this.equipments);
     }
   }
 
   deleteFromLocalStorage(id: number) {
-
     let array = JSON.parse(<string>localStorage.getItem('rentalEquipments'));
 
     if (array) {
@@ -70,7 +70,6 @@ export class LocalStorageService {
 
       if (index !== -1) {
         array.splice(index, 1);
-        console.log(array);
         localStorage.setItem('rentalEquipments', JSON.stringify(array));
       } else {
         localStorage.removeItem('rentalEquipments');
@@ -84,5 +83,15 @@ export class LocalStorageService {
     const array = JSON.parse(<string>localStorage.getItem('rentalEquipments'));
     this.numberSource.next(array ? array.length : 0);
     //return array ? array.length : 0;
+  }
+
+  clearStorage() {
+    localStorage.removeItem('rentalEquipments');
+    this.equipments = [];
+    this.getStorageItemCount()
+    this.loadFromLocalStorage()
+    console.log(this.equipments);
+    const data = localStorage.getItem('rentalEquipments');
+    console.log(data)
   }
 }

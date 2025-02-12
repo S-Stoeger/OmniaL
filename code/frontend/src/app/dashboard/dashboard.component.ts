@@ -2,10 +2,9 @@ import {AfterViewInit, Component, inject, OnInit, ViewChild} from '@angular/core
 import {MatTableModule, MatTable, MatTableDataSource} from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
-import { DashboardDataSource, DashboardItem } from './dashboard-datasource';
-import {Rental} from '../rental';
 import {HttpService} from '../http.service';
 import {DatePipe, NgIf} from '@angular/common';
+import {Rental} from '../interfaces';
 
 @Component({
   selector: 'app-dashboard',

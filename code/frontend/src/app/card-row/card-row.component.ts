@@ -1,9 +1,9 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {Equipment} from '../equipment';
 import {EquipmentService} from '../equipment.service';
 import {NgForOf, SlicePipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {HttpService} from '../http.service';
+import {Equipment} from '../interfaces';
 
 @Component({
   selector: 'app-card-row',

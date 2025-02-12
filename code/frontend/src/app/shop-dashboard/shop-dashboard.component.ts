@@ -1,9 +1,9 @@
 import {Component, inject} from '@angular/core';
-import {Reservation} from '../reservation';
 import {ReservationService} from '../reservation.service';
 import {NgForOf} from '@angular/common';
 import {ReservationExchangeComponent} from '../reservation-exchange/reservation-exchange.component';
 import {HttpService} from '../http.service';
+import {Reservation} from '../interfaces';
 
 @Component({
   selector: 'app-shop-dashboard',
@@ -14,16 +14,9 @@ import {HttpService} from '../http.service';
   styleUrl: './shop-dashboard.component.css'
 })
 export class ShopDashboardComponent {
-  requestReservations: Reservation[];
-  returnReservations: Reservation[];
-
-  reservationService: ReservationService = inject(ReservationService);
-  httpService = inject(HttpService);
 
   constructor() {
-    let reservations: Reservation[] = this.reservationService.getReservations();
-    this.returnReservations = reservations.filter(reservation => reservation.isConfirmed);
-    this.requestReservations = reservations.filter(reservation => !reservation.isConfirmed);
+
   }
 
 

@@ -2,12 +2,10 @@ import {Component, inject, OnInit} from '@angular/core';
 import {SelectedItemsComponent} from '../selected-items/selected-items.component';
 import {LocalStorageService} from '../local-storage.service';
 import {RentalEquipment} from '../rental-equipment';
-import {Observable} from 'rxjs';
 import {HttpService} from '../http.service';
-import {RentalDTO} from '../rental-dto';
-import {Rental} from '../rental';
 import {Person} from '../person';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {RentalRequest} from '../interfaces';
 
 @Component({
   selector: 'app-shop-cart',
@@ -21,6 +19,7 @@ export class ShopCartComponent implements OnInit {
   rental: RentalEquipment[] = [];
   rentalService: LocalStorageService = inject(LocalStorageService)
   httpService: HttpService = inject(HttpService)
+  localStorageService: LocalStorageService = inject(LocalStorageService)
   private snackBar = inject(MatSnackBar);
 
   constructor() {
@@ -30,16 +29,10 @@ export class ShopCartComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.rentalService.loadFromLocalStorage()
+      //this.rentalService.loadFromLocalStorage()
   }
 
   addReservation() {
-    const rentalsDTO: RentalDTO[] = this.rental.map(({id, equipmentID}) => ({
-      rentalId: id,
-      equipmentId: equipmentID,
-      isReturned: false
-    }))
-
     const person: Person = {
       id: 5,
       person_uuid: '92874a0d-a3d6-4729-aee7-2cf92a6162ca',
@@ -47,19 +40,19 @@ export class ShopCartComponent implements OnInit {
       firstname: 'Moritz',
       email: 'moritz.wagner06@gmx.at',
       grade: '5AHITM'
-    }
+    };
 
-    const rentalOriginal: Rental = {
-      person: person,
+    const equipmentIds: number[] = this.rental.map(item => item.equipmentID);
+
+    const rentalsRequest: RentalRequest = {
+      personId: person.id,
       leaseDate: new Date("2023-11-15T19:00:00.000+00:00"),
       returnDate: new Date("2023-11-15T19:00:00.000+00:00"),
-      returned: false,
-      rented: false
-    }
+      equipmentIds: equipmentIds
+    };
 
-    rentalsDTO.forEach((res: RentalDTO) => {
-      this.httpService.postRentalDTO(rentalOriginal, res)
-    })
+    this.httpService.postRentalDTO(rentalsRequest).subscribe((res: any) => {})
+    this.localStorageService.clearStorage()
 
     this.snackBar.open('Reserviert', 'Schließen')
     setTimeout(() => {
