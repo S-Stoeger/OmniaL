@@ -29,7 +29,7 @@ export class ShopCartComponent implements OnInit {
   }
 
   ngOnInit() {
-      //this.rentalService.loadFromLocalStorage()
+      this.rentalService.loadFromLocalStorage()
   }
 
   addReservation() {

@@ -85,6 +85,11 @@ export class LocalStorageService {
     //return array ? array.length : 0;
   }
 
+  getCount(): number {
+    const array = JSON.parse(<string>localStorage.getItem('rentalEquipments'));
+    return array ? array.length : 0;
+  }
+
   clearStorage() {
     localStorage.removeItem('rentalEquipments');
     this.equipments = [];

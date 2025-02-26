@@ -24,6 +24,7 @@ export class SelectedItemsComponent implements OnInit {
   currentRentalService: LocalStorageService = inject(LocalStorageService);
   equipments: Equipment[] = [];
   private snackBar = inject(MatSnackBar);
+  badgeCount = 0;
 
 
   ngOnInit(): void {
@@ -31,7 +32,12 @@ export class SelectedItemsComponent implements OnInit {
       this.httpService.getEquipmentById(this.rentalEquipment[i].equipmentID).subscribe(equipment => {
         this.equipments.push(equipment);
       })
+
+      this.currentRentalService.badgeCount.subscribe((count: number) => {
+        this.badgeCount = count;
+      })
     }
+
   }
 
   getTime(id: number) {
