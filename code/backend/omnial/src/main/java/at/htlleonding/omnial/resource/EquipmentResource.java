@@ -74,6 +74,13 @@ public class EquipmentResource {
     }
 
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/user/{id}")
+    public List<Equipment> getByUser(@PathParam("id") long id){
+        return this.equipmentRepository.getEquipmentByUser(id);
+    }
+
 
 
 }

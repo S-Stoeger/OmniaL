@@ -105,6 +105,7 @@ public class RentalResource {
 
         for (Long equipmentId : rentalRequest.equipmentIds) {
             Equipment equipment = Equipment.findById(equipmentId);
+            equipment.setAvailable(equipment.getAvailable()-1);
             if (equipment != null) {
                Rental_Equipment rentalEquipment = new Rental_Equipment(rental, equipment);
                Rental_Equipment.persist(rentalEquipment);
