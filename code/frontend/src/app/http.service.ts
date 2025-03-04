@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Equipment, Rental, RentalRequest} from './interfaces';
+import {Equipment, Person, Rental, RentalRequest} from './interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,9 @@ export class HttpService {
     return this.http.post<RentalRequest>(`${this.URL}rental`, rental);
   }
 
+  getEquipmentByPersonId(id: number): Observable<Equipment[]> | undefined {
+    return this.http.get<Equipment[]>(`${this.URL}equipment/user/${id}`);
+  }
 
   constructor() {
   }

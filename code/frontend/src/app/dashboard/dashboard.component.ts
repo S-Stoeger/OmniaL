@@ -3,42 +3,81 @@ import {MatTableModule, MatTable, MatTableDataSource} from '@angular/material/ta
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import {HttpService} from '../http.service';
-import {DatePipe, NgIf} from '@angular/common';
-import {Rental} from '../interfaces';
+import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {Equipment, Rental} from '../interfaces';
+import {map} from 'rxjs';
+import {SelectedItemsComponent} from '../selected-items/selected-items.component';
+import {RentalEquipment} from '../rental-equipment';
+import {format} from 'date-fns';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatSortModule, DatePipe, NgIf]
+  imports: [MatTableModule, MatPaginatorModule, MatSortModule, NgForOf, DatePipe, NgIf, SelectedItemsComponent, NgClass]
 })
-export class DashboardComponent implements AfterViewInit, OnInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<Rental>;
-  dataSource = new MatTableDataSource<Rental>();
+export class DashboardComponent implements OnInit {
   httpService: HttpService = inject(HttpService)
-
-  displayedColumns = ['studentName', 'class', 'email', 'date', 'status'];
+  rentals: Rental[] = [];
+  expandedRow: number | null = null;
+  equipments: Equipment[] = [];
+  isRowExpanded: boolean = false;
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource<Rental>();
-    this.refreshData()
+    this.httpService.getAllRentals()
+      // filter out all rentals which have already been returned :) hopefully its working
+      .pipe(map(rentals => rentals.filter((rental: Rental) => !(rental.isRented && rental.isReturned))))
+      .subscribe(filteredRentals => {
+        this.rentals = filteredRentals;
+        console.log(this.rentals)
+      });
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+  getTime(id: number) {
+    return `${this.parseDate(this.rentals[id].leaseDate+"")}-${this.parseDate(this.rentals[id].returnDate +"")}`;
   }
 
-  refreshData(): void {
-    this.httpService.getAllRentals().subscribe(
-      (rentalList) => {
-        this.dataSource.data = rentalList;
-        console.log(rentalList);
+  parseDate(date: string) {
+    return format(new Date(date), 'dd.MM.yy');
+    console.log("a")
+  }
+
+  toggleRow(i: number) {
+    this.getEquipmentOfRentalRequest(i)
+    this.expandedRow = this.expandedRow === i ? null : i;
+  }
+
+  getEquipmentOfRentalRequest(id: number): void {
+    this.httpService.getEquipmentByPersonId(this.rentals[id].person.id)?.subscribe(r => {
+      this.equipments = r;
+    });
+  }
+
+  getOpenRentals(): Rental[] {
+    let openRentals: Rental[] = [];
+    for (let rental of this.rentals) {
+      if (!rental.isRented) {
+          openRentals.push(rental);
       }
-    )
+    }
+    return openRentals;
+  }
+
+  getExpiredRentals(): Rental[] {
+    let expiredRentals: Rental[] = [];
+    for (let rental of this.rentals) {
+      if (this.isRentalExpired(rental)) {
+        expiredRentals.push(rental);
+      }
+    }
+    return expiredRentals;
+  }
+
+  isRentalExpired(rental: Rental): boolean {
+    const today = new Date(new Date().toISOString().split('T')[0]);
+    const returnDateParsed = new Date(new Date(rental.returnDate).toISOString().split('T')[0]);
+
+    return returnDateParsed < today
   }
 }

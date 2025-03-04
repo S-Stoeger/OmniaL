@@ -46,8 +46,8 @@ export class ShopCartComponent implements OnInit {
 
     const rentalsRequest: RentalRequest = {
       personId: person.id,
-      leaseDate: new Date("2023-11-15T19:00:00.000+00:00"),
-      returnDate: new Date("2023-11-15T19:00:00.000+00:00"),
+      leaseDate: new Date(this.rental[0].startTime),
+      returnDate: new Date(this.rental[0].endTime),
       equipmentIds: equipmentIds
     };
 

@@ -1,5 +1,5 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {RentalEquipment} from '../rental-equipment';
 import {EquipmentService} from '../equipment.service';
 import {LocalStorageService} from '../local-storage.service';
@@ -7,13 +7,14 @@ import {HttpService} from '../http.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AmountSettingsComponent} from '../amount-settings/amount-settings.component';
 import {Equipment} from '../interfaces';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-selected-items',
   imports: [
-    NgForOf,
     AmountSettingsComponent,
     NgIf,
+    AsyncPipe,
   ],
   templateUrl: './selected-items.component.html',
   styleUrl: './selected-items.component.css'
@@ -22,22 +23,26 @@ export class SelectedItemsComponent implements OnInit {
   @Input() rentalEquipment!: RentalEquipment[];
   httpService: HttpService = inject(HttpService);
   currentRentalService: LocalStorageService = inject(LocalStorageService);
-  equipments: Equipment[] = [];
+  equipments = new BehaviorSubject<Equipment[]>([]);
   private snackBar = inject(MatSnackBar);
   badgeCount = 0;
 
-
   ngOnInit(): void {
-    for (let i = 0; i < this.rentalEquipment.length; i++) {
-      this.httpService.getEquipmentById(this.rentalEquipment[i].equipmentID).subscribe(equipment => {
-        this.equipments.push(equipment);
-      })
-
-      this.currentRentalService.badgeCount.subscribe((count: number) => {
-        this.badgeCount = count;
+    console.log(this.rentalEquipment)
+    for (let rentalEquipment of this.rentalEquipment) {
+      this.httpService.getEquipmentById(rentalEquipment.equipmentID).subscribe(equipment => {
+        this.equipments.next([...this.equipments.getValue(), equipment])
+        console.log("equipments", this.equipments);
       })
     }
 
+    this.currentRentalService.badgeCount.subscribe((count: number) => {
+      this.badgeCount = count;
+    })
+
+
+
+    console.log("Array in compontn", this.rentalEquipment);
   }
 
   getTime(id: number) {
@@ -55,7 +60,7 @@ export class SelectedItemsComponent implements OnInit {
 
   delete(id: number) {
     this.currentRentalService.deleteFromLocalStorage(id)
-    this.equipments = this.equipments.filter(item => item.id !== id);
+    this.equipments.next( this.equipments.getValue().filter(item => item.id !== id))
     this.snackBar.open('Gelöscht', 'Schließen');
     setTimeout(() => {
       this.snackBar.dismiss()

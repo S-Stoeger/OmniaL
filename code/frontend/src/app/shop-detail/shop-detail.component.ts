@@ -146,16 +146,17 @@ export class ShopDetailComponent {
     const year = this.currentDate.getFullYear();
     const month = this.currentDate.getMonth();
 
-    const startTime = sortedDays.length > 0 ? new Date(year, month, sortedDays[0]) : null;
-    const endTime = sortedDays.length > 1 ? new Date(year, month, sortedDays[1]) : null;
+    const startTime = sortedDays.length > 0 ? new Date(year, month, sortedDays[0]) : new Date();
+    const endTime = sortedDays.length > 1 ? new Date(year, month, sortedDays[1]) : new Date();
 
     return {
       id: (this.counter += 1),
       equipmentID: equipment.id,
       count: this.amountSettingsComponent.getCurrentAmount(),
-      startTime: startTime ? startTime.toISOString() : null,
-      endTime: endTime ? endTime.toISOString() : null,
+      startTime: startTime.toISOString(),
+      endTime: endTime.toISOString(),
     };
+
   }
 
   check() {

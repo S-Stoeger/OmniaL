@@ -4,21 +4,30 @@
 
 .statusButton {
   border-radius: 5px;
+  padding: 0.2vw 0.5vw;
 }
 
-#rentButton {
+.rentButton {
   background-color: var(--greenO);
   color: var(--green);
   border: 2px solid var(--green);
 }
 
-#returnButton {
+#removeButton {
   background-color: var(--redO);
   color: var(--red);
   border: 2px solid var(--red);
+  margin-left: 2%;
 }
 
-#tableBox {
+#retourButton {
+  background-color: var(--light_blue);
+  color: var(--mid_blue);
+  border: 2px solid var(--mid_blue);
+  margin-left: 2%;
+}
+
+.tableBox {
   width: 85%;
   margin-left: auto;
   margin-right: auto;
@@ -28,26 +37,86 @@
   border-radius: 10px;
 }
 
-.mat-mdc-header-row {
-  background: var(--white);
+.tableFilter {
+  padding-top: 2%;
+  padding-bottom: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 33%;
 }
 
-.mat-mdc-row {
-  background-color: var(--white);
+.filterCircle {
+  border-radius: 50%;
+  width: 7vw;
+  height: 7vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 3%;
 }
 
-.mat-mdc-paginator {
-  background-color: var(--white);
+.filterCircleGreen {
+  background-color: var(--greenO);
+  border: 2px solid var(--green);
+  color: var(--green);
+}
+
+.filterCircleRed {
+  background-color: var(--redO);
+  border: 2px solid var(--red);
+  color: var(--red);
+}
+
+.filterCircleBlue {
+  background-color: var(--light_blue);
+  border: 2px solid var(--mid_blue);
+  color: var(--mid_blue);
+}
+
+
+.filterCircle > i {
+  font-size: 3vw;
+}
+
+.filterText {
+  color: var(--grey);
+}
+
+.filterCount {
+  margin: 0;
+  font-size: 2vw;
+  font-weight: bold;
 }
 
 h1 {
   padding-top: 2%;
-  margin-left: 3.5%;
-  font-size: 2rem;
+  margin-left: 5%;
+  margin-bottom: 1%;
+  font-size: 2.5rem;
 }
 
-.mat-elevation-z2 {
+table {
   width: 95%;
+  text-align: left;
   margin-left: auto;
   margin-right: auto;
+  font-size: 1vw;
+  border-collapse: collapse;
 }
+
+#rentalTable > tr:first-child {
+  color: var(--grey);
+}
+
+.tableRow:not(:first-child) {
+  border-top: 1px solid var(--grey);
+}
+
+td, th {
+  padding: 1.5% 2vw;
+}
+
+ .expired-rental {
+   color: var(--red)
+ }
