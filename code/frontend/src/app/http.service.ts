@@ -38,6 +38,10 @@ export class HttpService {
     return this.http.get<Equipment[]>(`${this.URL}equipment/user/${id}`);
   }
 
+  getAllPersons() {
+    return this.http.get<Person[]>("http://localhost:8080/api/persons/list");
+  }
+
   constructor() {
   }
 }

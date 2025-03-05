@@ -63,7 +63,6 @@ export class ShopDetailComponent {
   currentDate = new Date();
   selectedDays: number[] = [];
   days: { label: number | null; isWeekend: boolean; disabled: boolean; date: number }[] = [];
-  countAmount = 0;
 
   get monthYear(): string {
     const year = this.currentDate.getFullYear();
@@ -160,13 +159,12 @@ export class ShopDetailComponent {
   }
 
   check() {
-    if(this.equipment?.available !== 0 && this.equipment != undefined) {
-      if (this.selectedDays.length == 2 && this.amountSettingsComponent.getCurrentAmount() > 0) {
+    if(this.equipment?.available !== 0 && this.equipment != undefined) {  
+      if (this.selectedDays.length == 2 && this.amountSettingsComponent.amount > 0) {
         return true;
       }
       return false;
     }
     return false;
   }
-
 }

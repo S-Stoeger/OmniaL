@@ -1,5 +1,5 @@
 <div id="detail-set-amount">
   <button id="minus-button" class="amount-button" (click)="amount = amount - 1" [disabled]="amount === 1"><i class="fa-solid fa-minus fa-xs"></i></button>
   <p>{{amount}}</p>
-  <button id="plus-button" class="amount-button" (click)="amount = amount + 1" [disabled]="maxAmount != undefined &&    amount >= maxAmount"><i class="fa-solid fa-plus fa-xs"></i></button>
+  <button id="plus-button" class="amount-button" (click)="amount = amount + 1" [disabled]="maxAmount != undefined && amount >= maxAmount"><i class="fa-solid fa-plus fa-xs"></i></button>
 </div>

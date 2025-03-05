@@ -21,6 +21,7 @@ export class ShopCartComponent implements OnInit {
   httpService: HttpService = inject(HttpService)
   localStorageService: LocalStorageService = inject(LocalStorageService)
   private snackBar = inject(MatSnackBar);
+  persons: Person[] = []
 
   constructor() {
     this.rentalService.warenkorb.subscribe((res: any) => {
@@ -29,23 +30,20 @@ export class ShopCartComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.rentalService.loadFromLocalStorage()
+      this.rentalService.loadFromLocalStorage();
+      this.httpService.getAllPersons().subscribe((res: any) => {
+        this.persons = res;
+      })
   }
 
   addReservation() {
-    const person: Person = {
-      id: 5,
-      person_uuid: '92874a0d-a3d6-4729-aee7-2cf92a6162ca',
-      surname: 'Wagner',
-      firstname: 'Moritz',
-      email: 'moritz.wagner06@gmx.at',
-      grade: '5AHITM'
-    };
-
     const equipmentIds: number[] = this.rental.map(item => item.equipmentID);
 
+    // as long as no login
+    const randomUserId = Math.floor(Math.random() * 4) + 1;
+
     const rentalsRequest: RentalRequest = {
-      personId: person.id,
+      personId: this.persons[randomUserId].id,
       leaseDate: new Date(this.rental[0].startTime),
       returnDate: new Date(this.rental[0].endTime),
       equipmentIds: equipmentIds

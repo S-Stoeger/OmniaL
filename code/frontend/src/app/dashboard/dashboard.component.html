@@ -1,5 +1,5 @@
 <div class="tableBox" style="display: flex">
-  <div class="tableFilter">
+  <div class="tableFilter" (click)="tableRentals = rentals">
     <div class="filterCircle filterCircleBlue">
       <i class="fa-solid fa-list"></i>
     </div>
@@ -8,16 +8,16 @@
       <p class="filterCount">{{this.rentals.length}}</p>
     </div>
   </div>
-  <div class="tableFilter">
+  <div class="tableFilter" (click)="filterOpenReturns()">
     <div class="filterCircle filterCircleGreen">
       <i class="fa-regular fa-calendar"></i>
     </div>
     <div>
-      <h3 class="filterText">Offene Anfragen</h3>
-      <p class="filterCount">{{this.getOpenRentals().length}}</p>
+      <h3 class="filterText">Offene R&uuml;ckgaben</h3>
+      <p class="filterCount">{{this.getOpenReturns().length}}</p>
     </div>
   </div>
-  <div class="tableFilter">
+  <div class="tableFilter" (click)="filterExpiredRentals()">
     <div class="filterCircle filterCircleRed">
       <i class="fa-regular fa-calendar-xmark"></i>
     </div>
@@ -32,24 +32,24 @@
 
   <table id="rentalTable">
     <tr>
-      <th>Schüler Name</th>
-      <th>Klasse</th>
-      <th>Email</th>
-      <th>Datum</th>
+      <th (click)="sortRentals('name')">Schüler Name</th>
+      <th (click)="sortRentals('grade')">Klasse</th>
+      <th (click)="sortRentals('email')">Email</th>
+      <th (click)="sortRentals('date')">Datum</th>
       <th>Status</th>
     </tr>
-    <ng-container *ngFor="let rental of rentals; let i = index">
-      <tr (click)="toggleRow(i)" class="tableRow" [ngClass]="{'expired-rental': isRentalExpired(rentals[i])}">
+    <ng-container *ngFor="let rental of tableRentals; let i = index">
+      <tr (click)="toggleRow(i)" class="tableRow" [ngClass]="{'expired-rental': isRentalExpired(tableRentals[i])}">
       <td>{{rental.person.surname}} {{rental.person.firstname}}</td>
         <td>{{rental.person.grade}}</td>
         <td>{{rental.person.email}}</td>
         <td>{{rental.leaseDate | date: 'dd.MM.yy'}} - {{rental.returnDate | date: 'dd.MM.yy'}}</td>
         <td>
-          <button class="statusButton rentButton" *ngIf="!rental.isRented && !this.isRentalExpired(rental)">verleih</button>
-          <button class="statusButton" id="removeButton" *ngIf="!rental.isRented && !this.isRentalExpired(rental)">l&ouml;schen</button>
+          <button class="statusButton rentButton" *ngIf="!rental.isRented">verleih</button>
+          <button class="statusButton" id="removeButton" *ngIf="!rental.isRented">l&ouml;schen</button>
 
           <!-- vllt mit id="retourButton"-->
-          <button class="statusButton rentButton" *ngIf="(rental.isRented && !rental.isReturned) || this.isRentalExpired(rental)">retour</button>
+          <button class="statusButton rentButton" *ngIf="rental.isRented && !rental.isReturned">retour</button>
         </td>
       </tr>
       <tr *ngIf="expandedRow === i && equipments.length > 0">
