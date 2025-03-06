@@ -1,0 +1,124 @@
+.full-width-table {
+  width: 100%;
+}
+
+.statusButton {
+  border-radius: 5px;
+  padding: 0.2vw 0.5vw;
+}
+
+.rentButton {
+  background-color: var(--greenO);
+  color: var(--green);
+  border: 2px solid var(--green);
+}
+
+#removeButton {
+  background-color: var(--redO);
+  color: var(--red);
+  border: 2px solid var(--red);
+  margin-left: 2%;
+}
+
+#retourButton {
+  background-color: var(--light_blue);
+  color: var(--mid_blue);
+  border: 2px solid var(--mid_blue);
+  margin-left: 2%;
+}
+
+.tableBox {
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.2);
+  margin-bottom: 5%;
+  margin-top: 5%;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.tableFilter {
+  padding-top: 2%;
+  padding-bottom: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 33%;
+}
+
+.filterCircle {
+  border-radius: 50%;
+  width: 7vw;
+  height: 7vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 3%;
+}
+
+.filterCircleGreen {
+  background-color: var(--greenO);
+  border: 2px solid var(--green);
+  color: var(--green);
+}
+
+.filterCircleRed {
+  background-color: var(--redO);
+  border: 2px solid var(--red);
+  color: var(--red);
+}
+
+.filterCircleBlue {
+  background-color: var(--light_blue);
+  border: 2px solid var(--mid_blue);
+  color: var(--mid_blue);
+}
+
+
+.filterCircle > i {
+  font-size: 3vw;
+}
+
+.filterText {
+  color: var(--grey);
+}
+
+.filterCount {
+  margin: 0;
+  font-size: 2vw;
+  font-weight: bold;
+}
+
+h1 {
+  padding-top: 2%;
+  margin-left: 5%;
+  margin-bottom: 1%;
+  font-size: 2.5rem;
+  cursor: default;
+}
+
+table {
+  width: 95%;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1vw;
+  border-collapse: collapse;
+}
+
+#rentalTable > tr:first-child {
+  color: var(--grey);
+}
+
+.tableRow:not(:first-child) {
+  border-top: 1px solid var(--grey);
+}
+
+td, th {
+  padding: 1.5% 2vw;
+}
+
+ .expired-rental {
+   color: var(--red)
+ }

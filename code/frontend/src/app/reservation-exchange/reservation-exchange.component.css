@@ -1,0 +1,95 @@
+.dashboard-exchange {
+  width: 20vw;
+  height: 22vh;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 5px 5px 30px grey;
+  border-radius: 0.5rem;
+}
+
+.dashboard-exchange-text {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.dashboard-exchange-name {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 0.1rem;
+  background-color: #7FAAB4;
+  padding: 2%;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.fa-circle-info {
+  margin-left: 90%;
+  margin-top: 2%;
+  font-size: 1.2rem;
+}
+
+.dashboard-exchange-status {
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 2rem;
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close-btn {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 480px) {
+  .dashboard-exchange {
+    width: 80%;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .dashboard-exchange-text {
+    font-size: 1.2rem;
+  }
+
+  .fa-circle-info {
+    font-size: 1.5rem;
+    margin-left: 0;
+  }
+
+  .dashboard-exchange-status {
+    font-size: 1.5rem;
+    gap: 0.5rem;
+  }
+}

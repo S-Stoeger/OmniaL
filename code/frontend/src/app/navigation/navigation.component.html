@@ -1,0 +1,54 @@
+<div class="app-navigation">
+  <a id="navigation-profile" routerLink="profile">
+    <div>
+      <p>MM</p>
+    </div>
+    <p style="width: 100%" class="navigation">Max Mustermann</p>
+  </a>
+  <div id="navigation-links">
+    <div id="searchbar">
+      <select>
+        <option>Alle</option>
+        <option>Kamera</option>
+        <option>Audio</option>
+        <option>Zubeh&ouml;r</option>
+        <option>Raum</option>
+      </select>
+      <p>Suche nach Equipment bzw. R&auml;ume</p>
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+    <a routerLink="" class="navigation">Shop</a>
+    <a routerLink="dashboard" class="navigation">Dashboard</a>
+    <a routerLink="cart" class="navigation">Warenkorb
+      <i class="fa-solid fa-cart-shopping" *ngIf="badgeCount === 0"></i>
+      <i class="fa-solid fa-cart-shopping" *ngIf="badgeCount !== 0" matBadge="{{badgeCount}}" matBadgeColor="accent" matBadgePosition="above after"></i>
+
+    </a>
+
+  </div>
+
+
+  <div id="mobile-dropdown">
+    <button id="menu-toggle">☰</button>
+    <div id="dropdown-menu">
+
+      <a routerLink="" class="navigation">Shop</a>
+      <a routerLink="dashboard" class="navigation">Dashboard</a>
+      <a routerLink="cart" class="navigation">Warenkorb <i class="fa-solid fa-cart-shopping"></i></a>
+    </div>
+  </div>
+  <div id="search-handy">
+    <div id="searchbar-handy">
+      <select>
+        <option>Alle</option>
+        <option>Kamera</option>
+        <option>Mikrofon</option>
+        <option>Zubeh&ouml;r</option>
+        <option>Raum</option>
+      </select>
+      <p>Suche nach Equipment bzw. R&auml;ume</p>
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+  </div>
+
+</div>

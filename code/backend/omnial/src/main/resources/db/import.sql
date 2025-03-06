@@ -18,7 +18,7 @@ insert into Person (id, email, firstname, grade, surname, person_uuid)
 values (nextval('person_seq'),'m.slabschi@students.htl-leonding.ac.at', 'Maxi', '4AHITM', 'Slabschi', '340b3a31-95d1-4bfb-a570-6e9d3ae96a82');
 
 insert into Person (id, email, firstname, grade, surname, person_uuid)
-values (nextval('person_seq'),'moritz.wagner06@gmx.at', 'Moritz', '4AHITM', 'Wagner', '92874a0d-a3d6-4729-aee7-2cf92a6162ca');
+values (nextval('person_seq'),'moritz.wagner06@gmx.at', 'Moritz', '5AHITM', 'Wagner', '92874a0d-a3d6-4729-aee7-2cf92a6162ca');
 
 /*
 insert into Person (id, email, firstname, grade, surname)
@@ -44,6 +44,38 @@ values (nextval('person_seq'),'fabian.film@gmail.com', 'Fabian', '4AHITM', 'Film
 
  */
 
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Blackmagic Cinema Pocket', 'Blackmagic', 1,1, 'assets/images/blackmagic.png');
+
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Panasonic Lumix DCM-GH6', 'GH6', 5,5, 'assets/images/gh6.png');
+
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Panasonic Lumix DCM-GH4', 'GH4', 1,0, 'assets/images/gh4.jpg');
+
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Dji Ronin M', 'Ronin M', 1,1, 'assets/images/roninM.png');
+
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Atomos Ninja Inferno', 'NinjaMonitor', 1,1, 'assets/images/ninjaMonitor.jpg');
+
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Sigma 18-35mm', 'Objektiv', 2,2, 'assets/images/objektiv.png');
+
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'KAMERA', 'lala', 'Kamera', 'Kamera', 1,1, 'assets/images/camera.png');
+
+insert into Equipment(id, equipmentType, labelNumber, name, title, itemCount, available, link)
+values (nextval('equipment_seq'), 'ZUBEHÖR', 'lala', 'Dji Ronin S','Ronin S', 1,1, 'assets/images/roninS.png');
+
+
+
+
+
+
+
+
+
 --Insert Rooms
 insert into Room (id, description, name)
 values (nextval('room_seq'),'Das Fotostudio steht für Schüler der Medientechnik zur verfügung um an Foto- und Videoprojekten zu arbeiten','Fotostudio');
@@ -62,6 +94,16 @@ values (nextval('room_seq'),'Der Videoschnittraum steht meist Schüler der Medie
 insert into Room (id, description, name)
 values (nextval('room_seq'),'Der Musikraum steht den Schülern der HTL Leonding zur Verfügung ' ||
 'um Ihrer kreativität in Form von Musik freien lauf zu lassen','Musikraum');
+
+
+insert into Rental(id, person_id, leaseDate, returnDate, actualReturnDate, isRented,  isReturned)
+values(nextval('rental_seq'), 1, '2023-11-15T20:00:00','2023-12-15T20:00:00', '2023-12-15T20:00:00',false, false);
+
+insert into Rental(id, person_id, leaseDate, returnDate, actualReturnDate, isRented,  isReturned)
+values(nextval('rental_seq'), 1, '2023-11-15T20:00:00', '2023-11-17T20:00:00', '2023-12-15T20:00:00', true,  true);
+
+
+
 
 
 -- No EDV rooms can be reserved (at least for now)
@@ -99,5 +141,5 @@ values (nextval('room_seq'),'Sehr cool','EDV-10');
  */
 
 -- Insert Reservation
-insert into reservation
+insert into Reservation
 values (nextval('reservation_seq'), 1, '2023-11-15',1,'2023-11-15T20:00:00','2023-11-15T10:55:00');
