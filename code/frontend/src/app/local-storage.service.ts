@@ -62,6 +62,10 @@ export class LocalStorageService {
     }
   }
 
+  getToken(): string {
+    return <string>localStorage.getItem('token')
+  }
+
   deleteFromLocalStorage(id: number) {
     let array = JSON.parse(<string>localStorage.getItem('rentalEquipments'));
 
