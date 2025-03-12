@@ -64,4 +64,6 @@ cd ../../../../..
 kubectl delete configmap nginx-config || echo "nginx-config does not yet exist"
 kubectl create configmap nginx-config --from-file ./frontend/docker/default.conf
 
+kubectl rollout restart deployment nginx
+kubectl rollout restart deployment appsrv
 kubectl get pods
