@@ -3,6 +3,7 @@ import {RouterLink} from '@angular/router';
 import {MatBadge} from '@angular/material/badge';
 import {LocalStorageService} from '../local-storage.service';
 import {NgIf} from '@angular/common';
+import {logout} from '../../main';
 
 @Component({
   selector: 'app-navigation',
@@ -29,4 +30,5 @@ export class NavigationComponent implements OnInit {
     this.localStorageService.getStorageItemCount()
   }
 
+  protected readonly logout = logout;
 }
