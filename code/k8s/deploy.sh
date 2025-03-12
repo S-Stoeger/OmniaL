@@ -1,41 +1,57 @@
 #!/usr/bin/env bash
 set -e
 
-# docker package names cannot contain uppercase letters:
-LC_GH_USER_NAME=s-stoeger
-BACKEND_IMAGE_NAME=ghcr.io/$LC_GH_USER_NAME/backend:latest
-FRONTEND_IMAGE_NAME=ghcr.io/$LC_GH_USER_NAME/shop-frontend:latest
+TAG=$(date +"%d-%m-%y_%H-%M")
 
-export BACKEND_IMAGE_NAME
-export FRONTEND_IMAGE_NAME
+echo DELETING OLD BUILDS.....
 
+cd ../frontend/docker
+sudo rm -f -r dist
 
-echo Building Frontend ...
+cd ../../backend/omnial/src/main/docker
+rm -r omnial-1.0-SNAPSHOT-runner.jar
 
-cd ../frontend/
+echo "----------------------------------"
+echo SUCCESSFULLY DELETED
+echo "----------------------------------"
+echo CREATING AND MOVING BUILDS....
+
+cd ../../../
+
+mvn -D skipTests=true clean package
+sudo mv ./target/omnial-1.0-SNAPSHOT-runner.jar ./src/main/docker/
+
+cd ../../frontend
 ng build
-sudo rm -f -r /docker/dist
-sudo mv dist /docker/
-cd ./docker 
+sudo mv dist ./docker/
 
-docker build . -t ghcr.io/s-stoeger/shop-frontend:latest
+echo "----------------------------------"
+echo SUCCESSFULLY BUILT AND MOVED BUILDS
+echo "----------------------------------"
+
+
+echo BUILDING AND PUSHING FRONTEND...
+
+cd ../frontend/docker
+
+#docker build --no-cache . -t ghcr.io/s-stoeger/shop-frontend:latest
+#docker push ghcr.io/s-stoeger/shop-frontend:latest
+
+docker build --no-cache . -t ghcr.io/s-stoeger/shop-frontend:$TAG -t ghcr.io/s-stoeger/shop-frontend:latest
+docker push ghcr.io/s-stoeger/shop-frontend:$TAG
 docker push ghcr.io/s-stoeger/shop-frontend:latest
 
 echo "----------------------------------"
 echo SUCCESSFULLY BUILT AND PUSHED FRONTEND
 echo "----------------------------------"
 
-echo Building backend...
-cd ../../backend/omnial/
+echo BUILDING AND PUSHING BACKEND....
+cd ../../backend/omnial/src/main/docker
 
-sudo rm -f omnial-1.0-SNAPSHOT-runner.jar
-mvn -D skipTests=true clean package
-
-sudo mv ./target/omnial-1.0-SNAPSHOT-runner.jar ./src/main/docker/
-
-cd ./src/main/docker
-
-docker build . -t ghcr.io/s-stoeger/backend:latest
+#docker build --no-cache . -t ghcr.io/s-stoeger/backend:latest
+#docker push ghcr.io/s-stoeger/backend:latest
+docker build --no-cache . -t ghcr.io/s-stoeger/backend:$TAG -t ghcr.io/s-stoeger/backend:latest
+docker push ghcr.io/s-stoeger/backend:$TAG
 docker push ghcr.io/s-stoeger/backend:latest
 
 echo "----------------------------------"
@@ -49,4 +65,3 @@ kubectl delete configmap nginx-config || echo "nginx-config does not yet exist"
 kubectl create configmap nginx-config --from-file ./frontend/docker/default.conf
 
 kubectl get pods
-
