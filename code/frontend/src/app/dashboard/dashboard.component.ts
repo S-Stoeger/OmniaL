@@ -26,7 +26,8 @@ export class DashboardComponent implements OnInit {
   equipments: Equipment[] = [];
   sortingOrder: number = 1;
   private currentSortKey: string = "";
-
+  tableHeaders: string[] =  ["Schüler Name", "Klasse", "Email", "Datum", "Status"]
+  keywords: Array<"name" | "email" | "grade" | "date"> = ["name", "email", "grade", "date"];
 
   ngOnInit() {
     this.httpService.getAllRentals()
@@ -89,12 +90,7 @@ export class DashboardComponent implements OnInit {
   sortRentals(keyWord: "name" | "email" | "grade" | "date") {
     this.toggleRow(this.expandedRow)
 
-    if (this.currentSortKey === keyWord) {
-      this.sortingOrder *= -1;
-    } else {
-      this.sortingOrder = 1;
-      this.currentSortKey = keyWord;
-    }
+    this.sortingOrder *= -1;
 
     return this.tableRentals.sort((a, b) => {
       let valueA;
@@ -106,8 +102,7 @@ export class DashboardComponent implements OnInit {
       } else if (keyWord === "date") {
         valueA = new Date(a.leaseDate).getTime();
         valueB = new Date(b.leaseDate).getTime();
-      }
-      else {
+      } else {
         valueA = a.person[keyWord].toLowerCase();
         valueB = b.person[keyWord].toLowerCase();
       }

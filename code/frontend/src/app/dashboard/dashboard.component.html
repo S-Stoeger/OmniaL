@@ -32,11 +32,10 @@
 
   <table id="rentalTable">
     <tr>
-      <th (click)="sortRentals('name')">Schüler Name</th>
-      <th (click)="sortRentals('grade')">Klasse</th>
-      <th (click)="sortRentals('email')">Email</th>
-      <th (click)="sortRentals('date')">Datum</th>
-      <th>Status</th>
+      <th *ngFor="let tableHeader of tableHeaders; let j = index" (click)="sortRentals(keywords[j])">
+        {{tableHeader}}
+        <i class="fa-solid fa-arrow-up arrow" [ngClass]="{'arrow-up': sortingOrder > 0, 'arrow-down': sortingOrder < 0}"></i>
+      </th>
     </tr>
     <ng-container *ngFor="let rental of tableRentals; let i = index">
       <tr (click)="toggleRow(i)" class="tableRow" [ngClass]="{'expired-rental': isRentalExpired(tableRentals[i])}">

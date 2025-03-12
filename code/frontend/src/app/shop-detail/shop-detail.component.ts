@@ -159,7 +159,7 @@ export class ShopDetailComponent {
   }
 
   check() {
-    if(this.equipment?.available !== 0 && this.equipment != undefined) {  
+    if(this.equipment?.available !== 0 && this.equipment != undefined) {
       if (this.selectedDays.length == 2 && this.amountSettingsComponent.amount > 0) {
         return true;
       }
