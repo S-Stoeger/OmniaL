@@ -6,10 +6,8 @@ import {HttpService} from '../http.service';
 import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {Equipment, Rental} from '../interfaces';
 import {map} from 'rxjs';
-import {SelectedItemsComponent} from '../selected-items/selected-items.component';
-import {RentalEquipment} from '../rental-equipment';
 import {format} from 'date-fns';
-import {Person} from '../person';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -27,7 +25,7 @@ export class DashboardComponent implements OnInit {
   sortingOrder: number = 1;
   private currentSortKey: string = "";
   tableHeaders: string[] =  ["Schüler Name", "Klasse", "Email", "Datum", "Status"]
-  keywords: Array<"name" | "email" | "grade" | "date"> = ["name", "email", "grade", "date"];
+  keywords: Array<"name" | "grade" | "email" | "date"> = ["name", "grade", "email", "date"];
 
   ngOnInit() {
     this.httpService.getAllRentals()

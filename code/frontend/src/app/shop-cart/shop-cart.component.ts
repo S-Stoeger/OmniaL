@@ -1,11 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {SelectedItemsComponent} from '../selected-items/selected-items.component';
 import {LocalStorageService} from '../local-storage.service';
-import {RentalEquipment} from '../rental-equipment';
 import {HttpService} from '../http.service';
-import {Person} from '../person';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {RentalRequest} from '../interfaces';
+import {Person, RentalEquipment, RentalRequest} from '../interfaces';
 import {UserService} from '../user.service';
 
 @Component({

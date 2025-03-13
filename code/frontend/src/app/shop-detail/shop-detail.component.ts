@@ -4,13 +4,12 @@ import {ActivatedRoute, NavigationEnd, Router, RouterLink} from '@angular/router
 import {EquipmentService} from '../equipment.service';
 import {NgForOf, NgIf} from '@angular/common';
 import {LocalStorageService} from '../local-storage.service';
-import {RentalEquipment} from '../rental-equipment';
 import {FormsModule} from '@angular/forms';
 import {HttpService} from '../http.service';
 import {Subscription} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AmountSettingsComponent} from '../amount-settings/amount-settings.component';
-import {Equipment} from '../interfaces';
+import {Equipment, RentalEquipment} from '../interfaces';
 
 @Component({
   selector: 'app-shop-detail',

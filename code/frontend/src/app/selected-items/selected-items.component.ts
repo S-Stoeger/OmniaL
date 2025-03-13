@@ -1,12 +1,10 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
-import {RentalEquipment} from '../rental-equipment';
-import {EquipmentService} from '../equipment.service';
 import {LocalStorageService} from '../local-storage.service';
 import {HttpService} from '../http.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AmountSettingsComponent} from '../amount-settings/amount-settings.component';
-import {Equipment} from '../interfaces';
+import {Equipment, RentalEquipment} from '../interfaces';
 import {BehaviorSubject} from 'rxjs';
 
 @Component({

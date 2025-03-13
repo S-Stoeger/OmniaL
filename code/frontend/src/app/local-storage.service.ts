@@ -1,8 +1,8 @@
 import {inject, Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RentalEquipment } from './rental-equipment';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {NavigationComponent} from './navigation/navigation.component';
+import {RentalEquipment} from './interfaces';
 
 @Injectable({
   providedIn: 'root',

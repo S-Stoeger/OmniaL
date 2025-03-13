@@ -3,6 +3,7 @@ import {ShopStartComponent} from './shop-start/shop-start.component';
 import {ShopCartComponent} from './shop-cart/shop-cart.component';
 import {ShopDetailComponent} from './shop-detail/shop-detail.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
+import {RoomReservationComponent} from './room-reservation/room-reservation.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +20,11 @@ export const routes: Routes = [
     path: 'cart',
     component: ShopCartComponent,
     title: 'Omnial'
+  },
+  {
+    path: 'room',
+    component: RoomReservationComponent,
+    title: 'Room'
   },
   {
     path: 'detail/:id',

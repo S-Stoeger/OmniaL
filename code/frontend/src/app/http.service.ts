@@ -14,7 +14,7 @@ export class HttpService {
 
   // Get all equipments
   fetchAllVotes() {
-    return this.http.get<Equipment[]>(this.URL + "equipment/list");
+    return this.http.get<Equipment[]>(`${this.URL}equipment/list`);
   }
 
   // Get Equipments by ID
@@ -25,7 +25,7 @@ export class HttpService {
   // Get all rentals
   getAllRentals() {
     //return this.http.get<Rental[]>(this.URL + "rental/list");
-    return this.http.get<Rental[]>("http://localhost:8080/api/rental/list");
+    return this.http.get<Rental[]>(`${this.URL}rental/list`);
   }
 
   postRentalDTO(rental: RentalRequest): Observable<RentalRequest> {
@@ -38,7 +38,7 @@ export class HttpService {
   }
 
   getAllPersons() {
-    return this.http.get<Person[]>("http://localhost:8080/api/persons/list");
+    return this.http.get<Person[]>(`${this.URL}persons/list`);
   }
 
   constructor() {
