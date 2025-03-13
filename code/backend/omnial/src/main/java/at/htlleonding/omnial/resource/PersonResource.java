@@ -72,13 +72,16 @@ public class PersonResource {
             JwtClaims claims = jwtContext.getJwtClaims();
 
             // Extract infos from claims
-            //String info = claims.getClaimValue("name").toString();
+            String firstName = claims.getClaimValueAsString("given_name");
+            String familyName = claims.getClaimValueAsString("family_name");
             String email = claims.getClaimValue("email").toString();
+            String grade = claims.getClaimValueAsString("distinguishedName").substring(15,21);
+            String studentId = claims.getClaimValueAsString("preferred_username");
+
+            Person tokenPerson = new Person(studentId, email, firstName, familyName, grade);
 
 
-            Person person = personRepository.getByEmail(email);
-
-            return Response.ok(person).build();
+            return Response.ok(tokenPerson).build();
 
         } catch (Exception e) {
             return Response.serverError()

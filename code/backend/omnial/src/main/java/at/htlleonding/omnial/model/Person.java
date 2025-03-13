@@ -43,6 +43,10 @@ public class Person {
         return id;
     }
 
+    public String getUuid() {
+        return person_uuid;
+    }
+
     public String getSurname() {
         return surname;
     }
@@ -84,6 +88,11 @@ public class Person {
         this.surname = surname;
         this.firstname = firstname;
         this.email = email;
+    }
+
+    public Person(String uuid, String surname, String firstname, String email, String grade) {
+        this(uuid, surname, firstname, email);
+        this.grade = grade;
     }
 
     public Person() {
