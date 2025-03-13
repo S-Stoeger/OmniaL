@@ -6,6 +6,7 @@ import {HttpService} from '../http.service';
 import {Person} from '../person';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {RentalRequest} from '../interfaces';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-shop-cart',
@@ -19,31 +20,28 @@ export class ShopCartComponent implements OnInit {
   rental: RentalEquipment[] = [];
   rentalService: LocalStorageService = inject(LocalStorageService)
   httpService: HttpService = inject(HttpService)
+  userService: UserService = inject(UserService);
   localStorageService: LocalStorageService = inject(LocalStorageService)
   private snackBar = inject(MatSnackBar);
-  persons: Person[] = []
+  user: Person;
 
   constructor() {
     this.rentalService.warenkorb.subscribe((res: any) => {
       this.rental = res;
     })
+
+    this.user = this.userService.getUser()
   }
 
   ngOnInit() {
       this.rentalService.loadFromLocalStorage();
-      this.httpService.getAllPersons().subscribe((res: any) => {
-        this.persons = res;
-      })
   }
 
   addReservation() {
     const equipmentIds: number[] = this.rental.map(item => item.equipmentID);
 
-    // as long as no login
-    const randomUserId = Math.floor(Math.random() * 4) + 1;
-
     const rentalsRequest: RentalRequest = {
-      personId: this.persons[randomUserId].id,
+      personId: this.user.id,
       leaseDate: new Date(this.rental[0].startTime),
       returnDate: new Date(this.rental[0].endTime),
       equipmentIds: equipmentIds
