@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
 
   getOpenReturns(): Rental[] {
     let openRentals: Rental[] = [];
-    for (let rental of this.tableRentals) {
+    for (let rental of this.rentals) {
       if (rental.isRented && !rental.isReturned) {
           openRentals.push(rental);
       }
@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
 
   getExpiredRentals(): Rental[] {
     let expiredRentals: Rental[] = [];
-    for (let rental of this.tableRentals) {
+    for (let rental of this.rentals) {
       if (this.isRentalExpired(rental)) {
         expiredRentals.push(rental);
       }
@@ -114,11 +114,16 @@ export class DashboardComponent implements OnInit {
   }
 
   filterExpiredRentals(): void {
-    const currentDate = new Date();
     this.tableRentals = this.getExpiredRentals();
   }
 
   filterOpenReturns() {
     this.tableRentals = this.getOpenReturns();
+  }
+
+  // temporary, cuz still no endpoint
+  removeRental(person_id: number) {
+    this.tableRentals = this.tableRentals.filter((rental: Rental) => rental.person.id != person_id);
+    this.rentals = this.tableRentals;
   }
 }
