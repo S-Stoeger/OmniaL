@@ -1,0 +1,63 @@
+<div class="layout">
+  <!-- Left Side: Calendar and Room List -->
+  <div class="left-panel">
+    <!-- Small Calendar -->
+    <div class="small-calendar">
+      <div id="navigation">
+        <button id="prev-month" (click)="changeMonth(-1)">
+          <i class="fa-solid fa-caret-left"></i>
+        </button>
+        <div id="month-year">{{ monthYear }}</div>
+        <button id="next-month" (click)="changeMonth(1)">
+          <i class="fa-solid fa-caret-right"></i>
+        </button>
+      </div>
+      <div id="days-container" class="days-container">
+        <div class="day"
+             *ngFor="let day of days"
+             [class.disabled]="day.disabled"
+             [class.weekend]="day.isWeekend"
+             [class.selected]="selectedDays.includes(day.date)"
+             [class.highlighted]="isInRange(day.date)"
+             (click)="!day.disabled && selectDay(day.date)"
+        >
+          {{ day.label }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Room List -->
+    <div class="room-list">
+      <h3 id="room">Rooms</h3>
+      <div class="room-scroll">
+        <ul>
+          <li *ngFor="let room of rooms">{{ room }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Main Calendar Grid -->
+  <div class="calendar">
+    <table>
+      <thead>
+      <tr>
+        <th>Fotostudio</th>
+        <th *ngFor="let day of weekDaysFormatted">{{ day }}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let time of times; let rowIndex = index">
+        <td>{{ time }}</td>
+        <td
+          *ngFor="let day of weekDays; let colIndex = index"
+          (mousedown)="onMouseDown(rowIndex, colIndex, $event)"
+          (mousemove)="onMouseMove(rowIndex, colIndex)"
+          (mouseup)="onMouseUp($event)"
+          [style.background-color]="getCellColor(rowIndex, colIndex)">
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,9 +1,14 @@
 <div class="app-navigation">
-  <a id="navigation-profile" routerLink="profile">
-    <div>
-      <p>MM</p>
+  <a id="navigation-profile">
+    <div id="navigation-profile-div">
+      <p>{{user.firstname.at(0)}}{{user.surname.at(0)}}</p>
     </div>
-    <p style="width: 100%" class="navigation">Max Mustermann</p>
+    <div style="display: block">
+      <p style="width: 100%; padding-bottom: 0" class="navigation">{{user.firstname}} {{user.surname}}</p>
+      <a (click)="logout()" id="logout">Logout</a>
+    </div>
+
+
   </a>
   <div id="navigation-links">
     <div id="searchbar">
@@ -17,9 +22,9 @@
       <p>Suche nach Equipment bzw. R&auml;ume</p>
       <i class="fa-solid fa-magnifying-glass"></i>
     </div>
-    <a routerLink="" class="navigation">Shop</a>
-    <a routerLink="dashboard" class="navigation">Dashboard</a>
-    <a routerLink="cart" class="navigation">Warenkorb
+    <a routerLink="" class="navigation navigation-effect">Shop</a>
+    <a routerLink="dashboard" class="navigation navigation-effect">Dashboard</a>
+    <a routerLink="cart" class="navigation navigation-effect">Warenkorb
       <i class="fa-solid fa-cart-shopping" *ngIf="badgeCount === 0"></i>
       <i class="fa-solid fa-cart-shopping" *ngIf="badgeCount !== 0" matBadge="{{badgeCount}}" matBadgeColor="accent" matBadgePosition="above after"></i>
 

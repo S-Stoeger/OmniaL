@@ -14,6 +14,15 @@ export interface RentalRequest {
   equipmentIds: number[],
 }
 
+export interface RentalEquipment {
+  id: number,
+  equipmentID: number,
+  count: number,
+  startTime: string,
+  endTime: string,
+}
+
+
 export interface Person {
   id: number,
   surname: string,
@@ -45,4 +54,42 @@ export interface Equipment {
   itemCount: number,
   available: number,
   link: number
+}
+
+export interface Reservation {
+  id: number;
+  roomId: number;
+  personId: number;
+  startTime: string;
+  endTime: string;
+  reservationDate: string;
+}
+
+export interface ReservationDTO {
+  roomId: number
+  personId: number
+  startTime: string
+  endTime: string
+  reservationDate: string;
+}
+
+export interface Model {
+  reservations: Reservation[]
+  persons: Person[]
+}
+
+export const model: Model = {
+  reservations: [],
+  persons: []
+}
+export interface SelectedDate {
+  year: number;
+  month: number;
+  day: number;
+}
+
+export interface Room {
+  id: number;
+  name: string;
+  description: string;
 }

@@ -6,10 +6,8 @@ import {HttpService} from '../http.service';
 import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {Equipment, Rental} from '../interfaces';
 import {map} from 'rxjs';
-import {SelectedItemsComponent} from '../selected-items/selected-items.component';
-import {RentalEquipment} from '../rental-equipment';
 import {format} from 'date-fns';
-import {Person} from '../person';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +24,8 @@ export class DashboardComponent implements OnInit {
   equipments: Equipment[] = [];
   sortingOrder: number = 1;
   private currentSortKey: string = "";
-
+  tableHeaders: string[] =  ["Schüler Name", "Klasse", "Email", "Datum", "Status"]
+  keywords: Array<"name" | "grade" | "email" | "date"> = ["name", "grade", "email", "date"];
 
   ngOnInit() {
     this.httpService.getAllRentals()
@@ -61,7 +60,7 @@ export class DashboardComponent implements OnInit {
 
   getOpenReturns(): Rental[] {
     let openRentals: Rental[] = [];
-    for (let rental of this.tableRentals) {
+    for (let rental of this.rentals) {
       if (rental.isRented && !rental.isReturned) {
           openRentals.push(rental);
       }
@@ -71,7 +70,7 @@ export class DashboardComponent implements OnInit {
 
   getExpiredRentals(): Rental[] {
     let expiredRentals: Rental[] = [];
-    for (let rental of this.tableRentals) {
+    for (let rental of this.rentals) {
       if (this.isRentalExpired(rental)) {
         expiredRentals.push(rental);
       }
@@ -89,12 +88,7 @@ export class DashboardComponent implements OnInit {
   sortRentals(keyWord: "name" | "email" | "grade" | "date") {
     this.toggleRow(this.expandedRow)
 
-    if (this.currentSortKey === keyWord) {
-      this.sortingOrder *= -1;
-    } else {
-      this.sortingOrder = 1;
-      this.currentSortKey = keyWord;
-    }
+    this.sortingOrder *= -1;
 
     return this.tableRentals.sort((a, b) => {
       let valueA;
@@ -106,8 +100,7 @@ export class DashboardComponent implements OnInit {
       } else if (keyWord === "date") {
         valueA = new Date(a.leaseDate).getTime();
         valueB = new Date(b.leaseDate).getTime();
-      }
-      else {
+      } else {
         valueA = a.person[keyWord].toLowerCase();
         valueB = b.person[keyWord].toLowerCase();
       }
@@ -119,11 +112,16 @@ export class DashboardComponent implements OnInit {
   }
 
   filterExpiredRentals(): void {
-    const currentDate = new Date();
     this.tableRentals = this.getExpiredRentals();
   }
 
   filterOpenReturns() {
     this.tableRentals = this.getOpenReturns();
+  }
+
+  // temporary, cuz still no endpoint
+  removeRental(person_id: number) {
+    this.tableRentals = this.tableRentals.filter((rental: Rental) => rental.person.id != person_id);
+    this.rentals = this.tableRentals;
   }
 }

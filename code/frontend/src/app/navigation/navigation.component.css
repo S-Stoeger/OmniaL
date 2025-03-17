@@ -18,15 +18,32 @@ a {
 .navigation {
   text-align: center;
   padding: 0.5rem;
+  margin: 0;
+}
+.navigation-effect {
   background-image: linear-gradient(var(--light_blue), var(--light_blue));
   background-size: 0% 0.2rem;
   background-position: 100% 100%;
   background-repeat: no-repeat;
   transition: background-size 0.5s ease-in-out;
 }
-.navigation:hover, .navigation:focus, .navigation:active {
+.navigation-effect:hover, .navigation-effect:focus, .navigation-effect:active {
   background-size: 100% 0.2rem;
   transition: 0.5s;
+}
+
+#logout {
+  font-size: 0.9rem;
+  margin: 0;
+  padding-left: 9%;
+  color: #a7a7a7;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
+}
+#logout:hover {
+  font-weight: bold;
+  color: var(--white);
 }
 
 #navigation-profile {
@@ -36,13 +53,13 @@ a {
   margin-left: 3vw;
 }
 
-#navigation-profile > div {
+#navigation-profile-div {
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--grey);
   width: 4rem;
-  height: 3rem;
+  height: 4rem;
   border-radius: 50%;
   color: var(--black);
 }

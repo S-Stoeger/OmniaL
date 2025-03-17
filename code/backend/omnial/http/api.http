@@ -112,3 +112,11 @@ Content-Type: application/json
 
 ####
 GET http://localhost:8080/api/equipment/user/1
+
+###
+
+GET https://it200281.cloud.htl-leonding.ac.at/api/equipment/list
+
+###
+GET http://localhost:8080/api/persons/token
+Authorization: Bearer <Token>

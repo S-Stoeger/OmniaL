@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
 import {ShopStartComponent} from './shop-start/shop-start.component';
-import {ShopDashboardComponent} from './shop-dashboard/shop-dashboard.component';
 import {ShopCartComponent} from './shop-cart/shop-cart.component';
-import {ShopProfileComponent} from './shop-profile/shop-profile.component';
 import {ShopDetailComponent} from './shop-detail/shop-detail.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
+import {RoomReservationComponent} from './room-reservation/room-reservation.component';
 
 export const routes: Routes = [
   {
@@ -23,9 +22,9 @@ export const routes: Routes = [
     title: 'Omnial'
   },
   {
-    path: 'profile',
-    component: ShopProfileComponent,
-    title: 'Omnial'
+    path: 'room',
+    component: RoomReservationComponent,
+    title: 'Room'
   },
   {
     path: 'detail/:id',

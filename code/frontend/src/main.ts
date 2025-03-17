@@ -32,6 +32,10 @@ async function init()  {
   localStorage.setItem('token', keycloak.token!)
 }
 
+export function logout() {
+  keycloak.logout();
+}
+
 
 init();
 
