@@ -98,12 +98,9 @@ public class PersonRepository {
         Person temp = getByUuid(uuid);
 
         if (temp==null){
-          Person newPerson = new Person(uuid,lastName, firstName, email, grade);
+          Person newPerson = new Person(uuid,firstName,lastName, email, grade);
           System.out.println(newPerson);
-
           entityManager.persist(newPerson);
-
-          //entityManager.persist(newPerson);
       }
     }
 

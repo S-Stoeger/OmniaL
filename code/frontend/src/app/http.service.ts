@@ -1,13 +1,15 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Equipment, Person, Rental, RentalRequest} from './interfaces';
+import {Equipment, Person, Rental, RentalRequest, Room} from './interfaces';
+import {LocalStorageService} from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
   private http: HttpClient = inject(HttpClient);
+  storageService: LocalStorageService = inject(LocalStorageService);
   private URL: string = 'https://it200281.cloud.htl-leonding.ac.at/api/';
   //private URL: string = 'http://localhost:8080/api/';
   equipments: Equipment[] = [];
@@ -39,6 +41,10 @@ export class HttpService {
 
   getAllPersons() {
     return this.http.get<Person[]>(`${this.URL}persons/list`);
+  }
+
+  getAllRooms() {
+    return this.http.get<Room[]>(`${this.URL}rooms/list`);
   }
 
   constructor() {
