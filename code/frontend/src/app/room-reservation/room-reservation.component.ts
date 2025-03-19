@@ -3,7 +3,10 @@ import {NgForOf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpService} from '../http.service';
 import {ReservationService} from '../reservation.service';
-import {ReservationDTO} from '../interfaces';
+import {ReservationDTO, Room} from '../interfaces';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {LocalStorageService} from '../local-storage.service';
 
 @Component({
   selector: 'app-room-reservation',
@@ -19,12 +22,17 @@ export class RoomReservationComponent {
     '7:00', '8:00', '8:55', '10:00', '10:55', '11:50', '12:45',
     '13:40', '14:35', '15:30', '16:25', '17:20', '18:15', '19:10'
   ];
+  httpService: HttpService = inject(HttpService);
+  router = inject(Router)
+  storageService: LocalStorageService = inject(LocalStorageService);
+  private snackBar = inject(MatSnackBar);
 
   currentWeekStart: Date;
   weekDays: Date[] = [];
   weekDaysFormatted: string[] = [];
 
-  rooms: string[] = ['Room 1', 'Room 2', 'Room 3', 'Room 4', 'Room 5', 'Room 6', 'Room 7', 'Room 8', 'Room 1', 'Room 2', 'Room 3', 'Room 4', 'Room 5', 'Room 6', 'Room 7', 'Room 8']; // Example rooms
+  rooms: Room[] = []; // Example rooms
+  currentRoom?: Room = undefined;
 
   // Track selected cells
   selectedCells: { [key: string]: string } = {}; // Key: "rowIndex-columnIndex", Value: color
@@ -36,6 +44,7 @@ export class RoomReservationComponent {
 
   // Available colors for selection
   colors: string[] = ['#ffcccc', '#ccffcc', '#ccccff', '#ffffcc']; // Example colors
+  count: number = 0;
 
 
   reservationService: ReservationService = inject(ReservationService);
@@ -44,8 +53,21 @@ export class RoomReservationComponent {
   constructor() {
     // Initialize with the current week
     this.currentWeekStart = this.getStartOfWeek(new Date());
-    this.updateWeekDays();
     this.renderCalendar();
+    this.selectedDays.push(new Date().getDate());
+    this.updateWeekDays();
+
+    this.httpService.getAllRooms().subscribe(r => {
+        this.rooms = r
+        this.currentRoom = this.rooms[0]
+      }
+    )
+
+
+  }
+
+  setRoom(room: Room) {
+    this.currentRoom = room;
   }
 
 
@@ -60,9 +82,15 @@ export class RoomReservationComponent {
   updateWeekDays(): void {
     this.weekDays = [];
     this.weekDaysFormatted = [];
+    let startWeek = 0;
+    if (this.count !== 0) {
+      startWeek = 1
+
+    }
+    this.count++
     for (let i = 0; i < 5; i++) { // Only weekdays (Monday to Friday)
       const day = new Date(this.currentWeekStart);
-      day.setDate(day.getDate() + i);
+      day.setDate(day.getDate() + i + startWeek);
       this.weekDays.push(day);
       this.weekDaysFormatted.push(this.formatDate(day));
     }
@@ -249,20 +277,28 @@ export class RoomReservationComponent {
   }
 
   selectDay(day: number | null) {
-    if (day === null) return;
+    if (day === null) {
+     return;
+    }
 
     if (this.selectedDays.includes(day)) {
       // Deselect the day
       this.selectedDays = this.selectedDays.filter((d) => d !== day);
     } else {
       // Add the day if less than 2 are selected
-      if (this.selectedDays.length < 2) {
+      if (this.selectedDays.length < 1) {
         this.selectedDays.push(day);
       } else {
         // Replace the earliest selected day if 2 are already selected
         this.selectedDays.shift();
         this.selectedDays.push(day);
       }
+    }
+
+    if (this.selectedDays.length > 0) {
+      // Get the selected date from the current month and year
+      const selectedDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
+      this.onDateSelect(selectedDate);
     }
   }
 
@@ -319,16 +355,23 @@ export class RoomReservationComponent {
     }
 
     const reservationDTO: ReservationDTO = {
-      roomId: 1, // Replace with actual selected room
+      roomId: this.currentRoom!.id, // Replace with actual selected room
       personId: 1, // Replace with actual user ID
       startTime: startTime.toISOString(),
       endTime: endTime.toISOString(),
       reservationDate: startTime.toISOString().split('T')[0], // YYYY-MM-DD format
     };
 
-    console.log(reservationDTO)
+    this.storageService.addRoomDTO(reservationDTO);
 
-    this.reservationService.addRoomReservation(reservationDTO);
+
+
+    this.snackBar.open('Hinzugefügt', 'Schließen')
+    setTimeout(() => {
+      this.snackBar.dismiss()
+    } ,2500)
+
+    this.router.navigate(['cart']);
   }
 
 

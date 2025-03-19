@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Equipment, Person, Rental, RentalRequest} from './interfaces';
+import {Equipment, Person, Rental, RentalRequest, Room} from './interfaces';
 import {LocalStorageService} from './local-storage.service';
 
 @Injectable({
@@ -43,13 +43,8 @@ export class HttpService {
     return this.http.get<Person[]>(`${this.URL}persons/list`);
   }
 
-  getPersonByToken(token: string): Observable<Person> {
-
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http.get<Person>(`${this.URL}persons/token`, { headers });
+  getAllRooms() {
+    return this.http.get<Room[]>(`${this.URL}rooms/list`);
   }
 
   constructor() {

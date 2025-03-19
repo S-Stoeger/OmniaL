@@ -27,6 +27,8 @@ export class UserService implements OnDestroy {
       this.refreshUserData(token);
     }
 
+    console.log("hier")
+    console.log(this.user$)
     // Listen for auth state changes
     this.authEventListener = this.handleAuthStateChange.bind(this);
     window.addEventListener('auth-state-changed', this.authEventListener);

@@ -8,16 +8,19 @@
     <div id="auswahl-room">
       <h2 style="text-align: center;">Wollen sie noch einen Raum reservieren?</h2>
       <div id="roomSection">
-        <div id="room" *ngFor="let reservation of reservations">
-          <h3>{{reservationService.getRoomById(reservation.roomId)}}</h3>
-          <div style="display: flex; align-items: center; justify-content: space-around;">
-            <i class="fa-solid fa-calendar-days fa-2xl"></i>
-            <p>Am {{ reservation.reservationDate | date:'dd.MM.yyyy' }},
-              von {{ reservation.startTime | date:'HH:mm'}}
-              bis {{ reservation.endTime | date:'HH:mm' }}</p>
+        <div *ngIf="rooms.length!==0">
+          <div  id="room" *ngFor="let reservation of rooms">
+            <div id="placeholder"></div>
+            <div id="roomText">
+              <h2>{{reservationService.getRoomById(reservation.roomId)}}</h2>
+              <p>Am {{ reservation.reservationDate | date:'dd.MM.yyyy' }} |
+                {{ reservation.startTime | date:'HH:mm'}} - {{ reservation.endTime | date:'HH:mm' }}</p>
+            </div>
           </div>
         </div>
+
         <hr>
+        <button (click)="addRoom()" id="addRoom">Hinzufügen</button>
       </div>
       <button (click)="addReservation()" id="submitRental">Reservieren</button>
     </div>

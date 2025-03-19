@@ -6,7 +6,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Person, RentalEquipment, RentalRequest, ReservationDTO} from '../interfaces';
 import {UserService} from '../user.service';
 import {ReservationService} from '../reservation.service';
-import {DatePipe, NgForOf} from '@angular/common';
+import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-shop-cart',
@@ -14,7 +15,8 @@ import {DatePipe, NgForOf} from '@angular/common';
   imports: [
     SelectedItemsComponent,
     NgForOf,
-    DatePipe
+    DatePipe,
+    NgIf
   ],
   styleUrl: './shop-cart.component.css'
 })
@@ -27,8 +29,10 @@ export class ShopCartComponent implements OnInit {
   userService: UserService = inject(UserService);
   reservationService: ReservationService = inject(ReservationService);
   localStorageService: LocalStorageService = inject(LocalStorageService)
+  router = inject(Router)
   private snackBar = inject(MatSnackBar);
-  user: Person;
+  user: Person | null = null;
+  rooms: ReservationDTO[] = [];
 
   constructor() {
     this.rentalService.warenkorb.subscribe((res: any) => {
@@ -38,7 +42,11 @@ export class ShopCartComponent implements OnInit {
       this.reservations = res;
     })
 
-    this.user = this.userService.getUser()!
+    this.userService.user$.subscribe(u => this.user = u );
+
+    this.rooms = this.localStorageService.getRoomDTO()
+    console.log("hallo")
+    console.log(this.rooms)
   }
 
   ngOnInit() {
@@ -49,11 +57,14 @@ export class ShopCartComponent implements OnInit {
     const equipmentIds: number[] = this.rental.map(item => item.equipmentID);
 
     const rentalsRequest: RentalRequest = {
-      personId: this.user.id,
+      personId: this.user!.id,
       leaseDate: new Date(this.rental[0].startTime),
       returnDate: new Date(this.rental[0].endTime),
       equipmentIds: equipmentIds
     };
+
+    console.log("moin")
+    console.log(this.user)
 
     this.httpService.postRentalDTO(rentalsRequest).subscribe((res: any) => {})
     this.localStorageService.clearStorage()
@@ -62,5 +73,9 @@ export class ShopCartComponent implements OnInit {
     setTimeout(() => {
       this.snackBar.dismiss()
     } ,2500)
+  }
+
+  addRoom() {
+    this.router.navigate(['room']);
   }
 }

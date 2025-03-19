@@ -1,8 +1,8 @@
 <div class="layout">
+  <button id="addRoom" (click)="addReservation()"><i class="fa-solid fa-plus"></i></button>
   <!-- Left Side: Calendar and Room List -->
   <div class="left-panel">
     <!-- Small Calendar -->
-    <button (click)="addReservation()">Res</button>
     <div class="small-calendar">
       <div id="navigation">
         <button id="prev-month" (click)="changeMonth(-1)">
@@ -32,7 +32,7 @@
       <h3 id="room">Rooms</h3>
       <div class="room-scroll">
         <ul>
-          <li *ngFor="let room of rooms">{{ room }}</li>
+          <li *ngFor="let room of rooms" (click)="setRoom(room)">{{ room.name }}</li>
         </ul>
       </div>
     </div>
@@ -43,7 +43,7 @@
     <table>
       <thead>
       <tr>
-        <th>Fotostudio</th>
+        <th>{{ currentRoom?.name }}</th>
         <th *ngFor="let day of weekDaysFormatted">{{ day }}</th>
       </tr>
       </thead>

@@ -34,14 +34,49 @@
 }
 
 #room {
-  background-color: var(--white);
-  width: 20vw;
-  margin: auto;
+  background-image: url("../../assets/images/fotostudio.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 23vw;
+  margin: auto auto 10% auto;
   border-radius: 0.5rem;
-  padding: 2vw;
+  height: 20vh;
 }
+#room > div > h2 {
+  padding-top: 3%;
+}
+
+#roomText {
+  height: 10vh;
+  background-color: var(--white);
+  width: 100%;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+
+}
+#roomText > p,h2 {
+  padding-left: 5%;
+}
+
+#placeholder {
+  height: 10vh;
+  width: 100%;
+}
+
 #roomSection {
   height: 75vh;
+}
+
+#addRoom {
+  margin-left: 5%;
+  background-color: var(--dark_blue);
+  border-radius: 0.5rem;
+  border: none;
+  color: var(--white);
+  padding: 2% 3% 2% 3%;
+  font-size: 1.5rem;
+  width: 90%;
 }
 
 #submitRental {

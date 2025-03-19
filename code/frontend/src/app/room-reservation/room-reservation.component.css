@@ -2,6 +2,20 @@
   display: flex;
 }
 
+#addRoom {
+  position: absolute;
+  top: 87%;
+  left: 93%;
+  width: 5vw;
+  height: 9.5vh;
+  border-radius: 15rem;
+  background-color: var(--mid_blue);
+}
+
+#addRoom > i {
+  font-size: 2.5rem;
+}
+
 .left-panel {
   width: 250px;
   margin-right: 5px;
@@ -56,6 +70,10 @@ th, td {
 
 th {
   background-color: #f4f4f4;
+}
+
+th:first-child {
+  width: 12%;
 }
 
 td {

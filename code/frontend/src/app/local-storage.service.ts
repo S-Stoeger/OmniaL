@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {NavigationComponent} from './navigation/navigation.component';
-import {RentalEquipment} from './interfaces';
+import {RentalEquipment, ReservationDTO} from './interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -102,5 +102,20 @@ export class LocalStorageService {
     console.log(this.equipments);
     const data = localStorage.getItem('rentalEquipments');
     console.log(data)
+  }
+
+  addRoomDTO(roomDTO: ReservationDTO) {
+    localStorage.setItem('roomDTO', JSON.stringify(roomDTO));
+  }
+
+  getRoomDTO(): ReservationDTO[]{
+    let array: ReservationDTO[] = [];
+
+    if (JSON.parse(<string>localStorage.getItem('roomDTO')) !== null) {
+      array.push(JSON.parse(<string>localStorage.getItem('roomDTO')));
+    }
+
+    return array;
+    //return JSON.parse(localStorage.getItem('roomDTO')!);
   }
 }
