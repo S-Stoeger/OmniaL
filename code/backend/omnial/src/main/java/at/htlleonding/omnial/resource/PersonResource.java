@@ -79,6 +79,7 @@ public class PersonResource {
             String studentId = claims.getClaimValueAsString("preferred_username");
 
             Person tokenPerson = new Person(studentId, email, firstName, familyName, grade);
+            personRepository.addPerson(studentId, email, firstName, familyName, grade);
 
 
             return Response.ok(tokenPerson).build();

@@ -94,11 +94,11 @@ public class PersonRepository {
     }
 
     @Transactional
-    public void addPerson(String uuid,String firstName, String lastName, String email){
+    public void addPerson(String uuid,String firstName, String lastName, String email, String grade){
         Person temp = getByUuid(uuid);
 
         if (temp==null){
-          Person newPerson = new Person(uuid,firstName,lastName, email);
+          Person newPerson = new Person(uuid,firstName,lastName, email, grade);
           System.out.println(newPerson);
           entityManager.persist(newPerson);
       }
