@@ -91,6 +91,7 @@ public class PersonResource {
             return Response.ok(p1).build();
 
 
+
         } catch (Exception e) {
             return Response.serverError()
                     .entity("Error processing token: " + e.getMessage())
