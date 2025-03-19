@@ -16,9 +16,9 @@ data:
       NOREPLICATION
       CONNECTION LIMIT -1
       PASSWORD 'demo';
- 
+
     CREATE DATABASE demo
-        WITH 
+        WITH
         OWNER = demo
         ENCODING = 'UTF8'
         CONNECTION LIMIT = -1;
@@ -30,13 +30,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgresql-data
-
-  annotations:
-    nfs.io/storage-path: "postgresql-data"
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: standard
+    - ReadWriteOnce
   resources:
     requests:
       storage: 100Mi

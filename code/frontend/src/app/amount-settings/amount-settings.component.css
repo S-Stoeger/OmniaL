@@ -1,0 +1,33 @@
+#detail-set-amount {
+  display: flex;
+  width: 9rem;
+  justify-content: space-between;
+  font-size: large;
+  align-items: center;
+}
+
+.amount-button {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#plus-button {
+  background-color: var(--green);
+}
+
+#minus-button {
+  background-color: var(--red);
+}
+
+.amount-button:disabled {
+  opacity: 0.5;
+}
