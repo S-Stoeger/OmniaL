@@ -29,6 +29,14 @@ async function init()  {
     console.error('Failed to initialize adapter:', error);
   }
 
+  const token = keycloak.idTokenParsed;
+  console.log("Benutzer:", token);
+
+  //const userId  = keycloak.tokenParsed.sub;
+  //console.log("User UUID:", userId);
+
+
+
   localStorage.setItem('token', keycloak.token!)
 }
 
