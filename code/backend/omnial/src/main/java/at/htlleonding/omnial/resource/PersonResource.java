@@ -78,12 +78,18 @@ public class PersonResource {
             String email = claims.getClaimValue("email").toString();
             String grade = claims.getClaimValueAsString("distinguishedName").substring(15,21);
             String studentId = claims.getClaimValueAsString("preferred_username");
+            String uuid = claims.getClaimValueAsString("sub");
 
-            Person tokenPerson = new Person(studentId, familyName, firstName,  email, grade);
-            personRepository.addPerson(studentId , firstName, familyName,email, grade);
+            Person p1 = personRepository.getByUuid(uuid);
+            if (p1 == null) {
+                Person tokenPerson = new Person(uuid, familyName, firstName,  email, grade);
+                personRepository.addPerson(uuid , firstName, familyName,email, grade);
+                return Response.ok(tokenPerson).build();
 
+            }
 
-            return Response.ok(tokenPerson).build();
+            return Response.ok(p1).build();
+
 
         } catch (Exception e) {
             return Response.serverError()
