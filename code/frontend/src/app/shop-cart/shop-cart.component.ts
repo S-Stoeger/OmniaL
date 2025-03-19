@@ -36,11 +36,9 @@ export class ShopCartComponent implements OnInit {
     })
     this.reservationService.reservations.subscribe((res: any) => {
       this.reservations = res;
-      console.log("Reservations")
-      console.log(this.reservations)
     })
 
-    this.user = this.userService.getUser()
+    this.user = this.userService.getUser()!
   }
 
   ngOnInit() {

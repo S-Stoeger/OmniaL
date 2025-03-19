@@ -1,7 +1,10 @@
-  import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+  import {Component, inject} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {NavigationComponent} from './navigation/navigation.component';
 import {FooterComponent} from './footer/footer.component';
+  import {Person} from './interfaces';
+  import {LocalStorageService} from './local-storage.service';
+  import {HttpService} from './http.service';
 
 @Component({
   selector: 'app-root',
