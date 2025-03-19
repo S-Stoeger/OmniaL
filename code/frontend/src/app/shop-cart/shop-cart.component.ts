@@ -3,22 +3,29 @@ import {SelectedItemsComponent} from '../selected-items/selected-items.component
 import {LocalStorageService} from '../local-storage.service';
 import {HttpService} from '../http.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {Person, RentalEquipment, RentalRequest} from '../interfaces';
+import {Person, RentalEquipment, RentalRequest, ReservationDTO} from '../interfaces';
 import {UserService} from '../user.service';
+import {ReservationService} from '../reservation.service';
+import {DatePipe, NgForOf} from '@angular/common';
 
 @Component({
   selector: 'app-shop-cart',
   templateUrl: './shop-cart.component.html',
   imports: [
-    SelectedItemsComponent
+    SelectedItemsComponent,
+    NgForOf,
+    DatePipe
   ],
   styleUrl: './shop-cart.component.css'
 })
 export class ShopCartComponent implements OnInit {
   rental: RentalEquipment[] = [];
+  reservations: ReservationDTO[] = [];
+
   rentalService: LocalStorageService = inject(LocalStorageService)
   httpService: HttpService = inject(HttpService)
   userService: UserService = inject(UserService);
+  reservationService: ReservationService = inject(ReservationService);
   localStorageService: LocalStorageService = inject(LocalStorageService)
   private snackBar = inject(MatSnackBar);
   user: Person;
@@ -26,6 +33,11 @@ export class ShopCartComponent implements OnInit {
   constructor() {
     this.rentalService.warenkorb.subscribe((res: any) => {
       this.rental = res;
+    })
+    this.reservationService.reservations.subscribe((res: any) => {
+      this.reservations = res;
+      console.log("Reservations")
+      console.log(this.reservations)
     })
 
     this.user = this.userService.getUser()
@@ -53,5 +65,4 @@ export class ShopCartComponent implements OnInit {
       this.snackBar.dismiss()
     } ,2500)
   }
-
 }

@@ -2,6 +2,7 @@
   <!-- Left Side: Calendar and Room List -->
   <div class="left-panel">
     <!-- Small Calendar -->
+    <button (click)="addReservation()">Res</button>
     <div class="small-calendar">
       <div id="navigation">
         <button id="prev-month" (click)="changeMonth(-1)">
@@ -54,6 +55,7 @@
           (mousedown)="onMouseDown(rowIndex, colIndex, $event)"
           (mousemove)="onMouseMove(rowIndex, colIndex)"
           (mouseup)="onMouseUp($event)"
+          (click)="onCellClick(rowIndex, colIndex)"
           [style.background-color]="getCellColor(rowIndex, colIndex)">
         </td>
       </tr>
