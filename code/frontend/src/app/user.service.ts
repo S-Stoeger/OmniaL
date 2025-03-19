@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class UserService implements OnDestroy {
   private http: HttpClient = inject(HttpClient);
   private URL: string = 'https://it200281.cloud.htl-leonding.ac.at/api/';
+  //private URL: string = 'http://localhost:8080/api/';
 
   // BehaviorSubject to track current user
   private userSubject = new BehaviorSubject<Person | null>(null);
