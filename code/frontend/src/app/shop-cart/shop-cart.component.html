@@ -8,7 +8,7 @@
     <div id="auswahl-room">
       <h2 style="text-align: center;">Wollen sie noch einen Raum reservieren?</h2>
       <div id="roomSection">
-        <div *ngIf="rooms.length!==0">
+        <div *ngIf="rooms.length!==0 && !test">
           <div  id="room" *ngFor="let reservation of rooms">
             <div id="placeholder"></div>
             <div id="roomText">

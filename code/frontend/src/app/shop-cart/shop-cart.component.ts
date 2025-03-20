@@ -33,6 +33,7 @@ export class ShopCartComponent implements OnInit {
   private snackBar = inject(MatSnackBar);
   user: Person | null = null;
   rooms: ReservationDTO[] = [];
+  test: boolean = false;
 
   constructor() {
     this.rentalService.warenkorb.subscribe((res: any) => {
@@ -73,6 +74,9 @@ export class ShopCartComponent implements OnInit {
     setTimeout(() => {
       this.snackBar.dismiss()
     } ,2500)
+
+    this.test = true
+    this.localStorageService.deleteRoomDTO()
   }
 
   addRoom() {

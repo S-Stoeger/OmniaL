@@ -118,4 +118,8 @@ export class LocalStorageService {
     return array;
     //return JSON.parse(localStorage.getItem('roomDTO')!);
   }
+
+  deleteRoomDTO() {
+    localStorage.removeItem('roomDTO');
+  }
 }
