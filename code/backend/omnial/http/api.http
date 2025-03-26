@@ -157,3 +157,25 @@ Content-Type: application/json
   "returnDate": "2025-04-02T00:00:00Z",
   "equipmentIds": [1, 51]
 }
+
+###
+PUT http://localhost:8080/api/rental/rent
+Content-Type: application/json
+
+{
+  "personId": 3,
+  "leaseDate": "2025-03-31T00:00:00Z",
+  "returnDate": "2025-04-02T00:00:00Z",
+  "equipmentIds": [1, 51]
+}
+
+###
+PUT http://localhost:8080/api/rental/return
+Content-Type: application/json
+
+{
+  "personId": 3,
+  "leaseDate": "2025-03-31T00:00:00Z",
+  "returnDate": "2025-04-02T00:00:00Z",
+  "equipmentIds": [1, 51]
+}

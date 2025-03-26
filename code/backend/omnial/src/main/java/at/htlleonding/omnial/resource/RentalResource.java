@@ -135,4 +135,37 @@ public class RentalResource {
         }
     }
 
+    @PUT
+    @Path("/rent")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateIsRented(RentalRequest rentalRequest) {
+        Rental myRental= Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
+                rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate).firstResult();
+
+        myRental.isRented = true;
+
+        return Response.ok().build();
+
+    }
+    @PUT
+    @Path("/return")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateReturn(RentalRequest rentalRequest) {
+        Rental myRental= Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
+                rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate).firstResult();
+
+        if(myRental.isRented) {
+            myRental.isRented = false;
+            myRental.isReturned = true;
+            return Response.ok().build();
+
+        }else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+
+
+
+    }
+
 }
