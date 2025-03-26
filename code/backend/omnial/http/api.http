@@ -120,3 +120,40 @@ GET https://it200281.cloud.htl-leonding.ac.at/api/equipment/list
 ###
 GET http://localhost:8080/api/persons/token
 Authorization: Bearer <Token>
+
+###
+GET http://localhost:8080/api/rental/list
+
+###
+POST http://localhost:8080/api/rental
+Content-Type: application/json
+
+{
+  "personId":2 ,
+  "leaseDate": "2025-03-08T00:00:00Z",
+  "returnDate": "2025-03-09T00:00:00Z",
+  "equipmentIds": [1, 51]
+}
+
+###
+POST http://localhost:8080/api/rental
+Content-Type: application/json
+
+{
+  "personId": 3,
+  "leaseDate": "2025-03-31T00:00:00Z",
+  "returnDate": "2025-04-02T00:00:00Z",
+  "equipmentIds": [1, 51]
+}
+
+
+###
+DELETE http://localhost:8080/api/rental
+Content-Type: application/json
+
+{
+  "personId": 3,
+  "leaseDate": "2025-03-31T00:00:00Z",
+  "returnDate": "2025-04-02T00:00:00Z",
+  "equipmentIds": [1, 51]
+}

@@ -115,6 +115,24 @@ public class RentalResource {
         return Response.status(Response.Status.CREATED).build();
     }
 
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteRental(RentalRequest rentalRequest) {
+        Rental toDelete = Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
+                rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate).firstResult();
 
+        long deleteCount = Rental_Equipment.delete("rental.id = ?1", toDelete.id);
+        long deleted2Count = Rental.delete(
+                "person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
+                rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate
+        );
+
+        // Optional: Protokollierung der gelöschten Einträge
+        if (deleteCount == rentalRequest.equipmentIds.size() && deleted2Count > 0) {
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+    }
 
 }
