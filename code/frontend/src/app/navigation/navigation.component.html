@@ -39,6 +39,9 @@
 
       <a routerLink="" class="navigation">Shop</a>
       <a routerLink="dashboard" class="navigation">Dashboard</a>
+      <!-- <a *ngIf="user?.grade == 'Teacher' || user?.grade == 'admin'" routerLink="dashboard" class="navigation">Dashboard</a> -->
+      <!--<a *ngIf="!(user?.grade == 'Teacher' || user?.grade == 'admin')" routerLink="dashboardStudent" class="navigation">Dashboard</a>-->
+
       <a routerLink="cart" class="navigation">Warenkorb <i class="fa-solid fa-cart-shopping"></i></a>
     </div>
   </div>

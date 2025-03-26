@@ -8,15 +8,15 @@ import {UserService} from '../user.service';
 import {ReservationService} from '../reservation.service';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {Router} from '@angular/router';
+import {RoomItemComponent} from '../room-item/room-item.component';
 
 @Component({
   selector: 'app-shop-cart',
   templateUrl: './shop-cart.component.html',
   imports: [
     SelectedItemsComponent,
-    NgForOf,
-    DatePipe,
-    NgIf
+    NgIf,
+    RoomItemComponent
   ],
   styleUrl: './shop-cart.component.css'
 })
