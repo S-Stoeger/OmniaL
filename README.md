@@ -2,7 +2,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/S-Stoeger/OmniaL">
-    <img src="https://raw.githubusercontent.com/S-Stoeger/OmniaL/main/code/frontend/img/Logo.png" alt="Logo" width="100" height="100">
+    <img src="https://raw.githubusercontent.com/S-Stoeger/OmniaL/main/code/frontend/assets/images/Logo-OmniaL-rund.png" alt="Logo" width="100" height="100">
 
   </a>
 
