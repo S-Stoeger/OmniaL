@@ -33,15 +33,19 @@
   text-align: center;
 }
 
-#room {
-  background-color: var(--white);
-  width: 20vw;
-  margin: auto;
-  border-radius: 0.5rem;
-  padding: 2vw;
-}
 #roomSection {
   height: 75vh;
+}
+
+#addRoom {
+  margin-left: 5%;
+  background-color: var(--dark_blue);
+  border-radius: 0.5rem;
+  border: none;
+  color: var(--white);
+  padding: 2% 3% 2% 3%;
+  font-size: 1.5rem;
+  width: 90%;
 }
 
 #submitRental {

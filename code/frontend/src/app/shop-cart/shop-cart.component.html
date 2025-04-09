@@ -8,14 +8,10 @@
     <div id="auswahl-room">
       <h2 style="text-align: center;">Wollen sie noch einen Raum reservieren?</h2>
       <div id="roomSection">
-        <div id="room">
-          <h3>Fotostudio</h3>
-          <div style="display: flex; align-items: center; justify-content: space-around;">
-            <i class="fa-solid fa-calendar-days fa-2xl"></i>
-            <p>xx.xx.xxxx - von 10:00 bis 13:35</p>
-          </div>
+        <div *ngIf="rooms.length!==0 && !test">
+          <app-room-item [rooms]="rooms"></app-room-item>
         </div>
-        <hr>
+        <button (click)="addRoom()" id="addRoom">Hinzufügen</button>
       </div>
       <button (click)="addReservation()" id="submitRental">Reservieren</button>
     </div>

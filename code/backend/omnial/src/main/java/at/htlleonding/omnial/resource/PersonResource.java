@@ -4,6 +4,7 @@ import at.htlleonding.omnial.model.Person;
 import at.htlleonding.omnial.repository.PersonRepository;
 import io.quarkus.security.identity.request.TokenAuthenticationRequest;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -77,11 +78,19 @@ public class PersonResource {
             String email = claims.getClaimValue("email").toString();
             String grade = claims.getClaimValueAsString("distinguishedName").substring(15,21);
             String studentId = claims.getClaimValueAsString("preferred_username");
+            String uuid = claims.getClaimValueAsString("sub");
 
-            Person tokenPerson = new Person(studentId, email, firstName, familyName, grade);
+            Person p1 = personRepository.getByUuid(uuid);
+            if (p1 == null) {
+                Person tokenPerson = new Person(uuid, familyName, firstName,  email, grade);
+                personRepository.addPerson(uuid , firstName, familyName,email, grade);
+                return Response.ok(tokenPerson).build();
+
+            }
+
+            return Response.ok(p1).build();
 
 
-            return Response.ok(tokenPerson).build();
 
         } catch (Exception e) {
             return Response.serverError()

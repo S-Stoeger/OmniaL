@@ -1,10 +1,10 @@
 <div class="app-navigation">
   <a id="navigation-profile">
     <div id="navigation-profile-div">
-      <p>{{user.firstname.at(0)}}{{user.surname.at(0)}}</p>
+      <p *ngIf="user">{{user.surname.charAt(0)}}{{user.firstname.charAt(0)}}</p>
     </div>
     <div style="display: block">
-      <p style="width: 100%; padding-bottom: 0" class="navigation">{{user.firstname}} {{user.surname}}</p>
+      <p style="width: 100%; padding-bottom: 0" class="navigation">{{user?.surname}} {{user?.firstname}}</p>
       <a (click)="logout()" id="logout">Logout</a>
     </div>
 
@@ -39,6 +39,9 @@
 
       <a routerLink="" class="navigation">Shop</a>
       <a routerLink="dashboard" class="navigation">Dashboard</a>
+      <!-- <a *ngIf="user?.grade == 'Teacher' || user?.grade == 'admin'" routerLink="dashboard" class="navigation">Dashboard</a> -->
+      <!--<a *ngIf="!(user?.grade == 'Teacher' || user?.grade == 'admin')" routerLink="dashboardStudent" class="navigation">Dashboard</a>-->
+
       <a routerLink="cart" class="navigation">Warenkorb <i class="fa-solid fa-cart-shopping"></i></a>
     </div>
   </div>

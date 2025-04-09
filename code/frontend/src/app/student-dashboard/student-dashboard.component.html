@@ -1,1 +1,25 @@
-<p>student-dashboard works!</p>
+<div id="flex">
+  <div class="tableBox">
+    <h1>Deine Entlehnungen</h1>
+
+    <table id="rentalTable">
+      <tr>
+        <th *ngFor="let tableHeader of tableHeaders; let j = index">
+          {{ tableHeader }}
+        </th>
+      </tr>
+      <ng-container *ngFor="let equipment of tableEquipment">
+        <tr class="tableRow">
+          <td><img src="{{equipment.link}}"></td>
+          <td>{{equipment.name}}</td>
+          <td>{{equipment.equipmentType}}</td>
+          <td>{{equipment.itemCount}}x</td>
+        </tr>
+      </ng-container>
+    </table>
+  </div>
+  <div class="tableBox">
+    <h1>Deine Reservierungen</h1>
+    <app-room-item [rooms]="reservations"></app-room-item>
+  </div>
+</div>
