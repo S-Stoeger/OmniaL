@@ -71,6 +71,24 @@ Und hier kommt OmniaL ins Spiel:
   <img src="https://contrib.rocks/image?repo=S-Stoeger/OmniaL&max=4" />
 </a>
 
+
+## Lokal laufen lassen
+* Docker Container mit PostgreSQL Datenbank starten (docker-compose.yaml in backend)
+* application.properties wenn nötig anpassen
+* Backend starten
+* Links fürs Posten der Reservierung im Frontend auf localhost ändern
+* Frontend starten
+* Mit Schülerlogin bei keycloak einloggen (Keycloak wird von Professor Aberger gemanaged)
+* Fertig
+
+## Ausbaumöglichkeiten in der Zukunft
+* Räume reservieren verbessern (mehrere Räume reservieren, Raum ohne Equipment reservieren, etc)
+* Jedes Equipment, das man in der Schule reservieren kann, in die DB einspielen (Name, Foto, etc)
+* Open Search einbauen
+* Ausführlich Testn und BUGS FIXEN
+* Filtersysteme einbauen wie "Am Beliebtesten", "Kürzlich zurückgegeben", etc.
+* QR-Code eines Equipment einscannen und direkt Reservieren
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!--
