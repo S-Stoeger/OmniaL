@@ -1,0 +1,19 @@
+<main>
+  <div id="auswahl">
+    <div id="auswahl-equipment">
+      <h1>Auswahl</h1>
+      <app-selected-items [rentalEquipment]="rental"></app-selected-items>
+    </div>
+
+    <div id="auswahl-room">
+      <h2 style="text-align: center;">Wollen sie noch einen Raum reservieren?</h2>
+      <div id="roomSection">
+        <div *ngIf="rooms.length!==0 && !test">
+          <app-room-item [rooms]="rooms"></app-room-item>
+        </div>
+        <button (click)="addRoom()" id="addRoom">Hinzufügen</button>
+      </div>
+      <button (click)="addReservation()" id="submitRental">Reservieren</button>
+    </div>
+  </div>
+</main>

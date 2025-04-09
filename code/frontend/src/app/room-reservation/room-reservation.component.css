@@ -1,0 +1,189 @@
+.layout {
+  display: flex;
+}
+
+#addRoom {
+  position: absolute;
+  top: 87%;
+  left: 93%;
+  width: 5vw;
+  height: 9.5vh;
+  border-radius: 15rem;
+  background-color: var(--mid_blue);
+}
+
+#addRoom > i {
+  font-size: 2.5rem;
+}
+
+.left-panel {
+  width: 250px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.small-calendar {
+  margin-bottom: 16px;
+}
+
+.small-calendar h3 {
+  margin-bottom: 8px;
+}
+
+.room-scroll {
+  overflow: scroll;
+  height: 52vh;
+}
+
+.room-list h3 {
+  margin-bottom: 8px;
+}
+
+.room-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.room-list li {
+  padding: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 8px;
+  background-color: #f4f4f4;
+}
+
+.calendar {
+  flex-grow: 1;
+  overflow-x: auto;
+  height: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 17px;
+  text-align: center;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+th:first-child {
+  width: 12%;
+}
+
+td {
+  background-color: #fff;
+  cursor: pointer; /* Add pointer cursor to indicate clickable cells */
+}
+
+td:first-child {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+
+#navigation {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1E444D;
+  color: #fff;
+  padding: 5px 0;
+  border-radius: 5px;
+  margin-top: 2%;
+}
+
+#room {
+  width: 100%;
+  background-color: #1E444D;
+  color: #fff;
+  padding: 5px 0;
+  border-radius: 5px;
+  margin-top: 2%;
+  text-align: center;
+}
+
+#prev-month, #next-month {
+  font-size: 16px;
+}
+
+button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #1E444D;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.days-container {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  width: 100%;
+  padding: 0.5% 0.7% 0.5% 0.5%;
+  margin-top: 5px;
+  border: 1px solid #1E444D;
+  box-sizing: border-box;
+}
+
+.day {
+  width: 100%;
+  aspect-ratio: 1; /* Keep square shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9rem; /* Smaller font */
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.monday {
+  background-color: #A7A7A7;
+}
+
+.day.disabled {
+  background-color: #f0f0f0;
+  color: #999;
+}
+
+.disabled {
+  background-color: #fff;
+  color: #999;
+}
+
+.day.weekend {
+  background-color: #add8e6;
+}
+
+.weekend {
+  background-color: #add8e6;
+}
+
+.day.selected {
+  background-color: #1E444D;
+  color: #fff;
+}
+
+.selected {
+  background-color: #1E444D;
+  color: #fff;
+}
+
+.day.highlighted {
+  background-color: #7FAAB4;
+  color: #000;
+}
+
+.highlighted {
+  background-color: #7FAAB4;
+  color: #000;
+}

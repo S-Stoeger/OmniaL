@@ -1,0 +1,97 @@
+#auswahl {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#auswahl-equipment {
+  width: 70vw;
+  height: 50vh;
+  text-align: center;
+  margin-top: 2%;
+}
+
+#auswahl-equipment > p {
+  font-size: 3rem;
+}
+
+#auswahl-equipment > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50vw;
+  margin: auto;
+}
+
+#auswahl-room {
+  width: 30vw;
+  height: 92vh;
+  background-color: var(--light_blue);
+}
+
+#auswahl-room > p {
+  font-size: x-large;
+  text-align: center;
+}
+
+#roomSection {
+  height: 75vh;
+}
+
+#addRoom {
+  margin-left: 5%;
+  background-color: var(--dark_blue);
+  border-radius: 0.5rem;
+  border: none;
+  color: var(--white);
+  padding: 2% 3% 2% 3%;
+  font-size: 1.5rem;
+  width: 90%;
+}
+
+#submitRental {
+  margin-left: 60%;
+  background-color: var(--dark_blue);
+  border-radius: 0.5rem;
+  border: none;
+  color: var(--white);
+  padding: 2% 3% 2% 3%;
+  font-size: 1.5rem;
+}
+
+@media only screen and (max-width: 480px) {
+  #auswahl {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #auswahl-equipment {
+    width: 95%;
+  }
+
+  #auswahl-equipment > h3 {
+    font-size: 2rem;
+  }
+
+  #auswahl-equipment > p {
+    font-size: 1.5rem;
+  }
+
+  #auswahl-equipment > div {
+    width: 90%;
+  }
+
+  #auswahl-room {
+    width: 100%;
+    height: auto;
+    margin-top: 1rem;
+  }
+
+  #auswahl-room > p {
+    font-size: 1.5rem;
+  }
+
+  #room {
+    width: 80%;
+    padding: 1rem;
+  }
+}

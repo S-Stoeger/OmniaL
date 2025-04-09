@@ -16,17 +16,18 @@ OmniaL
 === Ausgangssituation
 In der Htl-Leonding ist eine mittelgroße Schule in Oberösterreich.
 Viele Schüler arbeiten in der Schule an diversen Projekten/Aufgaben. +
-Oftmals fällt es schwer einen Raum zu finden welcher frei ist, da Reservierungen für z.B. EDV-Sääle sind an der Schule nur für Lehrer möglich sind. +
+Oftmals fällt es schwer einen Raum zu finden, welcher frei ist, da Reservierungen für z.B. EDV-Sääle sind an der Schule nur für Lehrer möglich sind. +
 Die Entlehnung von Equipment wird auf einem Blatt Papier ausgeführt, wodurch beim Ausleihen Fehler unterlaufen können. +
-Auch haben Schüler keine Informationen wann das jeweilige Equipment wieder verfügbar ist. +
+Schüler wissen nicht, wann das jeweilige Equipment wieder verfügbar ist. +
 
 === Projektbeschreibung
 Eine Anwendung die es Schülern und Lehrern ermöglicht Räume zu reservieren sowie die Entlehnung von Equipment durchzuführen. +
-Die Raumreservierung wird ähnlich zu WebUntis wie ein Kalender gestaltet sein, woduch Schüler bei leeren Räumen eine Reservierung machen können. +
-Falls Lehrer einen Raum für Unterrichtungszwecke benötigen, haben diese allerdings Vorrang. +
-Zwecks Entlehnung gibt es eine Veranschaulichung des gesammten Equipments und ob dieses gerade Verfügbar ist. +
-Sollte dieses gerade ausgeliehen sein, so gibt es auch ein Datum bis wann die Entlehnung erfolgt.
-Eine Verlängerun der Entlehnung kann per Antrag an den Lehrer geschickt werden.
+Die Raumreservierung wird ähnlich zu WebUntis wie ein Kalender gestaltet sein, Schüler können bei leeren Räumen eine Reservierung machen. +
+Die Entlehnung funktioniert nach dem Shop-Prinzip, das gebrauchte Equipment kann in einen "Warenkorb" gegeben werden und für einen gewünschten Zeitraum reserviert werden. Will man das Equipment direkt reservieren so kann man auch den QR-Code scanen. +
+Ist das gewünschte Equipment gerade ausgeliehen, so wird angezeigt ab wann das Equipment wieder zur verfügung steht. +
+Wollen die Professoren wissen, wer was ausgeliehen hat, so sehen sie dies über die Entlehnliste, welche auch ausgedruckt werden kann. +
+
+
 
 === Projektziel / Nicht-Ziele
 * Schüler wird das planen der Projekte erleichtert
@@ -34,9 +35,9 @@ Eine Verlängerun der Entlehnung kann per Antrag an den Lehrer geschickt werden.
 
 === Projektinhalte
 * Die Schüler können über ein Kalendersystem einen Raum reservieren.
-* Lehrer können diese Reservierung überschreiben sofern sie diesen für Unterricht benötigen.
 * Ein Raum kann immer nur einmal reserviert werden und das nur auf eine gewisse Zeitspanne.
-* Die Entlehnung erfolgt über eine Digitale Liste, welch auch ausgedruckt werden kann.
+* Die Entlehnung erfolgt durch das Shop-Prinzip.
+
 
 === Kritische Erfolgsfaktoren
 * *Zeitrahmen*: Das Projekt muss bis zum Projectaward 2025 abgeschlossen sein.
@@ -48,17 +49,16 @@ Eine Verlängerun der Entlehnung kann per Antrag an den Lehrer geschickt werden.
 Dienstag 10.10.2023
 
 ==== Projektende
-Projectaward 2025
+20.03.2025
 
 ====  Meilensteine
-* Ausdruckbare Entlehnungsliste
+* Ausdruckbare Entlehnunliste
 * Funktionierendes Kalendersystem
-* Anmeldung per Schülerdaten
 * Raumreservierung
 * Entlehung per digitaler Liste
 
 === Ressourcen / Kosten
-Als Ressourcen werden die SChülerlogins beenötigt, zur überprüfung der Anmeldedaten.
+Als Ressourcen werden die Schülerlogins benötigt, zur überprüfung der Anmeldedaten.
 
 === Projektorganisation
 ==== Projektauftraggeber
