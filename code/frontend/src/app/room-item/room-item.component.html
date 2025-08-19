@@ -1,0 +1,8 @@
+<div  id="room" *ngFor="let reservation of rooms">
+  <div id="placeholder"></div>
+  <div id="roomText">
+    <h2>{{reservationService.getRoomById(reservation.roomId)}}</h2>
+    <p>Am {{ reservation.reservationDate | date:'dd.MM.yyyy' }} |
+      {{ reservation.startTime | date:'HH:mm'}} - {{ reservation.endTime | date:'HH:mm' }}</p>
+  </div>
+</div>

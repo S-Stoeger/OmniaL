@@ -1,0 +1,12 @@
+{
+    "rest-client.environmentVariables": {
+        "local": {
+            "keyrl": "http://localhost:8000",
+            "token": ""
+        },
+        "staging": {
+            "baseUrl": "http://localhost:3001/api",
+            "token": "eyJhbGciOiJIUzI1NiJ9eyJSb2xlIjoiQWRtaW4if"
+        }
+   }
+}

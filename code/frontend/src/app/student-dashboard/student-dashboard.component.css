@@ -1,0 +1,60 @@
+.tableBox {
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.2);
+  margin-bottom: 5%;
+  margin-top: 5%;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+h1 {
+  padding-top: 2%;
+  margin-left: 5%;
+  margin-bottom: 1%;
+  font-size: 2.5rem;
+  cursor: default;
+}
+
+table {
+  width: 95%;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1vw;
+  border-collapse: collapse;
+}
+
+#rentalTable > tr:first-child {
+  color: var(--grey);
+}
+
+.tableRow:not(:first-child) {
+  border-top: 1px solid var(--grey);
+}
+
+td, th {
+  padding: 1.5% 2vw;
+}
+
+td > img {
+  width: 80%;
+}
+
+td:first-child {
+  width: 20%;
+}
+
+#flex {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#flex > .tableBox:first-child {
+  width: 60%;
+}
+
+#flex> .tableBox:last-child {
+  width: 30%;
+}

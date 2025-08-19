@@ -1,0 +1,29 @@
+#container {
+  width: 80%;
+  height: 70vh;
+  margin: auto;
+  overflow: scroll;
+  background-color: #fff;
+}
+
+#item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.equipmentName {
+  width: 35%;
+}
+
+.removeButton {
+  color: var(--black);
+  transition: 0.2s;
+}
+.removeButton:hover {
+  color: var(--red);
+  transition: 0.2s;
+}

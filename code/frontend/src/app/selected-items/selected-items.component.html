@@ -1,0 +1,15 @@
+<div id="container" *ngIf="badgeCount > 0">
+
+  @for (equipment of this.equipments | async ; let i = $index; track equipment.id) {
+    <hr>
+    <div  id="item">
+      <img src="{{ equipment.link }}" width="100vw">
+      <h2 class="equipmentName">{{ equipment.name }}</h2>
+      <p>{{getTime(i)}}</p>
+      <app-amount-settings [maxAmount]="equipment.itemCount" [chosenAmount]="getCount(i)"></app-amount-settings>
+      <i (click)="delete(equipment.id)" class="fa-solid fa-x fa-lg removeButton"></i>
+    </div>
+    <hr>
+  }
+</div>
+

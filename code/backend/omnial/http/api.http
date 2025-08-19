@@ -1,5 +1,10 @@
-GET http://localhost:8080/api/reservations/list
+GET http://localhost:8080/api/reservations/token
 
+
+
+###
+GET http://localhost:8080/api/reservations/list
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJwMFloSVNwUHNreFZvX3A1YjY2MnVkbHVBeGZOM1VTUGYzZmxSLVZkOFc4In0.eyJleHAiOjE3MTA0OTIxOTksImlhdCI6MTcxMDQ5MTg5OSwiYXV0aF90aW1lIjoxNzEwNDg2OTQ0LCJqdGkiOiIxY2ZmNTQ3MC1kMDJhLTRiNDgtYjRlMC04OGJmZGE0YWQyMDYiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvcmVhbG1zL29tbmlhbCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJkOGFjN2VmMy0zMTljLTQ3NDEtYTg0Mi0zYmMzNTJmZjg4OTUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJmcm9udGVuZCIsIm5vbmNlIjoiMzBmYmQ4YmMtZjQ5OS00M2I0LThjMTgtNDE0NTIwZGNjNjg5Iiwic2Vzc2lvbl9zdGF0ZSI6ImNmNDkyMjk5LTQ3YmMtNGMzNi04ZDgwLWJmMmY1YjhkNDJjZCIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo0MjAwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwidXNlciIsImRlZmF1bHQtcm9sZXMtb21uaWFsIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInNpZCI6ImNmNDkyMjk5LTQ3YmMtNGMzNi04ZDgwLWJmMmY1YjhkNDJjZCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkhheGkgUG9wYXhpIiwicHJlZmVycmVkX3VzZXJuYW1lIjoib21uaWFsIiwiZ2l2ZW5fbmFtZSI6IkhheGkiLCJmYW1pbHlfbmFtZSI6IlBvcGF4aSJ9.NkspIyBU-dV7ezoWmxX-sLBuLcF-VS1CodzBAQmwOSl7qnxgTkgRc_0Dieu6U5PrYRxOynwW11T8YEPNyH1sziETBEZ2qjmNV0442siMZcR0gHyWFrXmpSj_i3e9iQBO6MQlehP6Q6j23OVESLstTypH1Raano-ahWy6AS2EWKp7K4lu3uPbxGb6qDrVdnafEYQvYIz0AcD6sll8ypuDKdE9hEhPz8JiqopjSTnixv7JrJjbtbC_Vba3DSi5MBjbcmC2RA569-hjQvEhyT-DXLxza_9PccOK4aO90uT38EqeoipK9luwtEuk6wOwsiZbq4bRDcFa1jwtwuh9WnhBwQ
 ###
 
 POST http://localhost:8080/api/reservations/
@@ -34,3 +39,143 @@ Content-Type: application/json
 
 DELETE http://localhost:8080/api/reservations/1
 Content-Type: application/json
+
+###
+//test
+
+POST http://localhost:8080/api/reservations/
+Content-Type: application/json
+
+{
+  "roomId": 1,
+  "personId": 1,
+  "startTime": "2023-12-14T08:00:00",
+  "endTime": "2023-12-14T08:50:00",
+  "reservationDate": "2023-12-14"
+}
+
+###
+
+DELETE http://localhost:8080/api/reservations/1
+Content-Type: application/json
+
+### Persons ###
+
+### Get Person
+
+GET http://localhost:8080/api/persons/list
+
+###
+
+### Get Person
+
+GET http://localhost:8080/api/equipment/list
+
+
+###
+
+
+POST http://localhost:8080/api/rental/
+Content-Type: application/json
+
+
+{
+  "person_id": 1,
+  "leaseDate": "2023-12-14T08:50:00",
+  "returnDate": "2023-12-14T08:50:00",
+  "actualReturnDate": "2023-12-14T08:50:00",
+  "isReturned": false,
+  "isRented": true,
+  "rentalEquipmentDTO": [
+    {
+      "rental_id": 1,
+      "equipment_id": 1
+    }
+  ]
+}
+
+###
+GET http://localhost:8080/api/rental/list
+
+###
+
+
+POST http://localhost:8080/api/rental
+Content-Type: application/json
+
+{
+  "personId": 1,
+  "leaseDate": "2025-02-07T00:00:00Z",
+  "returnDate": "2025-02-14T00:00:00Z",
+  "equipmentIds": [1, 51]
+}
+
+####
+GET http://localhost:8080/api/equipment/user/1
+
+###
+
+GET https://it200281.cloud.htl-leonding.ac.at/api/equipment/list
+
+###
+GET http://localhost:8080/api/persons/token
+Authorization: Bearer <Token>
+
+###
+GET http://localhost:8080/api/rental/list
+
+###
+POST http://localhost:8080/api/rental
+Content-Type: application/json
+
+{
+  "personId":2 ,
+  "leaseDate": "2025-03-08T00:00:00Z",
+  "returnDate": "2025-03-09T00:00:00Z",
+  "equipmentIds": [1, 51]
+}
+
+###
+POST http://localhost:8080/api/rental
+Content-Type: application/json
+
+{
+  "personId": 3,
+  "leaseDate": "2025-03-31T00:00:00Z",
+  "returnDate": "2025-04-02T00:00:00Z",
+  "equipmentIds": [1, 51]
+}
+
+
+###
+DELETE http://localhost:8080/api/rental
+Content-Type: application/json
+
+{
+  "personId": 3,
+  "leaseDate": "2025-03-31T00:00:00Z",
+  "returnDate": "2025-04-02T00:00:00Z",
+  "equipmentIds": [1, 51]
+}
+
+###
+PUT http://localhost:8080/api/rental/rent
+Content-Type: application/json
+
+{
+  "personId": 3,
+  "leaseDate": "2025-03-31T00:00:00Z",
+  "returnDate": "2025-04-02T00:00:00Z",
+  "equipmentIds": [1, 51]
+}
+
+###
+PUT http://localhost:8080/api/rental/return
+Content-Type: application/json
+
+{
+  "personId": 3,
+  "leaseDate": "2025-03-31T00:00:00Z",
+  "returnDate": "2025-04-02T00:00:00Z",
+  "equipmentIds": [1, 51]
+}

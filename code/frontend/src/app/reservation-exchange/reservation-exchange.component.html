@@ -1,0 +1,14 @@
+<div class="dashboard-exchange" *ngFor="let rental of rentals">
+  <p class="dashboard-exchange-name">{{ rental.person.surname }} {{ rental.person.firstname }} <a id="openModalBtn" (click)="openModal(rental)"><i class="fa-solid fa-circle-info"></i></a><p>
+  <p class="dashboard-exchange-text">{{ rental.leaseDate | date: "dd.MM.yyyy" }} - {{ rental.returnDate | date: "dd.MM.yyyy" }}<p>
+  <div class="dashboard-exchange-status">
+    <i class="fa-solid fa-x"></i><i class="fa-solid fa-check"></i>
+  </div>
+</div>
+
+<div *ngIf="isModalOpen && modalRental != null" id="myModal" class="modal" (click)="onBackgroundClick($event)">
+  <div class="modal-content">
+    <span class="close-btn" (click)="closeModal()">×</span>
+    <p>{{ modalRental.person.firstname }} {{ modalRental.person.surname }}</p>
+  </div>
+</div>
